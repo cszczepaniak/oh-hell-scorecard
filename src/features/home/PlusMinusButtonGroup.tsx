@@ -8,10 +8,7 @@ interface PlusMinusButtonGroupProps {
   arrayHelper: FieldArrayRenderProps;
   arrayLen: number;
 }
-const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> = ({
-  arrayHelper,
-  arrayLen,
-}) => {
+const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> = ({ arrayHelper, arrayLen }) => {
   const increment = (_: React.MouseEvent) => {
     if (arrayLen < maxPlayers) {
       arrayHelper.push('');
@@ -25,10 +22,10 @@ const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> =
   return (
     <Group>
       <Button onClick={increment}>
-        <Icon icon='solid-plus' />
+        <Icon icon="solid-plus" />
       </Button>
       <Button onClick={decrement}>
-        <Icon icon='solid-minus' />
+        <Icon icon="solid-minus" />
       </Button>
     </Group>
   );

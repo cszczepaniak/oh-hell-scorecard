@@ -8,7 +8,7 @@ test('renders oh hell', () => {
   const { getByText } = render(
     <Provider store={store}>
       <App />
-    </Provider>
+    </Provider>,
   );
 
   expect(getByText(/oh hell/i)).toBeInTheDocument();
