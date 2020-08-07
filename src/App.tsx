@@ -20,7 +20,7 @@ const theme: ThemeConfig = {
   },
 };
 
-const App = () => {
+const App: React.FunctionComponent = () => {
   return (
     <BumbagProvider theme={theme}>
       <Home />
