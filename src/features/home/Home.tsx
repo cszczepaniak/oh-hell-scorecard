@@ -2,20 +2,22 @@ import React from 'react';
 import {
   Box,
   Button,
-  Group,
   Heading,
   InputField,
   PageContent,
   Stack,
-  Icon,
+  Text,
 } from 'bumbag';
-import { Formik, Form, Field, FieldArray, FieldArrayRenderProps } from 'formik';
+import PlusMinusButtonGroup from './PlusMinusButtonGroup';
+import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
+import * as Yup from 'yup';
 
-const minPlayers = 3;
-const maxPlayers = 10;
 interface FormData {
   playerNames: string[];
 }
+const FormSchema = Yup.object().shape({
+  playerNames: Yup.array().of(Yup.string().required('Name is required')),
+});
 
 const Home: React.FunctionComponent = () => {
   const initialValues: FormData = {
@@ -28,17 +30,18 @@ const Home: React.FunctionComponent = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={values => console.log(values)}
+          validationSchema={FormSchema}
         >
-          {formik => (
+          {({ values }) => (
             <Form>
               <Heading use='h5'>Enter player names</Heading>
               <FieldArray name='playerNames'>
                 {arrayHelper => (
-                  <Stack spacing='major-1'>
-                    <FormInputs names={formik.values.playerNames} />
+                  <Stack spacing='major-3'>
+                    <FormInputs names={values.playerNames} />
                     <PlusMinusButtonGroup
                       arrayHelper={arrayHelper}
-                      arrayLen={formik.values.playerNames.length}
+                      arrayLen={values.playerNames.length}
                     />
                     <Button type='submit' palette='primary'>
                       Create Game!
@@ -54,35 +57,31 @@ const Home: React.FunctionComponent = () => {
   );
 };
 
-interface PlusMinusButtonGroupProps {
-  arrayHelper: FieldArrayRenderProps;
-  arrayLen: number;
+interface FieldWithErrorProps {
+  name: string;
+  placeholder: string;
 }
-const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> = ({
-  arrayHelper,
-  arrayLen,
-}) => {
-  const increment = (_: React.MouseEvent) => {
-    if (arrayLen < maxPlayers) {
-      arrayHelper.push('');
-    }
-  };
-  const decrement = (_: React.MouseEvent) => {
-    if (arrayLen > minPlayers) {
-      arrayHelper.remove(arrayLen - 1);
-    }
-  };
-  return (
-    <Group>
-      <Button onClick={increment}>
-        <Icon icon='solid-plus' />
-      </Button>
-      <Button onClick={decrement}>
-        <Icon icon='solid-minus' />
-      </Button>
-    </Group>
-  );
-};
+const FieldWithError: React.FunctionComponent<FieldWithErrorProps> = ({
+  name,
+  placeholder,
+}) => (
+  <Box marginBottom='major-3' position='relative'>
+    <Field
+      name={name}
+      component={InputField.Formik}
+      placeholder={placeholder}
+    />
+    <Box position='absolute'>
+      <Field name={name}>
+        {(props: FieldProps) => {
+          const error = getIn(props.form.errors, name);
+          const touch = getIn(props.form.touched, name);
+          return <Text color='danger'>{touch && error ? error : ''}</Text>;
+        }}
+      </Field>
+    </Box>
+  </Box>
+);
 
 interface FormInputsProps {
   names: string[];
@@ -90,10 +89,9 @@ interface FormInputsProps {
 const FormInputs: React.FunctionComponent<FormInputsProps> = ({ names }) => (
   <React.Fragment>
     {names.map((_, i) => (
-      <Field
+      <FieldWithError
         key={i}
         name={`playerNames[${i}]`}
-        component={InputField.Formik}
         placeholder={`Player ${i + 1}`}
       />
     ))}
