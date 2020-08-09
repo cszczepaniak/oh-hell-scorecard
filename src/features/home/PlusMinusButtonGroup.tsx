@@ -10,12 +10,12 @@ interface PlusMinusButtonGroupProps {
   arrayLen: number;
 }
 const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> = ({ arrayHelper, arrayLen }) => {
-  const increment = (_: React.MouseEvent) => {
+  const increment = () => {
     if (arrayLen < maxPlayers) {
       arrayHelper.push('');
     }
   };
-  const decrement = (_: React.MouseEvent) => {
+  const decrement = () => {
     if (arrayLen > minPlayers) {
       arrayHelper.remove(arrayLen - 1);
     }
