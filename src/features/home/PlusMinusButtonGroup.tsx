@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { FieldArrayRenderProps } from 'formik';
 import { Group, Button, Icon } from 'bumbag';
+import { FieldArrayRenderProps } from 'formik';
+
 import { minPlayers, maxPlayers } from './constants';
 
 interface PlusMinusButtonGroupProps {

@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { Box, Button, Heading, InputField, PageContent, Stack, Text } from 'bumbag';
-import PlusMinusButtonGroup from './PlusMinusButtonGroup';
 import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
 import * as Yup from 'yup';
+
+import PlusMinusButtonGroup from './PlusMinusButtonGroup';
 
 interface FormData {
   playerNames: string[];

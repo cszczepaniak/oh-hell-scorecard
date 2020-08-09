@@ -1,7 +1,9 @@
 import React from 'react';
-import Home from './features/home/Home';
-import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
+
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
+
+import Home from './features/home/Home';
 
 const theme: ThemeConfig = {
   Icon: {
