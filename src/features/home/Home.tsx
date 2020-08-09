@@ -14,6 +14,9 @@ const FormSchema = Yup.object().shape({
 });
 
 const Home: React.FunctionComponent = () => {
+  const onSubmit = (values: FormData) => {
+    console.log(values);
+  };
   const initialValues: FormData = {
     playerNames: Array(4).fill(''),
   };
@@ -21,7 +24,7 @@ const Home: React.FunctionComponent = () => {
     <Box>
       <PageContent>
         <Heading fontSize="2.5rem">Oh Hell Scorecard</Heading>
-        <Formik initialValues={initialValues} onSubmit={(values) => console.log(values)} validationSchema={FormSchema}>
+        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={FormSchema}>
           {({ values }) => (
             <Form>
               <Heading use="h5">Enter player names</Heading>
