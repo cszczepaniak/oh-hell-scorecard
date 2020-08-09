@@ -1,6 +1,7 @@
 import React from 'react';
-import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
+
 import { Box, Button, Heading, InputField, PageContent, Stack, Text } from 'bumbag';
+import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
 import PlusMinusButtonGroup from './PlusMinusButtonGroup';
@@ -12,6 +13,7 @@ const FormSchema = Yup.object().shape({
   playerNames: Yup.array().of(Yup.string().required('Name is required')),
 });
 
+// comment
 const Home: React.FunctionComponent = () => {
   const initialValues: FormData = {
     playerNames: Array(4).fill(''),
