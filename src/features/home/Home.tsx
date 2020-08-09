@@ -13,7 +13,6 @@ const FormSchema = Yup.object().shape({
   playerNames: Yup.array().of(Yup.string().required('Name is required')),
 });
 
-// comment
 const Home: React.FunctionComponent = () => {
   const initialValues: FormData = {
     playerNames: Array(4).fill(''),
