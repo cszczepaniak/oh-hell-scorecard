@@ -5,6 +5,8 @@ import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
 
 import Home from './features/home/Home';
 
+const a = 3;
+
 const theme: ThemeConfig = {
   Icon: {
     iconSets: [
