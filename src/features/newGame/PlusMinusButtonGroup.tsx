@@ -23,10 +23,10 @@ const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> =
   return (
     <Group>
       <Button onClick={increment}>
-        <Icon icon="solid-plus" />
+        <Icon icon='solid-plus' />
       </Button>
       <Button onClick={decrement}>
-        <Icon icon="solid-minus" />
+        <Icon icon='solid-minus' />
       </Button>
     </Group>
   );
