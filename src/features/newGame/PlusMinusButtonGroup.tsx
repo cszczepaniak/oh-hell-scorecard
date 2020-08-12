@@ -22,10 +22,10 @@ const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> =
   };
   return (
     <Group>
-      <Button onClick={increment}>
+      <Button onClick={increment} disabled={arrayLen === maxPlayers}>
         <Icon icon='solid-plus' />
       </Button>
-      <Button onClick={decrement}>
+      <Button onClick={decrement} disabled={arrayLen === minPlayers}>
         <Icon icon='solid-minus' />
       </Button>
     </Group>
