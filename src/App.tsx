@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
 
 import NewGame from './features/newGame/NewGame';
@@ -9,15 +9,15 @@ const theme: ThemeConfig = {
   Icon: {
     iconSets: [
       {
-        icons: [faPlus, faMinus],
+        icons: [faPlus, faMinus, faArrowRight],
         prefix: 'solid-',
         type: 'font-awesome',
       },
-      {
-        icons: [faPlus, faMinus],
-        prefix: 'regular-',
-        type: 'font-awesome',
-      },
+      // {
+      //   icons: [faPlus, faMinus],
+      //   prefix: 'regular-',
+      //   type: 'font-awesome',
+      // },
     ],
   },
 };
