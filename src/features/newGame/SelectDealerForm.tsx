@@ -8,6 +8,9 @@ import { actions } from './slice';
 export const SelectDealerForm: React.FunctionComponent = () => {
   const { state, dispatch } = useContext(newGameContext);
 
+  const dealerIsValid = () => {
+    return state.dealer && state.playerNames.includes(state.dealer);
+  };
   const onClickName = (name: string) => () => {
     if (state.dealer === name) {
       dispatch(actions.unselectDealer());
@@ -20,7 +23,9 @@ export const SelectDealerForm: React.FunctionComponent = () => {
     dispatch(actions.decrementIdx());
   };
   const onClickSubmit = () => {
-    dispatch(actions.incrementIdx());
+    if (dealerIsValid()) {
+      dispatch(actions.incrementIdx());
+    }
   };
 
   return (
@@ -43,7 +48,7 @@ export const SelectDealerForm: React.FunctionComponent = () => {
           <Button iconBefore='solid-arrow-left' onClick={onClickPrev}>
             Player Names
           </Button>
-          <Button iconAfter='solid-arrow-right' onClick={onClickSubmit}>
+          <Button iconAfter='solid-arrow-right' onClick={onClickSubmit} disabled={!dealerIsValid()}>
             Select Settings
           </Button>
         </Set>

@@ -35,7 +35,7 @@ export const PlayerNamesForm: React.FunctionComponent = () => {
       }}
       validationSchema={FormSchema}
     >
-      {({ values, resetForm }) => (
+      {({ values, resetForm, isValid }) => (
         <Form>
           <Heading use='h5'>Enter player names</Heading>
           <FieldArray name='playerNames'>
@@ -46,7 +46,11 @@ export const PlayerNamesForm: React.FunctionComponent = () => {
                   <PlusMinusButtonGroup arrayHelper={arrayHelper} arrayLen={values.playerNames.length} />
                   <Button onClick={onClickClearNames(resetForm)}>Clear Names</Button>
                 </Set>
-                <Button type='submit' iconAfter='solid-arrow-right'>
+                <Button
+                  type='submit'
+                  iconAfter='solid-arrow-right'
+                  disabled={!isValid || values.playerNames.includes('')}
+                >
                   Select Dealer
                 </Button>
               </Stack>
