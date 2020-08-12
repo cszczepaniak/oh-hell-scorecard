@@ -17,23 +17,21 @@ export interface PlayerNameFormData {
 }
 
 export const PlayerNamesForm: React.FunctionComponent = () => {
-  const context = useContext(newGameContext);
+  const { state, dispatch } = useContext(newGameContext);
 
   const onClickClearNames = (resetForm: () => void) => () => {
     resetForm();
-    context.dispatch(actions.setPlayerNames([]));
+    dispatch(actions.setPlayerNames([]));
   };
 
   return (
     <Formik
       initialValues={
-        context.state.playerNames.length > 0
-          ? { playerNames: context.state.playerNames }
-          : { playerNames: Array(4).fill('') }
+        state.playerNames.length > 0 ? { playerNames: state.playerNames } : { playerNames: Array(4).fill('') }
       }
       onSubmit={(values: PlayerNameFormData) => {
-        context.dispatch(actions.setPlayerNames(values.playerNames));
-        context.dispatch(actions.incrementIdx());
+        dispatch(actions.setPlayerNames(values.playerNames));
+        dispatch(actions.incrementIdx());
       }}
       validationSchema={FormSchema}
     >
