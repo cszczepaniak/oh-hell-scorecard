@@ -1,57 +1,41 @@
-import React, { useState } from 'react';
+import React, { createContext, useReducer } from 'react';
 
+import { AnyAction } from '@reduxjs/toolkit';
 import { Box, Heading, PageContent } from 'bumbag';
 
-import { PlayerNamesForm, PlayerNameFormData } from './PlayerNamesForm';
+import { PlayerNamesForm } from './PlayerNamesForm';
 import { SelectDealerForm } from './SelectDealerForm';
 import { SettingsForm } from './SettingsForm';
+import { reducer, initialState, NewGameState } from './slice';
+
+interface NewGameContext {
+  state: NewGameState;
+  dispatch: React.Dispatch<AnyAction>;
+}
+
+const initialContext: NewGameContext = {
+  state: initialState,
+  dispatch: () => {
+    return;
+  },
+};
+
+export const newGameContext = createContext(initialContext);
 
 const NewGame: React.FunctionComponent = () => {
-  const [formIdx, setFormIdx] = useState(0);
-  const [playerNames, setPlayerNames] = useState<string[]>([]);
-  const [dealerName, setDealerName] = useState('');
-
-  const incrementIdx = () => {
-    setFormIdx(formIdx + 1);
-  };
-  const decrementIdx = () => {
-    setFormIdx(formIdx - 1);
-  };
-  const assertIdx = (actIdx: number, expIdx: number, action: () => void) => {
-    if (actIdx !== expIdx) {
-      console.log('Bad time!');
-      return;
-    }
-    action();
-  };
-  const onPlayerNamesSubmit = (values: PlayerNameFormData) => {
-    assertIdx(formIdx, 0, () => {
-      incrementIdx();
-      setPlayerNames(values.playerNames);
-    });
-  };
-  const onSelectDealerSubmit = (name: string) => {
-    assertIdx(formIdx, 1, () => {
-      incrementIdx();
-      setDealerName(name);
-    });
-  };
-  const onSettingsSubmit = () => {
-    console.log('Creating game...');
-    console.log({ playerNames, dealerName });
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <Box>
-      <PageContent>
-        <Heading fontSize='2.5rem'>Oh Hell Scorecard</Heading>
-        {formIdx === 0 && <PlayerNamesForm onSubmit={onPlayerNamesSubmit} />}
-        {formIdx === 1 && (
-          <SelectDealerForm playerNames={playerNames} onSubmit={onSelectDealerSubmit} onClickPrev={decrementIdx} />
-        )}
-        {formIdx === 2 && <SettingsForm onSubmit={onSettingsSubmit} onClickPrev={decrementIdx} />}
-      </PageContent>
-    </Box>
+    <newGameContext.Provider value={{ state, dispatch }}>
+      <Box>
+        <PageContent>
+          <Heading fontSize='2.5rem'>Oh Hell Scorecard</Heading>
+          {state.displayIdx === 0 && <PlayerNamesForm />}
+          {state.displayIdx === 1 && <SelectDealerForm />}
+          {state.displayIdx === 2 && <SettingsForm />}
+        </PageContent>
+      </Box>
+    </newGameContext.Provider>
   );
 };
 

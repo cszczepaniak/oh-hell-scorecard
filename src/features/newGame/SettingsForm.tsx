@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Button, RadioGroup, Set, Stack } from 'bumbag';
 
-interface SettingsFormProps {
-  onSubmit: () => void;
-  onClickPrev: () => void;
-}
+import { newGameContext } from './NewGame';
+import { actions } from './slice';
 
-export const SettingsForm: React.FunctionComponent<SettingsFormProps> = ({ onSubmit, onClickPrev }) => {
+export const SettingsForm: React.FunctionComponent = () => {
+  const { dispatch } = useContext(newGameContext);
+
+  const onClickPrev = () => {
+    dispatch(actions.decrementIdx());
+  };
+  const onSubmit = () => {
+    console.log('Creating game...');
+  };
+
   return (
     <Stack>
       <RadioGroup

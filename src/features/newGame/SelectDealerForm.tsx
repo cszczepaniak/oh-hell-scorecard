@@ -1,39 +1,40 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 
 import { Box, Button, Stack, Heading, Set } from 'bumbag';
 
-interface SelectDealerFormProps {
-  playerNames: string[];
-  onSubmit: (name: string) => void;
-  onClickPrev: () => void;
-}
+import { newGameContext } from './NewGame';
+import { actions } from './slice';
 
-export const SelectDealerForm: React.FunctionComponent<SelectDealerFormProps> = ({
-  playerNames,
-  onSubmit,
-  onClickPrev,
-}) => {
-  const [dealerName, setDealerName] = useState('');
+export const SelectDealerForm: React.FunctionComponent = () => {
+  const context = useContext(newGameContext);
 
   const onClickName = (name: string) => () => {
-    if (dealerName === name) {
-      setDealerName('');
+    if (context.state.dealer === name) {
+      context.dispatch(actions.unselectDealer());
     } else {
-      setDealerName(name);
+      context.dispatch(actions.selectDealer(name));
     }
   };
-
+  const onClickPrev = () => {
+    context.dispatch(actions.unselectDealer());
+    context.dispatch(actions.decrementIdx());
+  };
   const onClickSubmit = () => {
-    onSubmit(dealerName);
+    context.dispatch(actions.incrementIdx());
   };
 
   return (
     <React.Fragment>
       <Heading use='h5'>Choose dealer</Heading>
       <Stack spacing='major-3'>
-        {playerNames.map((n, i) => (
+        {context.state.playerNames.map((n, i) => (
           <Box key={i} display='block'>
-            <Button width='100%' background={dealerName === n ? '#abcabc' : ''} onClick={onClickName(n)} alignX='left'>
+            <Button
+              width='100%'
+              background={context.state.dealer === n ? '#abcabc' : ''}
+              onClick={onClickName(n)}
+              alignX='left'
+            >
               {n}
             </Button>
           </Box>
