@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Heading, InputField, Stack, Text } from 'bumbag';
+import { Box, Button, Stack, Heading, InputField, Text } from 'bumbag';
 import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
