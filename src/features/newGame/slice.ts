@@ -1,15 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export interface GameSettings {
+  scoringMode: 'standard' | 'negative';
+  bonusRounds: boolean;
+}
+
 export interface NewGameState {
   displayIdx: number;
   playerNames: string[];
   dealer: string;
+  settings: GameSettings;
 }
 
 export const initialState: NewGameState = {
   displayIdx: 0,
   playerNames: [],
   dealer: '',
+  settings: {
+    scoringMode: 'negative',
+    bonusRounds: true,
+  },
 };
 
 const newGameSlice = createSlice({
@@ -33,6 +43,9 @@ const newGameSlice = createSlice({
     },
     unselectDealer(state) {
       state.dealer = '';
+    },
+    setSettings(state, action) {
+      state.settings = action.payload;
     },
   },
 });
