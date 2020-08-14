@@ -12,14 +12,16 @@ const initialValues: GameSettings = {
 };
 
 export const SettingsForm: React.FunctionComponent = () => {
-  const { dispatch } = useContext(newGameContext);
+  const { state, dispatch } = useContext(newGameContext);
 
   const onClickPrev = () => {
     dispatch(actions.decrementIdx());
   };
   const onSubmit = (values: GameSettings) => {
     dispatch(actions.setSettings(values));
-    console.log(values);
+    console.log('Creating game...');
+    const { playerNames, dealer, settings } = state;
+    console.log({ playerNames, dealer, settings });
   };
 
   return (
