@@ -34,7 +34,9 @@ export const SettingsForm: React.FunctionComponent = () => {
                     <Radio
                       label='Standard Scoring'
                       checked={values.scoringMode === 'standard'}
-                      onChange={() => setFieldValue('scoring', 'standard')}
+                      onChange={() => {
+                        setFieldValue('scoringMode', 'standard');
+                      }}
                     />
                   </Box>
                   <SettingExplainerModal title='Standard Scoring'>
@@ -47,7 +49,7 @@ export const SettingsForm: React.FunctionComponent = () => {
                     <Radio
                       label='Negative Scoring'
                       checked={values.scoringMode === 'negative'}
-                      onChange={() => setFieldValue('scoring', 'negative')}
+                      onChange={() => setFieldValue('scoringMode', 'negative')}
                     />
                   </Box>
                   <SettingExplainerModal title='Negative Scoring'>
