@@ -4,6 +4,7 @@ import { Box, Button, Stack, Heading, InputField, Text, Set } from 'bumbag';
 import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
+import { maxPlayers, minPlayers } from './constants';
 import { newGameContext } from './NewGame';
 import PlusMinusButtonGroup from './PlusMinusButtonGroup';
 import { actions } from './slice';
@@ -43,7 +44,14 @@ export const PlayerNamesForm: React.FunctionComponent = () => {
               <Stack spacing='major-3'>
                 <FormInputs names={values.playerNames} />
                 <Set>
-                  <PlusMinusButtonGroup arrayHelper={arrayHelper} arrayLen={values.playerNames.length} />
+                  <PlusMinusButtonGroup
+                    onIncrement={() => values.playerNames.length < maxPlayers && arrayHelper.push('')}
+                    onDecrement={() =>
+                      values.playerNames.length > minPlayers && arrayHelper.remove(values.playerNames.length - 1)
+                    }
+                    disablePlus={values.playerNames.length === maxPlayers}
+                    disableMinus={values.playerNames.length === minPlayers}
+                  />
                   <Button onClick={onClickClearNames(resetForm)}>Clear Names</Button>
                 </Set>
                 <Button

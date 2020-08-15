@@ -1,31 +1,25 @@
 import React from 'react';
 
 import { Group, Button, Icon } from 'bumbag';
-import { FieldArrayRenderProps } from 'formik';
-
-import { minPlayers, maxPlayers } from './constants';
 
 interface PlusMinusButtonGroupProps {
-  arrayHelper: FieldArrayRenderProps;
-  arrayLen: number;
+  onIncrement: () => void;
+  onDecrement: () => void;
+  disablePlus: boolean;
+  disableMinus: boolean;
 }
-const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> = ({ arrayHelper, arrayLen }) => {
-  const increment = () => {
-    if (arrayLen < maxPlayers) {
-      arrayHelper.push('');
-    }
-  };
-  const decrement = () => {
-    if (arrayLen > minPlayers) {
-      arrayHelper.remove(arrayLen - 1);
-    }
-  };
+const PlusMinusButtonGroup: React.FunctionComponent<PlusMinusButtonGroupProps> = ({
+  onIncrement,
+  onDecrement,
+  disablePlus,
+  disableMinus,
+}) => {
   return (
     <Group>
-      <Button onClick={increment} disabled={arrayLen === maxPlayers}>
+      <Button onClick={onIncrement} disabled={disablePlus}>
         <Icon icon='solid-plus' />
       </Button>
-      <Button onClick={decrement} disabled={arrayLen === minPlayers}>
+      <Button onClick={onDecrement} disabled={disableMinus}>
         <Icon icon='solid-minus' />
       </Button>
     </Group>
