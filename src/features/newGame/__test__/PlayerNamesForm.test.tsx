@@ -3,7 +3,7 @@ import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { newGameContext } from '../NewGame';
+import { NewGameContext } from '../context';
 import { PlayerNamesForm } from '../PlayerNamesForm';
 import { actions, initialState } from '../slice';
 
@@ -103,9 +103,9 @@ test('clear form button resets the form and clears the names in context', async 
   const mockDispatch = jest.fn();
 
   const { getAllByRole, getAllByPlaceholderText, queryAllByDisplayValue } = render(
-    <newGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+    <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
-    </newGameContext.Provider>,
+    </NewGameContext.Provider>,
   );
   const resetBtn = getAllByRole('button')[resetBtnIdx];
   const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
@@ -133,9 +133,9 @@ test('submit button should update context', async () => {
 
   const playerNames = ['q', 'w', 'e', 'r'];
   const { getByText, getAllByPlaceholderText } = render(
-    <newGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+    <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
-    </newGameContext.Provider>,
+    </NewGameContext.Provider>,
   );
 
   const inputs = getAllByPlaceholderText(inputPlaceholderRegex);

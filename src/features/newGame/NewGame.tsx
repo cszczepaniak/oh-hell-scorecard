@@ -1,33 +1,19 @@
-import React, { createContext, useReducer } from 'react';
+import React, { useReducer } from 'react';
 
-import { AnyAction } from '@reduxjs/toolkit';
 import { Box, Heading, PageContent } from 'bumbag';
 
 import { minPlayers, maxPlayers } from './constants';
+import { NewGameContext } from './context';
 import { PlayerNamesForm } from './PlayerNamesForm';
 import { SelectDealerForm } from './SelectDealerForm';
 import { SettingsForm } from './SettingsForm';
-import { reducer, initialState, NewGameState } from './slice';
-
-interface NewGameContext {
-  state: NewGameState;
-  dispatch: React.Dispatch<AnyAction>;
-}
-
-const initialContext: NewGameContext = {
-  state: initialState,
-  dispatch: () => {
-    return;
-  },
-};
-
-export const newGameContext = createContext(initialContext);
+import { reducer, initialState } from './slice';
 
 const NewGame: React.FunctionComponent = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
-    <newGameContext.Provider value={{ state, dispatch }}>
+    <NewGameContext.Provider value={{ state, dispatch }}>
       <Box>
         <PageContent>
           <Heading>Oh Hell Scorecard</Heading>
@@ -36,7 +22,7 @@ const NewGame: React.FunctionComponent = () => {
           {state.displayIdx === 2 && <SettingsForm />}
         </PageContent>
       </Box>
-    </newGameContext.Provider>
+    </NewGameContext.Provider>
   );
 };
 

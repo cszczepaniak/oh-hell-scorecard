@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Box, Button, Checkbox, Dialog, FieldStack, FieldWrapper, Icon, Modal, Radio, Set } from 'bumbag';
 import { Form, Formik } from 'formik';
 
-import { newGameContext } from './NewGame';
+import { NewGameContext } from './context';
 import { actions, GameSettings } from './slice';
 
 const initialValues: GameSettings = {
@@ -12,7 +12,7 @@ const initialValues: GameSettings = {
 };
 
 export const SettingsForm: React.FunctionComponent = () => {
-  const { state, dispatch } = useContext(newGameContext);
+  const { state, dispatch } = useContext(NewGameContext);
 
   const onClickPrev = () => {
     dispatch(actions.decrementIdx());
