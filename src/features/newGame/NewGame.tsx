@@ -3,6 +3,7 @@ import React, { createContext, useReducer } from 'react';
 import { AnyAction } from '@reduxjs/toolkit';
 import { Box, Heading, PageContent } from 'bumbag';
 
+import { minPlayers, maxPlayers } from './constants';
 import { PlayerNamesForm } from './PlayerNamesForm';
 import { SelectDealerForm } from './SelectDealerForm';
 import { SettingsForm } from './SettingsForm';
@@ -29,8 +30,8 @@ const NewGame: React.FunctionComponent = () => {
     <newGameContext.Provider value={{ state, dispatch }}>
       <Box>
         <PageContent>
-          <Heading fontSize='2.5rem'>Oh Hell Scorecard</Heading>
-          {state.displayIdx === 0 && <PlayerNamesForm />}
+          <Heading>Oh Hell Scorecard</Heading>
+          {state.displayIdx === 0 && <PlayerNamesForm minPlayers={minPlayers} maxPlayers={maxPlayers} />}
           {state.displayIdx === 1 && <SelectDealerForm />}
           {state.displayIdx === 2 && <SettingsForm />}
         </PageContent>
