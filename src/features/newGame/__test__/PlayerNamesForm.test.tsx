@@ -3,7 +3,9 @@ import React from 'react';
 import { render, fireEvent, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { newGameContext } from '../NewGame';
 import { PlayerNamesForm } from '../PlayerNamesForm';
+import { actions, initialState } from '../slice';
 
 const plusBtnIdx = 0;
 const minusBtnIdx = 1;
@@ -96,13 +98,19 @@ test('select dealer button is disabled until form is valid', async () => {
   expect(submitBtn).not.toBeDisabled();
 });
 
-test('clear form button resets the form', async () => {
+test('clear form button resets the form and clears the names in context', async () => {
+  const mockState = initialState;
+  const mockDispatch = jest.fn();
+
   const { getAllByRole, getAllByPlaceholderText, queryAllByDisplayValue } = render(
-    <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
+    <newGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+      <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
+    </newGameContext.Provider>,
   );
   const resetBtn = getAllByRole('button')[resetBtnIdx];
   const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
   for (let i = 1; i < inputs.length; i++) {
+    mockDispatch.mockClear();
     // fill in some inputs
     for (let j = 0; j < i; j++) {
       await wait(async () => {
@@ -114,5 +122,34 @@ test('clear form button resets the form', async () => {
       fireEvent.click(resetBtn);
     });
     expect(queryAllByDisplayValue(/player\d+/i)).toHaveLength(0);
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(mockDispatch).toHaveBeenLastCalledWith(actions.setPlayerNames([]));
   }
+});
+
+test('submit button should update context', async () => {
+  const mockState = initialState;
+  const mockDispatch = jest.fn();
+
+  const playerNames = ['q', 'w', 'e', 'r'];
+  const { getByText, getAllByPlaceholderText } = render(
+    <newGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+      <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
+    </newGameContext.Provider>,
+  );
+
+  const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
+  for (let i = 0; i < inputs.length; i++) {
+    await wait(async () => {
+      await userEvent.type(inputs[i], playerNames[i]);
+    });
+  }
+
+  await wait(() => {
+    fireEvent.click(getByText(/select dealer/i));
+  });
+
+  expect(mockDispatch).toHaveBeenCalledTimes(2);
+  expect(mockDispatch).toHaveBeenNthCalledWith(1, actions.setPlayerNames(playerNames));
+  expect(mockDispatch).toHaveBeenNthCalledWith(2, actions.incrementIdx());
 });
