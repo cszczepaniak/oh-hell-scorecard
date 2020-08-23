@@ -58,6 +58,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
                   />
                   <Button onClick={onClickClearNames(resetForm)}>Clear Names</Button>
                 </Set>
+                {/* TODO make the NavButton work with form and onSubmit. Can't have onClick if the button is submitting a form apparently */}
                 <NavButton direction='forward' type='submit' disabled={!isValid || values.playerNames.includes('')}>
                   Select Dealer
                 </NavButton>
