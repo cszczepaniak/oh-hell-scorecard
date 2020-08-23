@@ -4,7 +4,8 @@ import { act, render, fireEvent, RenderResult } from '@testing-library/react';
 
 import { NewGameContext } from '../context';
 import { SelectDealerForm } from '../SelectDealerForm';
-import { actions, initialState, NewGameState } from '../slice';
+import { actions, initialState } from '../slice';
+import { INewGameState } from '../types';
 
 const cleanupDOM = () => {
   document.getElementsByTagName('html')[0].innerHTML = '';
@@ -21,7 +22,7 @@ const renderWithNames = (names: string[]) => {
   return { state, dispatch, renderResult };
 };
 
-const renderWithState = (state: NewGameState) => {
+const renderWithState = (state: INewGameState) => {
   const dispatch = jest.fn();
   const renderResult = render(
     <NewGameContext.Provider value={{ state, dispatch }}>
@@ -52,7 +53,7 @@ const submitBtnIdx = (nPlayers: number) => {
 
 test('buttons exist for each player in state', () => {
   const numAdditionalBtns = 2;
-  const checkRenderResult = (state: NewGameState, renderResult: RenderResult) => {
+  const checkRenderResult = (state: INewGameState, renderResult: RenderResult) => {
     const { getAllByRole, getByText } = renderResult;
     expect(getAllByRole('button')).toHaveLength(state.playerNames.length + numAdditionalBtns);
     state.playerNames.forEach((n: string, i: number) => {
@@ -93,7 +94,7 @@ test('clicking the button for the selected dealer dispatches unselect dealer act
   });
 });
 
-test('clicking back button dispatches unselectDealer and decrementIdx', () => {
+test('clicking back button dispatches unselectDealer', () => {
   const names = getNames(4);
   const {
     renderResult: { getAllByRole },
@@ -103,9 +104,8 @@ test('clicking back button dispatches unselectDealer and decrementIdx', () => {
   act(() => {
     fireEvent.click(backBtn);
   });
-  expect(dispatch).toHaveBeenCalledTimes(2);
+  expect(dispatch).toHaveBeenCalledTimes(1);
   expect(dispatch).toHaveBeenNthCalledWith(1, actions.unselectDealer());
-  expect(dispatch).toHaveBeenNthCalledWith(2, actions.decrementIdx());
 });
 
 test('submit button is disabled while no dealer is selected', () => {
@@ -126,19 +126,6 @@ test('submit button is disabled while dealer name is not in player names', () =>
   expect(submitBtn).toBeDisabled();
 });
 
-test('incrementIdx is not dispatched when dealer name is invalid', () => {
-  const names = getNames(4);
-  const {
-    renderResult: { getAllByRole },
-    dispatch,
-  } = renderWithState({ ...initialState, playerNames: names, dealer: 'notAValidName' });
-  const submitBtn = getAllByRole('button')[submitBtnIdx(names.length)];
-  act(() => {
-    fireEvent.click(submitBtn);
-  });
-  expect(dispatch).not.toHaveBeenCalled();
-});
-
 test('submit button is enabled while dealer name is valid', () => {
   const names = getNames(4);
   names.forEach((n) => {
@@ -149,18 +136,4 @@ test('submit button is enabled while dealer name is valid', () => {
     expect(submitBtn).not.toBeDisabled();
     cleanupDOM();
   });
-});
-
-test('incrementIdx is dispatched when submitted', () => {
-  const names = getNames(4);
-  const {
-    renderResult: { getAllByRole },
-    dispatch,
-  } = renderWithState({ ...initialState, playerNames: names, dealer: names[0] });
-  const submitBtn = getAllByRole('button')[submitBtnIdx(names.length)];
-  act(() => {
-    fireEvent.click(submitBtn);
-  });
-  expect(dispatch).toHaveBeenCalledTimes(1);
-  expect(dispatch).toHaveBeenLastCalledWith(actions.incrementIdx());
 });

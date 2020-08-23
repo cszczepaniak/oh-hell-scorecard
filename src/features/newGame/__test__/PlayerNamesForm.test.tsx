@@ -149,7 +149,6 @@ test('submit button should update context', async () => {
     fireEvent.click(getByText(/select dealer/i));
   });
 
-  expect(mockDispatch).toHaveBeenCalledTimes(2);
+  expect(mockDispatch).toHaveBeenCalledTimes(1);
   expect(mockDispatch).toHaveBeenNthCalledWith(1, actions.setPlayerNames(playerNames));
-  expect(mockDispatch).toHaveBeenNthCalledWith(2, actions.incrementIdx());
 });
