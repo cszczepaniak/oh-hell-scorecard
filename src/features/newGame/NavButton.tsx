@@ -28,6 +28,7 @@ export const NavButton: React.FunctionComponent<IBackButtonProps & ButtonProps> 
   return (
     <Button
       {...props}
+      type='button'
       iconBefore={direction === 'back' ? 'solid-arrow-left' : ''}
       iconAfter={direction === 'forward' ? 'solid-arrow-right' : ''}
       onClick={handleClick}
