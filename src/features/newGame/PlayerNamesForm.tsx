@@ -40,7 +40,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
       }}
       validationSchema={FormSchema}
     >
-      {({ values, resetForm, isValid }) => (
+      {({ isValid, values, resetForm, submitForm }) => (
         <Form>
           <Heading use='h5'>Enter player names</Heading>
           <FieldArray name='playerNames'>
@@ -58,8 +58,11 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
                   />
                   <Button onClick={onClickClearNames(resetForm)}>Clear Names</Button>
                 </Set>
-                {/* TODO make the NavButton work with form and onSubmit. Can't have onClick if the button is submitting a form apparently */}
-                <NavButton direction='forward' type='submit' disabled={!isValid || values.playerNames.includes('')}>
+                <NavButton
+                  direction='forward'
+                  onClick={() => submitForm()}
+                  disabled={!isValid || values.playerNames.includes('')}
+                >
                   Select Dealer
                 </NavButton>
               </Stack>
