@@ -1,111 +1,90 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { Box, Button, Checkbox, Dialog, FieldStack, FieldWrapper, Icon, Modal, Radio, Set } from 'bumbag';
-import { Form, Formik } from 'formik';
+import { Blockquote, Box, Button, Checkbox, FieldStack, FieldWrapper, Icon, Paragraph, Radio, Set } from 'bumbag';
 
+import { IconButton } from '../iconButton/IconButton';
 import { NewGameContext } from './context';
 import { NavButton } from './NavButton';
-import { actions, GameSettings } from './slice';
-// import { ScoringMode, IGameSettings } from './types';
-
-const initialValues: GameSettings = {
-  scoringMode: 'negative',
-  bonusRounds: true,
-};
+import { actions } from './slice';
+import { ScoringMode } from './types';
 
 export const SettingsForm: React.FunctionComponent = () => {
   const { state, dispatch } = useContext(NewGameContext);
 
-  const onSubmit = (values: GameSettings) => {
-    dispatch(actions.setSettings(values));
+  const handleCreateGame = () => {
     console.log('Creating game...');
     const { playerNames, dealer, settings } = state;
     console.log({ playerNames, dealer, settings });
   };
-  // const handleScoringModeChange = (mode: ScoringMode) => {
-  //   const settings: IGameSettings = { ...state.settings, scoringMode: mode };
-  //   dispatch(actions.setSettings(settings));
-  // };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {({ values, setFieldValue }) => (
-        <Form>
-          <FieldStack>
-            <FieldWrapper>
-              <React.Fragment>
-                <Set>
-                  <Box width='25%'>
-                    <Radio
-                      label='Standard Scoring'
-                      checked={values.scoringMode === 'standard'}
-                      onChange={() => {
-                        setFieldValue('scoringMode', 'standard');
-                      }}
-                    />
-                  </Box>
-                  <SettingExplainerModal title='Standard Scoring'>
-                    Players are awarded one point for each trick they take, plus a bonus of 10 points for hitting their
-                    bid.
-                  </SettingExplainerModal>
-                </Set>
-                <Set>
-                  <Box width='25%'>
-                    <Radio
-                      label='Negative Scoring'
-                      checked={values.scoringMode === 'negative'}
-                      onChange={() => setFieldValue('scoringMode', 'negative')}
-                    />
-                  </Box>
-                  <SettingExplainerModal title='Negative Scoring'>
-                    Players are awarded 10 plus one point for each trick they take if they hit their bid, otherwise they
-                    receive negative points equal to the difference between bid and actual tricks taken.
-                  </SettingExplainerModal>
-                </Set>
-              </React.Fragment>
-            </FieldWrapper>
-            <FieldWrapper>
-              <Set>
-                <Box width='25%'>
-                  <Checkbox
-                    label='Use bonus rounds'
-                    checked={values.bonusRounds}
-                    onChange={() => {
-                      setFieldValue('bonusRounds', !values.bonusRounds);
-                    }}
-                  />
-                </Box>
-                <SettingExplainerModal title='Bonus Rounds'>
-                  Rounds with the most cards for the given number of players are bonus rounds. In a bonus round, players
-                  are awarded 20 points instead of 10 if they bid 0 and take 0 tricks.
-                </SettingExplainerModal>
-              </Set>
-            </FieldWrapper>
-            <Set>
-              <NavButton direction='back'>Select Dealer</NavButton>
-              <Button type='submit' palette='primary'>
-                Create Game!
-              </Button>
-            </Set>
-          </FieldStack>
-        </Form>
-      )}
-    </Formik>
+    <FieldStack>
+      <FieldWrapper label='Scoring Mode'>
+        <React.Fragment>
+          <SettingExplainerWrapper text='Players are awarded one point for each trick they take, plus a bonus of 10 points for hitting their bid.'>
+            <Radio
+              label='Standard Scoring'
+              checked={state.settings.scoringMode === ScoringMode.Standard}
+              onChange={() => {
+                dispatch(actions.setScoringMode(ScoringMode.Standard));
+              }}
+            />
+          </SettingExplainerWrapper>
+          <SettingExplainerWrapper text='Players are awarded 10 plus one point for each trick they take if they hit their bid, otherwise they receive negative points equal to the difference between bid and actual tricks taken.'>
+            <Radio
+              label='Negative Scoring'
+              checked={state.settings.scoringMode === ScoringMode.Negative}
+              onChange={() => {
+                dispatch(actions.setScoringMode(ScoringMode.Negative));
+              }}
+            />
+          </SettingExplainerWrapper>
+        </React.Fragment>
+      </FieldWrapper>
+      <FieldWrapper label='Bonus Rounds'>
+        <SettingExplainerWrapper text='Rounds with the most cards for the given number of players are bonus rounds. In a bonus round, players are awarded 20 points instead of 10 if they bid 0 and take 0 tricks.'>
+          <Checkbox
+            label='Use bonus rounds'
+            checked={state.settings.bonusRounds}
+            onChange={() => {
+              dispatch(actions.toggleBonusRounds());
+            }}
+          />
+        </SettingExplainerWrapper>
+      </FieldWrapper>
+      <Set>
+        <NavButton direction='back'>Select Dealer</NavButton>
+        <Button type='button' onClick={handleCreateGame} palette='primary'>
+          Create Game!
+        </Button>
+      </Set>
+    </FieldStack>
   );
 };
 
-interface SettingExplainerModalProps {
-  title: string;
-  children: string;
+interface SettingExplainerProps {
+  text: string;
+  children: JSX.Element;
 }
 
-const SettingExplainerModal: React.FunctionComponent<SettingExplainerModalProps> = ({ title, children }) => (
-  <Modal.State>
-    <Dialog.Modal baseId='standard' type='info' title={title} showCloseButton>
-      {children}
-    </Dialog.Modal>
-    <Modal.Disclosure>
-      <Icon icon='solid-question-circle' />
-    </Modal.Disclosure>
-  </Modal.State>
-);
+const SettingExplainerWrapper: React.FunctionComponent<SettingExplainerProps> = ({ text, children }) => {
+  const [show, setShow] = useState(false);
+
+  return (
+    <React.Fragment>
+      <Set>
+        <Box width='25%'>{children}</Box>
+        <IconButton onClick={() => setShow(!show)}>
+          <Icon icon='solid-question-circle' />
+        </IconButton>
+      </Set>
+      {show && (
+        <Blockquote border='none' marginY='0.5rem' width='90%'>
+          <Paragraph color='#444444' fontStyle='italic'>
+            {text}
+          </Paragraph>
+        </Blockquote>
+      )}
+    </React.Fragment>
+  );
+};

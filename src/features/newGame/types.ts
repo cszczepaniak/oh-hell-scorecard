@@ -9,7 +9,6 @@ export interface IGameSettings {
 }
 
 export interface INewGameState {
-  displayIdx: number;
   playerNames: string[];
   dealer: string;
   settings: IGameSettings;

@@ -2,20 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { INewGameState, ScoringMode } from './types';
 
-export interface GameSettings {
-  scoringMode: 'standard' | 'negative';
-  bonusRounds: boolean;
-}
-
-export interface NewGameState {
-  displayIdx: number;
-  playerNames: string[];
-  dealer: string;
-  settings: GameSettings;
-}
-
 export const initialState: INewGameState = {
-  displayIdx: 0,
   playerNames: [],
   dealer: '',
   settings: {
@@ -28,12 +15,6 @@ const newGameSlice = createSlice({
   name: 'newGame',
   initialState: initialState,
   reducers: {
-    incrementIdx(state) {
-      state.displayIdx++;
-    },
-    decrementIdx(state) {
-      state.displayIdx--;
-    },
     setPlayerNames(state, action) {
       state.playerNames = action.payload;
     },
@@ -48,6 +29,12 @@ const newGameSlice = createSlice({
     },
     setSettings(state, action) {
       state.settings = action.payload;
+    },
+    toggleBonusRounds(state) {
+      state.settings.bonusRounds = !state.settings.bonusRounds;
+    },
+    setScoringMode(state, action) {
+      state.settings.scoringMode = action.payload;
     },
   },
 });
