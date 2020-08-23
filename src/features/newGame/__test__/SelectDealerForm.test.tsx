@@ -10,8 +10,8 @@ const cleanupDOM = () => {
   document.getElementsByTagName('html')[0].innerHTML = '';
 };
 
-const renderWithNames = (names: string[], dealer = '') => {
-  const state = { ...initialState, dealer, playerNames: names };
+const renderWithNames = (names: string[]) => {
+  const state = { ...initialState, playerNames: names };
   const dispatch = jest.fn();
   const renderResult = render(
     <NewGameContext.Provider value={{ state, dispatch }}>
