@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, RenderResult, act, fireEvent } from '@testing-library/react';
 
 import { NewGameContext } from '../context';
 import { SettingsForm } from '../SettingsForm';
-import { initialState } from '../slice';
+import { initialState, actions } from '../slice';
 import { INewGameState, ScoringMode } from '../types';
 
 const cleanupDOM = () => {
@@ -13,11 +13,18 @@ const cleanupDOM = () => {
 
 const renderWithSettings = (scoringMode: ScoringMode, bonusRounds: boolean) => {
   const state: INewGameState = { ...initialState, settings: { scoringMode, bonusRounds } };
-  return render(
-    <NewGameContext.Provider value={{ state, dispatch: jest.fn() }}>
-      <SettingsForm />
-    </NewGameContext.Provider>,
-  );
+  const mockDispatch = jest.fn();
+
+  const res: [RenderResult, () => void, INewGameState] = [
+    render(
+      <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
+        <SettingsForm />
+      </NewGameContext.Provider>,
+    ),
+    mockDispatch,
+    state,
+  ];
+  return res;
 };
 
 test('scoring mode radio button check state is controlled by state', async () => {
@@ -35,46 +42,74 @@ test('scoring mode radio button check state is controlled by state', async () =>
   ];
 
   tests.forEach((t) => {
-    const { getAllByLabelText } = renderWithSettings(t.scoringMode, false);
+    const [{ getAllByLabelText }] = renderWithSettings(t.scoringMode, false);
     t.standardRadioExpectation(getAllByLabelText(/standard scoring/i)[0]);
     t.negativeRadioExpectation(getAllByLabelText(/negative scoring/i)[0]);
     cleanupDOM();
   });
-
-  // await wait(() => {
-  //   fireEvent.click(standardRadio);
-  // });
-  // expect(standardRadio).toBeChecked();
-  // expect(negativeRadio).not.toBeChecked();
-  // await wait(() => {
-  //   fireEvent.click(negativeRadio);
-  // });
-  // expect(negativeRadio).toBeChecked();
 });
 
-test('scoring mode radio button check state is controlled by state', async () => {
-  // const { getAllByLabelText } = renderWithSettings(ScoringMode.Negative, false);
-  // expect(getAllByLabelText(/standard scoring/i)[0]).toBeChecked();
-  // expect(getAllByLabelText(/negative scoring/i)[0]).not.toBeChecked();
-  // cleanupDOM();
-  // const { getAllByLabelText } = renderWithSettings(ScoringMode.Negative, false);
-  // const standardRadio = getAllByLabelText(/standard scoring/i)[0];
-  // const negativeRadio = getAllByLabelText(/negative scoring/i)[0];
-  // expect(standardRadio).toBeChecked();
-  // expect(negativeRadio).not.toBeChecked();
-  // await wait(() => {
-  //   fireEvent.click(standardRadio);
-  // });
-  // expect(standardRadio).toBeChecked();
-  // expect(negativeRadio).not.toBeChecked();
-  // await wait(() => {
-  //   fireEvent.click(negativeRadio);
-  // });
-  // expect(negativeRadio).toBeChecked();
+test('scoring mode radio button clicks dispatch actions to update state', async () => {
+  const tests = [
+    {
+      initialScoringMode: ScoringMode.Negative,
+      targetInputLabelMatcher: /standard scoring/i,
+      expAction: actions.setScoringMode(ScoringMode.Standard),
+    },
+    {
+      initialScoringMode: ScoringMode.Standard,
+      targetInputLabelMatcher: /negative scoring/i,
+      expAction: actions.setScoringMode(ScoringMode.Negative),
+    },
+  ];
+  tests.forEach((t) => {
+    const [{ getByLabelText }, mockDispatch] = renderWithSettings(t.initialScoringMode, false);
+    const radio = getByLabelText(t.targetInputLabelMatcher);
+    act(() => {
+      fireEvent.click(radio);
+    });
+    expect(mockDispatch).toHaveBeenCalled();
+    expect(mockDispatch).toHaveBeenLastCalledWith(t.expAction);
+    cleanupDOM();
+  });
 });
 
-test('bonus round checkbox can be toggled', async () => {
-  const { getByLabelText } = renderWithSettings(ScoringMode.Negative, false);
-  const bonusCheckbox = getByLabelText(/use bonus rounds/i);
-  expect(bonusCheckbox).not.toBeChecked();
+test('bonus round checkbox state controlled by state', async () => {
+  const tests = [
+    {
+      bonusRound: false,
+      expectation: (cb: HTMLElement) => expect(cb).not.toBeChecked(),
+    },
+    {
+      bonusRound: true,
+      expectation: (cb: HTMLElement) => expect(cb).toBeChecked(),
+    },
+  ];
+  tests.forEach((t) => {
+    const [{ getByLabelText }] = renderWithSettings(ScoringMode.Negative, t.bonusRound);
+    const bonusCheckbox = getByLabelText(/use bonus rounds/i);
+    t.expectation(bonusCheckbox);
+    cleanupDOM();
+  });
+});
+
+test('bonus round checkbox click dispatches toggle action', async () => {
+  const tests = [
+    {
+      bonusRound: false,
+    },
+    {
+      bonusRound: true,
+    },
+  ];
+  tests.forEach((t) => {
+    const [{ getByLabelText }, mockDispatch] = renderWithSettings(ScoringMode.Negative, t.bonusRound);
+    const bonusCheckbox = getByLabelText(/use bonus rounds/i);
+    act(() => {
+      fireEvent.click(bonusCheckbox);
+    });
+    expect(mockDispatch).toHaveBeenCalled();
+    expect(mockDispatch).toHaveBeenLastCalledWith(actions.toggleBonusRounds());
+    cleanupDOM();
+  });
 });
