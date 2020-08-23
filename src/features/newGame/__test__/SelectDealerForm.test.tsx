@@ -12,14 +12,14 @@ const cleanupDOM = () => {
 };
 
 const renderWithNames = (names: string[]) => {
-  const state = { ...initialState, playerNames: names };
+  const mockState = { ...initialState, playerNames: names };
   const mockDispatch = jest.fn();
   const renderResult = render(
-    <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
+    <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <SelectDealerForm />
     </NewGameContext.Provider>,
   );
-  return { state, mockDispatch, renderResult };
+  return { mockState, mockDispatch, renderResult };
 };
 
 const renderWithState = (state: INewGameState) => {
@@ -62,9 +62,9 @@ test('buttons exist for each player in state', () => {
     cleanupDOM();
   };
   let res = renderWithNames(getNames(4));
-  checkRenderResult(res.state, res.renderResult);
+  checkRenderResult(res.mockState, res.renderResult);
   res = renderWithNames(getNames(6));
-  checkRenderResult(res.state, res.renderResult);
+  checkRenderResult(res.mockState, res.renderResult);
 });
 
 test('clicking any button dispatches select dealer action, even if a dealer is already selected', () => {
