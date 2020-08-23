@@ -5,6 +5,7 @@ import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
 import { NewGameContext } from './context';
+import { NavButton } from './NavButton';
 import PlusMinusButtonGroup from './PlusMinusButtonGroup';
 import { actions } from './slice';
 
@@ -36,7 +37,6 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
       }
       onSubmit={(values: PlayerNameFormData) => {
         dispatch(actions.setPlayerNames(values.playerNames));
-        dispatch(actions.incrementIdx());
       }}
       validationSchema={FormSchema}
     >
@@ -58,13 +58,9 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
                   />
                   <Button onClick={onClickClearNames(resetForm)}>Clear Names</Button>
                 </Set>
-                <Button
-                  type='submit'
-                  iconAfter='solid-arrow-right'
-                  disabled={!isValid || values.playerNames.includes('')}
-                >
+                <NavButton direction='forward' type='submit' disabled={!isValid || values.playerNames.includes('')}>
                   Select Dealer
-                </Button>
+                </NavButton>
               </Stack>
             )}
           </FieldArray>

@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { Box, Button, Stack, Heading, Set } from 'bumbag';
 
 import { NewGameContext } from './context';
+import { NavButton } from './NavButton';
 import { actions } from './slice';
 
 export const SelectDealerForm: React.FunctionComponent = () => {
@@ -16,15 +17,6 @@ export const SelectDealerForm: React.FunctionComponent = () => {
       dispatch(actions.unselectDealer());
     } else {
       dispatch(actions.selectDealer(name));
-    }
-  };
-  const onClickPrev = () => {
-    dispatch(actions.unselectDealer());
-    dispatch(actions.decrementIdx());
-  };
-  const onClickSubmit = () => {
-    if (dealerIsValid()) {
-      dispatch(actions.incrementIdx());
     }
   };
 
@@ -45,12 +37,12 @@ export const SelectDealerForm: React.FunctionComponent = () => {
           </Box>
         ))}
         <Set>
-          <Button iconBefore='solid-arrow-left' onClick={onClickPrev}>
+          <NavButton direction='back' onClick={() => dispatch(actions.unselectDealer())}>
             Player Names
-          </Button>
-          <Button iconAfter='solid-arrow-right' onClick={onClickSubmit} disabled={!dealerIsValid()}>
+          </NavButton>
+          <NavButton direction='forward' disabled={!dealerIsValid()}>
             Select Settings
-          </Button>
+          </NavButton>
         </Set>
       </Stack>
     </React.Fragment>
