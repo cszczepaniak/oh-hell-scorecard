@@ -4,6 +4,7 @@ import { Box, Button, Checkbox, Dialog, FieldStack, FieldWrapper, Icon, Modal, R
 import { Form, Formik } from 'formik';
 
 import { NewGameContext } from './context';
+import { NavButton } from './NavButton';
 import { actions, GameSettings } from './slice';
 // import { ScoringMode, IGameSettings } from './types';
 
@@ -15,9 +16,6 @@ const initialValues: GameSettings = {
 export const SettingsForm: React.FunctionComponent = () => {
   const { state, dispatch } = useContext(NewGameContext);
 
-  const onClickPrev = () => {
-    dispatch(actions.decrementIdx());
-  };
   const onSubmit = (values: GameSettings) => {
     dispatch(actions.setSettings(values));
     console.log('Creating game...');
@@ -84,9 +82,7 @@ export const SettingsForm: React.FunctionComponent = () => {
               </Set>
             </FieldWrapper>
             <Set>
-              <Button onClick={onClickPrev} iconBefore='solid-arrow-left'>
-                Select Dealer
-              </Button>
+              <NavButton direction='back'>Select Dealer</NavButton>
               <Button type='submit' palette='primary'>
                 Create Game!
               </Button>
