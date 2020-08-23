@@ -13,23 +13,23 @@ const cleanupDOM = () => {
 
 const renderWithNames = (names: string[]) => {
   const state = { ...initialState, playerNames: names };
-  const dispatch = jest.fn();
+  const mockDispatch = jest.fn();
   const renderResult = render(
-    <NewGameContext.Provider value={{ state, dispatch }}>
+    <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
       <SelectDealerForm />
     </NewGameContext.Provider>,
   );
-  return { state, dispatch, renderResult };
+  return { state, mockDispatch, renderResult };
 };
 
 const renderWithState = (state: INewGameState) => {
-  const dispatch = jest.fn();
+  const mockDispatch = jest.fn();
   const renderResult = render(
-    <NewGameContext.Provider value={{ state, dispatch }}>
+    <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
       <SelectDealerForm />
     </NewGameContext.Provider>,
   );
-  return { dispatch, renderResult };
+  return { mockDispatch, renderResult };
 };
 
 const getNames = (n: number): string[] => {
@@ -76,7 +76,7 @@ test('clicking any button dispatches select dealer action, even if a dealer is a
     act(() => {
       fireEvent.click(b);
     });
-    expect(res.dispatch).toHaveBeenLastCalledWith(actions.selectDealer(names[i]));
+    expect(res.mockDispatch).toHaveBeenLastCalledWith(actions.selectDealer(names[i]));
   });
 });
 
@@ -89,7 +89,7 @@ test('clicking the button for the selected dealer dispatches unselect dealer act
     act(() => {
       fireEvent.click(selectThisDealerBtn);
     });
-    expect(res.dispatch).toHaveBeenLastCalledWith(actions.unselectDealer());
+    expect(res.mockDispatch).toHaveBeenLastCalledWith(actions.unselectDealer());
     cleanupDOM();
   });
 });
@@ -98,14 +98,14 @@ test('clicking back button dispatches unselectDealer', () => {
   const names = getNames(4);
   const {
     renderResult: { getAllByRole },
-    dispatch,
+    mockDispatch,
   } = renderWithNames(names);
   const backBtn = getAllByRole('button')[backBtnIdx(names.length)];
   act(() => {
     fireEvent.click(backBtn);
   });
-  expect(dispatch).toHaveBeenCalledTimes(1);
-  expect(dispatch).toHaveBeenNthCalledWith(1, actions.unselectDealer());
+  expect(mockDispatch).toHaveBeenCalledTimes(1);
+  expect(mockDispatch).toHaveBeenNthCalledWith(1, actions.unselectDealer());
 });
 
 test('submit button is disabled while no dealer is selected', () => {
