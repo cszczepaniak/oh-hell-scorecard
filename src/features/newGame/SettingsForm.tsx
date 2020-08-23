@@ -5,6 +5,7 @@ import { Form, Formik } from 'formik';
 
 import { NewGameContext } from './context';
 import { actions, GameSettings } from './slice';
+// import { ScoringMode, IGameSettings } from './types';
 
 const initialValues: GameSettings = {
   scoringMode: 'negative',
@@ -23,13 +24,17 @@ export const SettingsForm: React.FunctionComponent = () => {
     const { playerNames, dealer, settings } = state;
     console.log({ playerNames, dealer, settings });
   };
+  // const handleScoringModeChange = (mode: ScoringMode) => {
+  //   const settings: IGameSettings = { ...state.settings, scoringMode: mode };
+  //   dispatch(actions.setSettings(settings));
+  // };
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ values, setFieldValue }) => (
         <Form>
           <FieldStack>
-            <FieldWrapper label='Scoring Mode'>
+            <FieldWrapper>
               <React.Fragment>
                 <Set>
                   <Box width='25%'>
@@ -61,7 +66,7 @@ export const SettingsForm: React.FunctionComponent = () => {
                 </Set>
               </React.Fragment>
             </FieldWrapper>
-            <FieldWrapper label='Bonus Rounds'>
+            <FieldWrapper>
               <Set>
                 <Box width='25%'>
                   <Checkbox

@@ -2,18 +2,33 @@ import { createContext } from 'react';
 
 import { AnyAction } from '@reduxjs/toolkit';
 
-import { initialState, NewGameState } from './slice';
+import { initialState } from './slice';
+import { INewGameState } from './types';
 
-interface NewGameContextValues {
-  state: NewGameState;
+interface INewGameContextValues {
+  state: INewGameState;
   dispatch: React.Dispatch<AnyAction>;
 }
 
-const initialContext: NewGameContextValues = {
+export const NewGameContext = createContext<INewGameContextValues>({
   state: initialState,
   dispatch: () => {
     return;
   },
-};
+});
 
-export const NewGameContext = createContext(initialContext);
+interface IDisplayContextValues {
+  displayIdx: number;
+  next: () => void;
+  previous: () => void;
+}
+
+export const DisplayContext = createContext<IDisplayContextValues>({
+  displayIdx: 0,
+  next: () => {
+    return;
+  },
+  previous: () => {
+    return;
+  },
+});

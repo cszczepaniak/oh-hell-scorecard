@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { INewGameState, ScoringMode } from './types';
+
 export interface GameSettings {
   scoringMode: 'standard' | 'negative';
   bonusRounds: boolean;
@@ -12,12 +14,12 @@ export interface NewGameState {
   settings: GameSettings;
 }
 
-export const initialState: NewGameState = {
+export const initialState: INewGameState = {
   displayIdx: 0,
   playerNames: [],
   dealer: '',
   settings: {
-    scoringMode: 'negative',
+    scoringMode: ScoringMode.Negative,
     bonusRounds: true,
   },
 };
