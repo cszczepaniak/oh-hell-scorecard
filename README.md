@@ -1,5 +1,7 @@
 # oh-hell-scorecard
 
+[https://github.com/cszczepaniak/oh-hell-scorecard/workflows/Node.js%20CI/badge.svg]
+
 A web app to score a game of Oh Hell (aka Up and Down the River, Oh Heck, etc.)
 
 ---
