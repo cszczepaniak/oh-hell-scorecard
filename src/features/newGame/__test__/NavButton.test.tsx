@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, fireEvent } from '@testing-library/react';
+import { act, render, fireEvent } from '@testing-library/react';
 
 import { DisplayContext } from '../context';
 import { NavButton } from '../NavButton';
@@ -77,4 +77,19 @@ test('button renders the correct children', () => {
   const testText = 'abc';
   const { getByText } = render(<NavButton direction='forward'>{testText}</NavButton>);
   getByText(testText);
+});
+
+test('button calls the onclick handler if it is passed', () => {
+  const testText = 'abc';
+  const mockHandleClick = jest.fn();
+  const { getByText } = render(
+    <NavButton direction='forward' onClick={mockHandleClick}>
+      {testText}
+    </NavButton>,
+  );
+  const button = getByText(testText);
+  act(() => {
+    fireEvent.click(button);
+  });
+  expect(mockHandleClick).toHaveBeenCalled();
 });
