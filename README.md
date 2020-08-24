@@ -1,6 +1,7 @@
 # oh-hell-scorecard
 
 ![](https://github.com/cszczepaniak/oh-hell-scorecard/workflows/Unit%20Tests/badge.svg)
+[![codecov](https://codecov.io/gh/cszczepaniak/oh-hell-scorecard/branch/master/graph/badge.svg)](https://codecov.io/gh/cszczepaniak/oh-hell-scorecard)
 ![](https://github.com/cszczepaniak/oh-hell-scorecard/workflows/eslint/badge.svg)
 
 A web app to score a game of Oh Hell (aka Up and Down the River, Oh Heck, etc.)
