@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: '13.x'
       - run: npm install
-      - run: npm test
+      - run: npm test -- --coverage
         env:
           CI: true
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
