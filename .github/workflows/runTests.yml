@@ -1,4 +1,4 @@
-name: Run Unit Tests
+name: Node.js CI
 
 on:
   push:
@@ -16,6 +16,7 @@ jobs:
         with:
           node-version: '13.x'
       - run: npm install
+      - run: npm run lint
       - run: npm test
         env:
           CI: true
