@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Run Unit Tests
 
 on:
   push:
@@ -12,8 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
           node-version: '13.x'
       - run: npm install
