@@ -2,14 +2,18 @@ import React, { useReducer, useState } from 'react';
 
 import { Box, Heading, PageContent } from 'bumbag';
 
-import { minPlayers, maxPlayers } from './constants';
 import { NewGameContext, DisplayContext } from './context';
 import { PlayerNamesForm } from './PlayerNamesForm';
 import { SelectDealerForm } from './SelectDealerForm';
 import { SettingsForm } from './SettingsForm';
 import { reducer, initialState } from './slice';
 
-const NewGame: React.FunctionComponent = () => {
+interface INewGameProps {
+  minPlayers: number;
+  maxPlayers: number;
+}
+
+const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, maxPlayers }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [displayIdx, setDisplayIdx] = useState(0);
   const incrementIdx = () => {
