@@ -44,7 +44,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
         <Form>
           <Heading use='h5'>Enter player names</Heading>
           <FieldArray name='playerNames'>
-            {(arrayHelper) => (
+            {arrayHelper => (
               <Stack spacing='major-3'>
                 <FormInputs names={values.playerNames} />
                 <Set>

@@ -50,7 +50,7 @@ test('scoring mode radio button check state is controlled by state', async () =>
     },
   ];
 
-  tests.forEach((t) => {
+  tests.forEach(t => {
     const [{ getAllByLabelText }] = renderWithSettings(t.scoringMode, false);
     t.standardRadioExpectation(getAllByLabelText(/standard scoring/i)[0]);
     t.negativeRadioExpectation(getAllByLabelText(/negative scoring/i)[0]);
@@ -71,7 +71,7 @@ test('scoring mode radio button clicks dispatch actions to update state', async 
       expAction: actions.setScoringMode(ScoringMode.Negative),
     },
   ];
-  tests.forEach((t) => {
+  tests.forEach(t => {
     const [{ getByLabelText }, mockDispatch] = renderWithSettings(t.initialScoringMode, false);
     const radio = getByLabelText(t.targetInputLabelMatcher);
     act(() => {
@@ -94,7 +94,7 @@ test('bonus round checkbox state controlled by state', async () => {
       expectation: (cb: HTMLElement) => expect(cb).toBeChecked(),
     },
   ];
-  tests.forEach((t) => {
+  tests.forEach(t => {
     const [{ getByLabelText }] = renderWithSettings(ScoringMode.Negative, t.bonusRound);
     const bonusCheckbox = getByLabelText(/use bonus rounds/i);
     t.expectation(bonusCheckbox);
@@ -111,7 +111,7 @@ test('bonus round checkbox click dispatches toggle action', async () => {
       bonusRound: true,
     },
   ];
-  tests.forEach((t) => {
+  tests.forEach(t => {
     const [{ getByLabelText }, mockDispatch] = renderWithSettings(ScoringMode.Negative, t.bonusRound);
     const bonusCheckbox = getByLabelText(/use bonus rounds/i);
     act(() => {

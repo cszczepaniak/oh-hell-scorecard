@@ -10,7 +10,7 @@ interface IBackButtonProps {
   children: string;
 }
 
-export const NavButton: React.FunctionComponent<IBackButtonProps & ButtonProps> = (props) => {
+export const NavButton: React.FunctionComponent<IBackButtonProps & ButtonProps> = props => {
   const { next, previous } = useContext(DisplayContext);
   const { direction, onClick, children } = props;
 

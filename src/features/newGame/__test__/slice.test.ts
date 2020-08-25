@@ -51,7 +51,7 @@ test('reducer should toggle bonus rounds setting with toggleBonusRounds action',
       expToggledValue: false,
     },
   ];
-  tests.forEach((t) => {
+  tests.forEach(t => {
     const state = getStateWithBonusRoundsSetTo(t.bonusRounds);
     expect(state.settings.bonusRounds).toBe(t.bonusRounds);
     const newState = reducer(state, actions.toggleBonusRounds());

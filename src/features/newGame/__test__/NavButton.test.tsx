@@ -28,7 +28,7 @@ test('button calls the correct event based on direction prop', () => {
       expectedHandler: mockPrev,
     },
   ];
-  tests.forEach((t) => {
+  tests.forEach(t => {
     const { getByRole } = render(
       <DisplayContext.Provider value={{ displayIdx: 0, next: mockNext, previous: mockPrev }}>
         <NavButton direction={t.direction}>a</NavButton>
@@ -57,7 +57,7 @@ test('button calls no event when the button is disabled', () => {
       direction: 'back',
     },
   ];
-  tests.forEach((t) => {
+  tests.forEach(t => {
     const { getByRole } = render(
       <DisplayContext.Provider value={{ displayIdx: 0, next: mockNext, previous: mockPrev }}>
         <NavButton direction={t.direction} disabled>
