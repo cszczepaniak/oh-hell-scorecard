@@ -13,6 +13,8 @@ const resetBtnIdx = 2;
 const submitBtnIdx = 3;
 const inputPlaceholderRegex = /Player \d+/i;
 
+// TODO test that the form cannot be submitted when there are duplicate names
+
 test('inputs are added one at a time until max is reached', async () => {
   const maxPlayers = 10;
 
