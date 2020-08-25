@@ -69,14 +69,15 @@ test('buttons exist for each player in state', () => {
 
 test('clicking any button dispatches select dealer action, even if a dealer is already selected', () => {
   const names = getNames(4);
-  const res = renderWithNames(names);
-  const { getAllByRole } = res.renderResult;
-  const selectDealerBtns = getAllByRole('button').slice(0, 3);
-  selectDealerBtns.forEach((b, i) => {
+  const {
+    renderResult: { getByText },
+    mockDispatch,
+  } = renderWithNames(names);
+  names.forEach(n => {
     act(() => {
-      fireEvent.click(b);
+      fireEvent.click(getByText(n));
     });
-    expect(res.mockDispatch).toHaveBeenLastCalledWith(actions.selectDealer(names[i]));
+    expect(mockDispatch).toHaveBeenLastCalledWith(actions.selectDealer(n));
   });
 });
 
@@ -128,7 +129,7 @@ test('submit button is disabled while dealer name is not in player names', () =>
 
 test('submit button is enabled while dealer name is valid', () => {
   const names = getNames(4);
-  names.forEach((n) => {
+  names.forEach(n => {
     const {
       renderResult: { getAllByRole },
     } = renderWithState({ ...initialState, playerNames: names, dealer: n });
