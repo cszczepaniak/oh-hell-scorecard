@@ -7,13 +7,15 @@ import { PlayerNamesForm } from './PlayerNamesForm';
 import { SelectDealerForm } from './SelectDealerForm';
 import { SettingsForm } from './SettingsForm';
 import { reducer, initialState } from './slice';
+import { INewGameState } from './types';
 
 interface INewGameProps {
   minPlayers: number;
   maxPlayers: number;
+  handleCreateGame: (state: INewGameState) => void;
 }
 
-export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, maxPlayers }) => {
+export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, maxPlayers, handleCreateGame }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [displayIdx, setDisplayIdx] = useState(0);
   const incrementIdx = () => {
@@ -21,12 +23,6 @@ export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, ma
   };
   const decrementIdx = () => {
     setDisplayIdx(displayIdx - 1);
-  };
-
-  const handleCreateGame = () => {
-    console.log('Creating game...');
-    const { playerNames, dealer, settings } = state;
-    console.log({ playerNames, dealer, settings });
   };
 
   return (

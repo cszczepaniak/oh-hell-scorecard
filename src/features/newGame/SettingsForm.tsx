@@ -6,10 +6,10 @@ import { NewGameContext } from './context';
 import { NavButton } from './NavButton';
 import { SettingExplainerWrapper } from './SettingExplainerWrapper';
 import { actions } from './slice';
-import { ScoringMode } from './types';
+import { ScoringMode, INewGameState } from './types';
 
 interface ISettingsFormProps {
-  handleCreateGame: () => void;
+  handleCreateGame: (state: INewGameState) => void;
 }
 
 export const SettingsForm: React.FunctionComponent<ISettingsFormProps> = ({ handleCreateGame }) => {
@@ -54,7 +54,7 @@ export const SettingsForm: React.FunctionComponent<ISettingsFormProps> = ({ hand
         </FieldWrapper>
         <Set>
           <NavButton direction='back'>Select Dealer</NavButton>
-          <Button type='button' onClick={handleCreateGame} palette='primary'>
+          <Button type='button' onClick={() => handleCreateGame(state)} palette='primary'>
             Create Game!
           </Button>
         </Set>

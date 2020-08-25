@@ -4,6 +4,7 @@ import { faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle } from '@f
 import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
 
 import { NewGame } from './features/newGame/NewGame';
+import { INewGameState } from './features/newGame/types';
 
 const theme: ThemeConfig = {
   Icon: {
@@ -23,9 +24,14 @@ const theme: ThemeConfig = {
 };
 
 const App: React.FunctionComponent = () => {
+  const handleCreateGame = (state: INewGameState) => {
+    console.log('Creating game...');
+    const { playerNames, dealer, settings } = state;
+    console.log({ playerNames, dealer, settings });
+  };
   return (
     <BumbagProvider theme={theme}>
-      <NewGame minPlayers={3} maxPlayers={10} />
+      <NewGame minPlayers={3} maxPlayers={10} handleCreateGame={handleCreateGame} />
     </BumbagProvider>
   );
 };

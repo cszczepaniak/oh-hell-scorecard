@@ -6,7 +6,9 @@ import userEvent from '@testing-library/user-event';
 import { NewGame } from '../NewGame';
 
 test('should be able to click through the screens', async () => {
-  const { getAllByPlaceholderText, getAllByRole, getByText } = render(<NewGame minPlayers={3} maxPlayers={10} />);
+  const { getAllByPlaceholderText, getAllByRole, getByText } = render(
+    <NewGame minPlayers={3} maxPlayers={10} handleCreateGame={jest.fn()} />,
+  );
   expect(getByText(/enter player names/i)).toBeInTheDocument();
   const playerNameInputs = getAllByPlaceholderText(/player \d+/i);
   const selectDealerButton = getByText(/select dealer/i);
