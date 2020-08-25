@@ -25,7 +25,7 @@ const theme: ThemeConfig = {
 const App: React.FunctionComponent = () => {
   return (
     <BumbagProvider theme={theme}>
-      <NewGame />
+      <NewGame minPlayers={3} maxPlayers={10} />
     </BumbagProvider>
   );
 };
