@@ -18,7 +18,7 @@ const renderWithSettings = (scoringMode: ScoringMode, bonusRounds: boolean) => {
   const res: [RenderResult, () => void, INewGameState] = [
     render(
       <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
-        <SettingsForm />
+        <SettingsForm handleCreateGame={jest.fn()} />
       </NewGameContext.Provider>,
     ),
     mockDispatch,
@@ -26,6 +26,15 @@ const renderWithSettings = (scoringMode: ScoringMode, bonusRounds: boolean) => {
   ];
   return res;
 };
+
+test('clicking the submit button should call handleCreateGame', () => {
+  const mockHandleCreateGame = jest.fn();
+  const { getByText } = render(<SettingsForm handleCreateGame={mockHandleCreateGame} />);
+  act(() => {
+    fireEvent.click(getByText(/create game/i));
+  });
+  expect(mockHandleCreateGame).toHaveBeenCalled();
+});
 
 test('scoring mode radio button check state is controlled by state', async () => {
   const tests = [
