@@ -23,6 +23,12 @@ export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, ma
     setDisplayIdx(displayIdx - 1);
   };
 
+  const handleCreateGame = () => {
+    console.log('Creating game...');
+    const { playerNames, dealer, settings } = state;
+    console.log({ playerNames, dealer, settings });
+  };
+
   return (
     <NewGameContext.Provider value={{ state, dispatch }}>
       <DisplayContext.Provider value={{ displayIdx, next: incrementIdx, previous: decrementIdx }}>
@@ -31,7 +37,7 @@ export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, ma
             <Heading>Oh Hell Scorecard</Heading>
             {displayIdx === 0 && <PlayerNamesForm minPlayers={minPlayers} maxPlayers={maxPlayers} />}
             {displayIdx === 1 && <SelectDealerForm />}
-            {displayIdx === 2 && <SettingsForm />}
+            {displayIdx === 2 && <SettingsForm handleCreateGame={handleCreateGame} />}
           </PageContent>
         </Box>
       </DisplayContext.Provider>
