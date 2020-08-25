@@ -1,11 +1,13 @@
-import { applyTheme, Button } from 'bumbag';
+import React from 'react';
+
+import { applyTheme, Button, ButtonProps, Icon } from 'bumbag';
 
 const buttonStyles = {
   background: '#ffffff',
   border: 'none',
   boxShadow: 'none',
 };
-export const IconButton = applyTheme(Button, {
+const IconButtonWrapper = applyTheme(Button, {
   styles: {
     base: buttonStyles,
     focus: buttonStyles,
@@ -13,3 +15,13 @@ export const IconButton = applyTheme(Button, {
     hoveractive: buttonStyles,
   },
 });
+
+interface IIconButtonProps {
+  icon: string;
+}
+
+export const IconButton: React.FunctionComponent<IIconButtonProps & ButtonProps> = ({ icon, ...rest }) => (
+  <IconButtonWrapper {...rest}>
+    <Icon icon={icon} />
+  </IconButtonWrapper>
+);

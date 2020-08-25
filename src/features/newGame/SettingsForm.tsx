@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
-import { Blockquote, Box, Button, Checkbox, FieldStack, FieldWrapper, Icon, Paragraph, Radio, Set } from 'bumbag';
+import { Button, Checkbox, FieldStack, FieldWrapper, Radio, Set } from 'bumbag';
 
-import { IconButton } from '../iconButton/IconButton';
 import { NewGameContext } from './context';
 import { NavButton } from './NavButton';
+import { SettingExplainerWrapper } from './SettingExplainerWrapper';
 import { actions } from './slice';
 import { ScoringMode } from './types';
 
@@ -59,32 +59,5 @@ export const SettingsForm: React.FunctionComponent = () => {
         </Button>
       </Set>
     </FieldStack>
-  );
-};
-
-interface SettingExplainerProps {
-  text: string;
-  children: JSX.Element;
-}
-
-const SettingExplainerWrapper: React.FunctionComponent<SettingExplainerProps> = ({ text, children }) => {
-  const [show, setShow] = useState(false);
-
-  return (
-    <React.Fragment>
-      <Set>
-        <Box width='25%'>{children}</Box>
-        <IconButton onClick={() => setShow(!show)}>
-          <Icon icon='solid-question-circle' />
-        </IconButton>
-      </Set>
-      {show && (
-        <Blockquote border='none' marginY='0.5rem' width='90%'>
-          <Paragraph color='#444444' fontStyle='italic'>
-            {text}
-          </Paragraph>
-        </Blockquote>
-      )}
-    </React.Fragment>
   );
 };
