@@ -3,7 +3,7 @@ import React from 'react';
 import { faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
 
-import NewGame from './features/newGame/NewGame';
+import { NewGame } from './features/newGame/NewGame';
 
 const theme: ThemeConfig = {
   Icon: {

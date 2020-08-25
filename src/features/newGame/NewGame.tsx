@@ -13,7 +13,7 @@ interface INewGameProps {
   maxPlayers: number;
 }
 
-const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, maxPlayers }) => {
+export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, maxPlayers }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [displayIdx, setDisplayIdx] = useState(0);
   const incrementIdx = () => {
@@ -38,5 +38,3 @@ const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, maxPlayer
     </NewGameContext.Provider>
   );
 };
-
-export default NewGame;
