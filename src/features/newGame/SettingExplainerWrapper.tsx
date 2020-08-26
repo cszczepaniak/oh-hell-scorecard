@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Blockquote, Box, Paragraph, Set } from 'bumbag';
+import { Blockquote, Flex, Paragraph } from 'bumbag';
 
 import { IconButton } from '../iconButton/IconButton';
 
@@ -14,10 +14,10 @@ export const SettingExplainerWrapper: React.FunctionComponent<SettingExplainerPr
 
   return (
     <React.Fragment>
-      <Set>
-        <Box width='25%'>{children}</Box>
+      <Flex direction='row' justifyContent='space-between'>
+        {children}
         <IconButton icon='solid-question-circle' onClick={() => setShow(!show)} />
-      </Set>
+      </Flex>
       {show && (
         <Blockquote border='none' marginY='0.5rem' width='90%'>
           <Paragraph color='#444444' fontStyle='italic'>
