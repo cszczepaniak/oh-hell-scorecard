@@ -30,6 +30,8 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
     dispatch(actions.setPlayerNames([]));
   };
 
+  const hasDuplicates = (names: string[]) => names.some(n => names.indexOf(n) !== names.lastIndexOf(n));
+
   return (
     <Formik
       initialValues={
@@ -61,7 +63,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
                 <NavButton
                   direction='forward'
                   onClick={() => submitForm()}
-                  disabled={!isValid || values.playerNames.includes('')}
+                  disabled={!isValid || values.playerNames.includes('') || hasDuplicates(values.playerNames)}
                 >
                   Select Dealer
                 </NavButton>

@@ -9,9 +9,9 @@ import { actions, initialState } from '../slice';
 
 const plusBtnIdx = 0;
 const minusBtnIdx = 1;
-const resetBtnIdx = 2;
-const submitBtnIdx = 3;
-const inputPlaceholderRegex = /Player \d+/i;
+const clearNamesButtonMatcher = /clear names/i;
+const inputPlaceholderRegex = /player \d+/i;
+const selectDealerButtonMatcher = /select dealer/i;
 
 // TODO test that the form cannot be submitted when there are duplicate names
 
@@ -82,9 +82,9 @@ test('validation text appears when leaving an invalid field', async () => {
   }
 });
 
-test('select dealer button is disabled until form is valid', async () => {
-  const { getAllByPlaceholderText, getAllByRole } = render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
-  const submitBtn = getAllByRole('button')[submitBtnIdx];
+test('select dealer button is disabled until all names are filled in', async () => {
+  const { getAllByPlaceholderText, getByText } = render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
+  const submitBtn = getByText(selectDealerButtonMatcher);
   const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
   // type in three inputs first
   for (let i = 0; i < inputs.length - 1; i++) {
@@ -100,16 +100,35 @@ test('select dealer button is disabled until form is valid', async () => {
   expect(submitBtn).not.toBeDisabled();
 });
 
+test('select dealer button is disabled if there are duplicate names', async () => {
+  const { getAllByPlaceholderText, getByText } = render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
+  const submitBtn = getByText(selectDealerButtonMatcher);
+  const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
+
+  for (let i = 0; i < inputs.length; i++) {
+    await wait(async () => {
+      await userEvent.type(inputs[i], 'a');
+    });
+  }
+  expect(submitBtn).toBeDisabled();
+  for (let i = 0; i < inputs.length; i++) {
+    await wait(async () => {
+      await userEvent.type(inputs[i], `player${i}`);
+    });
+  }
+  expect(submitBtn).not.toBeDisabled();
+});
+
 test('clear form button resets the form and clears the names in context', async () => {
   const mockState = initialState;
   const mockDispatch = jest.fn();
 
-  const { getAllByRole, getAllByPlaceholderText, queryAllByDisplayValue } = render(
+  const { getByText, getAllByPlaceholderText, queryAllByDisplayValue } = render(
     <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
     </NewGameContext.Provider>,
   );
-  const resetBtn = getAllByRole('button')[resetBtnIdx];
+  const resetBtn = getByText(clearNamesButtonMatcher);
   const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
   for (let i = 1; i < inputs.length; i++) {
     mockDispatch.mockClear();
