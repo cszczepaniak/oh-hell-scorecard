@@ -2,7 +2,7 @@ import React from 'react';
 
 import { cleanup, render, act, fireEvent, screen } from '@testing-library/react';
 
-import { NewGameContext } from '../context';
+import { NewGameConfigContext } from '../context';
 import { SettingsForm } from '../SettingsForm';
 import { initialState, actions } from '../slice';
 import { INewGameState, ScoringMode } from '../types';
@@ -12,9 +12,9 @@ const renderWithSettings = (scoringMode: ScoringMode, bonusRounds: boolean) => {
   const mockDispatch = jest.fn();
 
   render(
-    <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
+    <NewGameConfigContext.Provider value={{ state, dispatch: mockDispatch }}>
       <SettingsForm handleCreateGame={jest.fn()} />
-    </NewGameContext.Provider>,
+    </NewGameConfigContext.Provider>,
   );
   const res: [() => void, INewGameState] = [mockDispatch, state];
   return res;

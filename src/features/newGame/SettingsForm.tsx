@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { Button, Checkbox, FieldStack, FieldWrapper, Heading, Radio, Set } from 'bumbag';
 
-import { NewGameContext } from './context';
+import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
 import { SettingExplainerWrapper } from './SettingExplainerWrapper';
 import { actions } from './slice';
@@ -13,7 +13,7 @@ interface ISettingsFormProps {
 }
 
 export const SettingsForm: React.FunctionComponent<ISettingsFormProps> = ({ handleCreateGame }) => {
-  const { state, dispatch } = useContext(NewGameContext);
+  const { state, dispatch } = useContext(NewGameConfigContext);
 
   return (
     <React.Fragment>

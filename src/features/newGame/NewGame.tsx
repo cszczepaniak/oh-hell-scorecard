@@ -2,11 +2,12 @@ import React, { useReducer, useState } from 'react';
 
 import { Box, Heading, PageContent } from 'bumbag';
 
-import { NewGameContext, DisplayContext } from './context';
+import { defaultRequest } from '../shared/newGame/types';
+import { NewGameConfigContext, DisplayContext } from './context';
 import { PlayerNamesForm } from './PlayerNamesForm';
 import { SelectDealerForm } from './SelectDealerForm';
 import { SettingsForm } from './SettingsForm';
-import { reducer, initialState } from './slice';
+import { reducer } from './slice';
 import { INewGameState } from './types';
 
 interface INewGameProps {
@@ -16,7 +17,7 @@ interface INewGameProps {
 }
 
 export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, maxPlayers, handleCreateGame }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, defaultRequest);
   const [displayIdx, setDisplayIdx] = useState(0);
   const incrementIdx = () => {
     setDisplayIdx(displayIdx + 1);
@@ -26,7 +27,7 @@ export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, ma
   };
 
   return (
-    <NewGameContext.Provider value={{ state, dispatch }}>
+    <NewGameConfigContext.Provider value={{ state, dispatch }}>
       <DisplayContext.Provider value={{ displayIdx, next: incrementIdx, previous: decrementIdx }}>
         <Box>
           <PageContent>
@@ -37,6 +38,6 @@ export const NewGame: React.FunctionComponent<INewGameProps> = ({ minPlayers, ma
           </PageContent>
         </Box>
       </DisplayContext.Provider>
-    </NewGameContext.Provider>
+    </NewGameConfigContext.Provider>
   );
 };

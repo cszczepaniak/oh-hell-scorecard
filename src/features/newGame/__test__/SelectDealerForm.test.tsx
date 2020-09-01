@@ -2,7 +2,7 @@ import React from 'react';
 
 import { act, cleanup, render, fireEvent, screen } from '@testing-library/react';
 
-import { NewGameContext } from '../context';
+import { NewGameConfigContext } from '../context';
 import { SelectDealerForm } from '../SelectDealerForm';
 import { actions, initialState } from '../slice';
 import { INewGameState } from '../types';
@@ -11,9 +11,9 @@ const renderWithNames = (names: string[]) => {
   const mockState = { ...initialState, playerNames: names };
   const mockDispatch = jest.fn();
   render(
-    <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+    <NewGameConfigContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <SelectDealerForm />
-    </NewGameContext.Provider>,
+    </NewGameConfigContext.Provider>,
   );
   return { mockState, mockDispatch };
 };
@@ -21,9 +21,9 @@ const renderWithNames = (names: string[]) => {
 const renderWithState = (state: INewGameState) => {
   const mockDispatch = jest.fn();
   render(
-    <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
+    <NewGameConfigContext.Provider value={{ state, dispatch: mockDispatch }}>
       <SelectDealerForm />
-    </NewGameContext.Provider>,
+    </NewGameConfigContext.Provider>,
   );
   return { mockDispatch };
 };

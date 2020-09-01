@@ -2,16 +2,15 @@ import { createContext } from 'react';
 
 import { AnyAction } from '@reduxjs/toolkit';
 
-import { initialState } from './slice';
-import { INewGameState } from './types';
+import { INewGameRequest, defaultRequest } from '../shared/newGame/types';
 
-interface INewGameContextValues {
-  state: INewGameState;
+interface INewGameConfigContextValues {
+  state: INewGameRequest;
   dispatch: React.Dispatch<AnyAction>;
 }
 
-export const NewGameContext = createContext<INewGameContextValues>({
-  state: initialState,
+export const NewGameConfigContext = createContext<INewGameConfigContextValues>({
+  state: defaultRequest,
   dispatch: () => {
     return;
   },
