@@ -2,17 +2,13 @@ import React, { useContext } from 'react';
 
 import { Button, Checkbox, FieldStack, FieldWrapper, Heading, Radio, Set } from 'bumbag';
 
+import { ScoringMode } from '../../shared/newGame/types';
 import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
 import { SettingExplainerWrapper } from './SettingExplainerWrapper';
 import { actions } from './slice';
-import { ScoringMode, INewGameState } from './types';
 
-interface ISettingsFormProps {
-  handleCreateGame: (state: INewGameState) => void;
-}
-
-export const SettingsForm: React.FunctionComponent<ISettingsFormProps> = ({ handleCreateGame }) => {
+export const SettingsForm: React.FunctionComponent = () => {
   const { state, dispatch } = useContext(NewGameConfigContext);
 
   return (
@@ -54,7 +50,7 @@ export const SettingsForm: React.FunctionComponent<ISettingsFormProps> = ({ hand
         </FieldWrapper>
         <Set>
           <NavButton direction='back'>Select Dealer</NavButton>
-          <Button type='button' onClick={() => handleCreateGame(state)} palette='primary'>
+          <Button type='button' palette='primary'>
             Create Game!
           </Button>
         </Set>

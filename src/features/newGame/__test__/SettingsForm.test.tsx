@@ -2,31 +2,30 @@ import React from 'react';
 
 import { cleanup, render, act, fireEvent, screen } from '@testing-library/react';
 
+import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/newGame/types';
 import { NewGameConfigContext } from '../context';
 import { SettingsForm } from '../SettingsForm';
-import { initialState, actions } from '../slice';
-import { INewGameState, ScoringMode } from '../types';
+import { actions } from '../slice';
 
 const renderWithSettings = (scoringMode: ScoringMode, bonusRounds: boolean) => {
-  const state: INewGameState = { ...initialState, settings: { scoringMode, bonusRounds } };
+  const state: INewGameRequest = { ...defaultRequest, settings: { scoringMode, bonusRounds } };
   const mockDispatch = jest.fn();
 
   render(
     <NewGameConfigContext.Provider value={{ state, dispatch: mockDispatch }}>
-      <SettingsForm handleCreateGame={jest.fn()} />
+      <SettingsForm />
     </NewGameConfigContext.Provider>,
   );
-  const res: [() => void, INewGameState] = [mockDispatch, state];
+  const res: [() => void, INewGameRequest] = [mockDispatch, state];
   return res;
 };
 
-test('clicking the submit button should call handleCreateGame', () => {
-  const mockHandleCreateGame = jest.fn();
-  render(<SettingsForm handleCreateGame={mockHandleCreateGame} />);
+// TODO this test will change - the button will be a link instead
+test.skip('clicking the submit button should call handleCreateGame', () => {
+  render(<SettingsForm />);
   act(() => {
     fireEvent.click(screen.getByText(/create game/i));
   });
-  expect(mockHandleCreateGame).toHaveBeenCalled();
 });
 
 test.each([
