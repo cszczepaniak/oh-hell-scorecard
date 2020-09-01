@@ -5,7 +5,7 @@ import { act, cleanup, render, fireEvent, screen } from '@testing-library/react'
 import { DisplayContext } from '../context';
 import { NavButton } from '../NavButton';
 
-test.each(['forward', 'back'])('bonus round checkbox click dispatches toggle action', direction => {
+test.each(['forward', 'back'])('button calls the correct event based on direction prop', direction => {
   const mockNext = jest.fn();
   const mockPrev = jest.fn();
   render(
