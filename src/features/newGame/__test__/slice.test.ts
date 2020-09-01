@@ -1,6 +1,5 @@
-import { defaultRequest } from '../../../shared/newGame/types';
+import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/newGame/types';
 import { reducer, actions } from '../slice';
-import { INewGameState, ScoringMode } from '../types';
 
 test('reducer should set player names with setPlayerNames action', () => {
   const playerNames = ['a', 'b', 'c', 'd'];
@@ -42,7 +41,7 @@ test.each([
   [true, false],
 ])('reducer should toggle bonus rounds setting with toggleBonusRounds action', (bonusRounds, expToggledValue) => {
   const getStateWithBonusRoundsSetTo = (br: boolean) => {
-    const state: INewGameState = { ...defaultRequest, settings: { ...defaultRequest.settings, bonusRounds: br } };
+    const state: INewGameRequest = { ...defaultRequest, settings: { ...defaultRequest.settings, bonusRounds: br } };
     return state;
   };
 
@@ -53,7 +52,7 @@ test.each([
 });
 
 test('reducer shouold set scoring mode with setScoringMode action', () => {
-  const state: INewGameState = {
+  const state: INewGameRequest = {
     ...defaultRequest,
     settings: { ...defaultRequest.settings, scoringMode: ScoringMode.Negative },
   };
