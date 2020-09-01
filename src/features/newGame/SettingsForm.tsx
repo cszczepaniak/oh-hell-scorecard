@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 
 import { Button, Checkbox, FieldStack, FieldWrapper, Heading, Radio, Set } from 'bumbag';
+import { useHistory } from 'react-router-dom';
 
+import { NewGameContext } from '../../shared/newGame/context';
 import { ScoringMode } from '../../shared/newGame/types';
 import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
@@ -10,6 +12,14 @@ import { actions } from './slice';
 
 export const SettingsForm: React.FunctionComponent = () => {
   const { state, dispatch } = useContext(NewGameConfigContext);
+  const { setRequest } = useContext(NewGameContext);
+  const history = useHistory();
+
+  const handleClickCreate = () => {
+    setRequest(state);
+    // ideally the button would be a link and we wouldn't have to `push`, but we also need to set the request here
+    history.push('/game');
+  };
 
   return (
     <React.Fragment>
@@ -50,7 +60,7 @@ export const SettingsForm: React.FunctionComponent = () => {
         </FieldWrapper>
         <Set>
           <NavButton direction='back'>Select Dealer</NavButton>
-          <Button type='button' palette='primary'>
+          <Button type='button' palette='primary' onClick={handleClickCreate}>
             Create Game!
           </Button>
         </Set>
