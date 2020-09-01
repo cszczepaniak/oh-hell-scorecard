@@ -13,8 +13,6 @@ const clearNamesButtonMatcher = /clear names/i;
 const inputPlaceholderRegex = /player \d+/i;
 const selectDealerButtonMatcher = /select dealer/i;
 
-// TODO test that the form cannot be submitted when there are duplicate names
-
 test('inputs are added one at a time until max is reached', async () => {
   const maxPlayers = 10;
 

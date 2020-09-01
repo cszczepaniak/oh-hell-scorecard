@@ -96,14 +96,14 @@ test('clicking back button dispatches unselectDealer', () => {
 
 test('submit button is disabled while no dealer is selected', () => {
   const names = getNames(4);
-  const {} = renderWithNames(names);
+  renderWithNames(names);
   const submitBtn = screen.getByText(submitButtonMatcher);
   expect(submitBtn).toBeDisabled();
 });
 
 test('submit button is disabled while dealer name is not in player names', () => {
   const names = getNames(4);
-  const {} = renderWithState({ ...initialState, playerNames: names, dealer: 'notAValidName' });
+  renderWithState({ ...initialState, playerNames: names, dealer: 'notAValidName' });
   const submitBtn = screen.getByText(submitButtonMatcher);
   expect(submitBtn).toBeDisabled();
 });
