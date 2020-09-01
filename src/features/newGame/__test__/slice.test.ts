@@ -36,27 +36,19 @@ test('reducer should clear dealer with unselectDealer action', () => {
   expect(newState.dealer).toBe('');
 });
 
-test('reducer should toggle bonus rounds setting with toggleBonusRounds action', () => {
+test.each([
+  [false, true],
+  [true, false],
+])('reducer should toggle bonus rounds setting with toggleBonusRounds action', (bonusRounds, expToggledValue) => {
   const getStateWithBonusRoundsSetTo = (br: boolean) => {
     const state: INewGameState = { ...initialState, settings: { ...initialState.settings, bonusRounds: br } };
     return state;
   };
-  const tests = [
-    {
-      bonusRounds: false,
-      expToggledValue: true,
-    },
-    {
-      bonusRounds: true,
-      expToggledValue: false,
-    },
-  ];
-  tests.forEach(t => {
-    const state = getStateWithBonusRoundsSetTo(t.bonusRounds);
-    expect(state.settings.bonusRounds).toBe(t.bonusRounds);
-    const newState = reducer(state, actions.toggleBonusRounds());
-    expect(newState.settings.bonusRounds).toBe(t.expToggledValue);
-  });
+
+  const state = getStateWithBonusRoundsSetTo(bonusRounds);
+  expect(state.settings.bonusRounds).toBe(bonusRounds);
+  const newState = reducer(state, actions.toggleBonusRounds());
+  expect(newState.settings.bonusRounds).toBe(expToggledValue);
 });
 
 test('reducer shouold set scoring mode with setScoringMode action', () => {
