@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { NewGameContext } from '../context';
@@ -18,11 +18,11 @@ const selectDealerButtonMatcher = /select dealer/i;
 test('inputs are added one at a time until max is reached', async () => {
   const maxPlayers = 10;
 
-  const { getAllByPlaceholderText, getAllByRole } = render(<PlayerNamesForm minPlayers={3} maxPlayers={maxPlayers} />);
+  render(<PlayerNamesForm minPlayers={3} maxPlayers={maxPlayers} />);
 
-  const plus = getAllByRole('button')[plusBtnIdx];
+  const plus = screen.getAllByRole('button')[plusBtnIdx];
   const startingPlayers = 4;
-  const getInputs = () => getAllByPlaceholderText(inputPlaceholderRegex);
+  const getInputs = () => screen.getAllByPlaceholderText(inputPlaceholderRegex);
   const clickPlus = async () => {
     await wait(() => fireEvent.click(plus));
   };
@@ -42,11 +42,11 @@ test('inputs are added one at a time until max is reached', async () => {
 test('inputs are removed one at a time until min is reached', async () => {
   const minPlayers = 3;
 
-  const { getAllByPlaceholderText, getAllByRole } = render(<PlayerNamesForm minPlayers={minPlayers} maxPlayers={10} />);
+  render(<PlayerNamesForm minPlayers={minPlayers} maxPlayers={10} />);
 
-  const minus = getAllByRole('button')[minusBtnIdx];
+  const minus = screen.getAllByRole('button')[minusBtnIdx];
   const startingPlayers = 4;
-  const getInputs = () => getAllByPlaceholderText(inputPlaceholderRegex);
+  const getInputs = () => screen.getAllByPlaceholderText(inputPlaceholderRegex);
   const clickMinus = async () => {
     await wait(() => fireEvent.click(minus));
   };
@@ -64,12 +64,10 @@ test('inputs are removed one at a time until min is reached', async () => {
 });
 
 test('validation text appears when leaving an invalid field', async () => {
-  const { getAllByPlaceholderText, queryAllByText, queryByText } = render(
-    <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
-  );
-  const getValidationMessages = () => queryAllByText(/name is required/i);
-  const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
-  expect(queryByText(/name is required/i)).not.toBeInTheDocument();
+  render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
+  const getValidationMessages = () => screen.queryAllByText(/name is required/i);
+  const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);
+  expect(screen.queryByText(/name is required/i)).not.toBeInTheDocument();
   for (let i = 0; i < 1; i++) {
     await wait(() => {
       fireEvent.focus(inputs[i]);
@@ -83,9 +81,9 @@ test('validation text appears when leaving an invalid field', async () => {
 });
 
 test('select dealer button is disabled until all names are filled in', async () => {
-  const { getAllByPlaceholderText, getByText } = render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
-  const submitBtn = getByText(selectDealerButtonMatcher);
-  const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
+  render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
+  const submitBtn = screen.getByText(selectDealerButtonMatcher);
+  const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);
   // type in three inputs first
   for (let i = 0; i < inputs.length - 1; i++) {
     await wait(async () => {
@@ -101,9 +99,9 @@ test('select dealer button is disabled until all names are filled in', async () 
 });
 
 test('select dealer button is disabled if there are duplicate names', async () => {
-  const { getAllByPlaceholderText, getByText } = render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
-  const submitBtn = getByText(selectDealerButtonMatcher);
-  const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
+  render(<PlayerNamesForm minPlayers={3} maxPlayers={10} />);
+  const submitBtn = screen.getByText(selectDealerButtonMatcher);
+  const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);
 
   for (let i = 0; i < inputs.length; i++) {
     await wait(async () => {
@@ -123,13 +121,13 @@ test('clear form button resets the form and clears the names in context', async 
   const mockState = initialState;
   const mockDispatch = jest.fn();
 
-  const { getByText, getAllByPlaceholderText, queryAllByDisplayValue } = render(
+  render(
     <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
     </NewGameContext.Provider>,
   );
-  const resetBtn = getByText(clearNamesButtonMatcher);
-  const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
+  const resetBtn = screen.getByText(clearNamesButtonMatcher);
+  const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);
   for (let i = 1; i < inputs.length; i++) {
     mockDispatch.mockClear();
     // fill in some inputs
@@ -138,11 +136,11 @@ test('clear form button resets the form and clears the names in context', async 
         await userEvent.type(inputs[j], `player${j}`);
       });
     }
-    expect(queryAllByDisplayValue(/player\d+/i)).toHaveLength(i);
+    expect(screen.queryAllByDisplayValue(/player\d+/i)).toHaveLength(i);
     await wait(() => {
       fireEvent.click(resetBtn);
     });
-    expect(queryAllByDisplayValue(/player\d+/i)).toHaveLength(0);
+    expect(screen.queryAllByDisplayValue(/player\d+/i)).toHaveLength(0);
     expect(mockDispatch).toHaveBeenCalledTimes(1);
     expect(mockDispatch).toHaveBeenLastCalledWith(actions.setPlayerNames([]));
   }
@@ -153,13 +151,13 @@ test('submit button should update context', async () => {
   const mockDispatch = jest.fn();
 
   const playerNames = ['q', 'w', 'e', 'r'];
-  const { getByText, getAllByPlaceholderText } = render(
+  render(
     <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
     </NewGameContext.Provider>,
   );
 
-  const inputs = getAllByPlaceholderText(inputPlaceholderRegex);
+  const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);
   for (let i = 0; i < inputs.length; i++) {
     await wait(async () => {
       await userEvent.type(inputs[i], playerNames[i]);
@@ -167,7 +165,7 @@ test('submit button should update context', async () => {
   }
 
   await wait(() => {
-    fireEvent.click(getByText(/select dealer/i));
+    fireEvent.click(screen.getByText(/select dealer/i));
   });
 
   expect(mockDispatch).toHaveBeenCalledTimes(1);

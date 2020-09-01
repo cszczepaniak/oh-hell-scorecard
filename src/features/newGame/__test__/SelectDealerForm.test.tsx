@@ -1,35 +1,31 @@
 import React from 'react';
 
-import { act, render, fireEvent, RenderResult } from '@testing-library/react';
+import { act, cleanup, render, fireEvent, screen } from '@testing-library/react';
 
 import { NewGameContext } from '../context';
 import { SelectDealerForm } from '../SelectDealerForm';
 import { actions, initialState } from '../slice';
 import { INewGameState } from '../types';
 
-const cleanupDOM = () => {
-  document.getElementsByTagName('html')[0].innerHTML = '';
-};
-
 const renderWithNames = (names: string[]) => {
   const mockState = { ...initialState, playerNames: names };
   const mockDispatch = jest.fn();
-  const renderResult = render(
+  render(
     <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <SelectDealerForm />
     </NewGameContext.Provider>,
   );
-  return { mockState, mockDispatch, renderResult };
+  return { mockState, mockDispatch };
 };
 
 const renderWithState = (state: INewGameState) => {
   const mockDispatch = jest.fn();
-  const renderResult = render(
+  render(
     <NewGameContext.Provider value={{ state, dispatch: mockDispatch }}>
       <SelectDealerForm />
     </NewGameContext.Provider>,
   );
-  return { mockDispatch, renderResult };
+  return { mockDispatch };
 };
 
 const getNames = (n: number): string[] => {
@@ -49,30 +45,26 @@ const submitButtonMatcher = /select settings/i;
 
 test('buttons exist for each player in state', () => {
   const numAdditionalBtns = 2;
-  const checkRenderResult = (state: INewGameState, renderResult: RenderResult) => {
-    const { getAllByRole, getByText } = renderResult;
-    expect(getAllByRole('button')).toHaveLength(state.playerNames.length + numAdditionalBtns);
+  const checkRenderResult = (state: INewGameState) => {
+    expect(screen.getAllByRole('button')).toHaveLength(state.playerNames.length + numAdditionalBtns);
     state.playerNames.forEach(n => {
-      const btn = getByText(n);
+      const btn = screen.getByText(n);
       expect(btn).toBeInTheDocument();
     });
-    cleanupDOM();
+    cleanup();
   };
   let res = renderWithNames(getNames(4));
-  checkRenderResult(res.mockState, res.renderResult);
+  checkRenderResult(res.mockState);
   res = renderWithNames(getNames(6));
-  checkRenderResult(res.mockState, res.renderResult);
+  checkRenderResult(res.mockState);
 });
 
 test('clicking any button dispatches select dealer action, even if a dealer is already selected', () => {
   const names = getNames(4);
-  const {
-    renderResult: { getByText },
-    mockDispatch,
-  } = renderWithNames(names);
+  const { mockDispatch } = renderWithNames(names);
   names.forEach(n => {
     act(() => {
-      fireEvent.click(getByText(n));
+      fireEvent.click(screen.getByText(n));
     });
     expect(mockDispatch).toHaveBeenLastCalledWith(actions.selectDealer(n));
   });
@@ -82,23 +74,19 @@ test('clicking the button for the selected dealer dispatches unselect dealer act
   const names = getNames(4);
   names.forEach(n => {
     const res = renderWithState({ ...initialState, playerNames: names, dealer: n });
-    const { getByText } = res.renderResult;
-    const selectThisDealerBtn = getByText(n);
+    const selectThisDealerBtn = screen.getByText(n);
     act(() => {
       fireEvent.click(selectThisDealerBtn);
     });
     expect(res.mockDispatch).toHaveBeenLastCalledWith(actions.unselectDealer());
-    cleanupDOM();
+    cleanup();
   });
 });
 
 test('clicking back button dispatches unselectDealer', () => {
   const names = getNames(4);
-  const {
-    renderResult: { getByText },
-    mockDispatch,
-  } = renderWithNames(names);
-  const backBtn = getByText(backButtonMatcher);
+  const { mockDispatch } = renderWithNames(names);
+  const backBtn = screen.getByText(backButtonMatcher);
   act(() => {
     fireEvent.click(backBtn);
   });
@@ -108,30 +96,24 @@ test('clicking back button dispatches unselectDealer', () => {
 
 test('submit button is disabled while no dealer is selected', () => {
   const names = getNames(4);
-  const {
-    renderResult: { getByText },
-  } = renderWithNames(names);
-  const submitBtn = getByText(submitButtonMatcher);
+  const {} = renderWithNames(names);
+  const submitBtn = screen.getByText(submitButtonMatcher);
   expect(submitBtn).toBeDisabled();
 });
 
 test('submit button is disabled while dealer name is not in player names', () => {
   const names = getNames(4);
-  const {
-    renderResult: { getByText },
-  } = renderWithState({ ...initialState, playerNames: names, dealer: 'notAValidName' });
-  const submitBtn = getByText(submitButtonMatcher);
+  const {} = renderWithState({ ...initialState, playerNames: names, dealer: 'notAValidName' });
+  const submitBtn = screen.getByText(submitButtonMatcher);
   expect(submitBtn).toBeDisabled();
 });
 
 test('submit button is enabled while dealer name is valid', () => {
   const names = getNames(4);
   names.forEach(n => {
-    const {
-      renderResult: { getByText },
-    } = renderWithState({ ...initialState, playerNames: names, dealer: n });
-    const submitBtn = getByText(submitButtonMatcher);
+    const {} = renderWithState({ ...initialState, playerNames: names, dealer: n });
+    const submitBtn = screen.getByText(submitButtonMatcher);
     expect(submitBtn).not.toBeDisabled();
-    cleanupDOM();
+    cleanup();
   });
 });

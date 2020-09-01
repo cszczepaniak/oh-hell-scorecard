@@ -1,13 +1,9 @@
 import React from 'react';
 
-import { act, render, fireEvent } from '@testing-library/react';
+import { act, cleanup, render, fireEvent, screen } from '@testing-library/react';
 
 import { DisplayContext } from '../context';
 import { NavButton } from '../NavButton';
-
-const cleanupDOM = () => {
-  document.getElementsByTagName('html')[0].innerHTML = '';
-};
 
 test('button calls the correct event based on direction prop', () => {
   const mockNext = jest.fn();
@@ -29,15 +25,15 @@ test('button calls the correct event based on direction prop', () => {
     },
   ];
   tests.forEach(t => {
-    const { getByRole } = render(
+    render(
       <DisplayContext.Provider value={{ displayIdx: 0, next: mockNext, previous: mockPrev }}>
         <NavButton direction={t.direction}>a</NavButton>
       </DisplayContext.Provider>,
     );
-    const btn = getByRole('button');
+    const btn = screen.getByRole('button');
     fireEvent.click(btn);
     expect(t.expectedHandler).toHaveBeenCalled();
-    cleanupDOM();
+    cleanup();
   });
 });
 
@@ -58,36 +54,36 @@ test('button calls no event when the button is disabled', () => {
     },
   ];
   tests.forEach(t => {
-    const { getByRole } = render(
+    render(
       <DisplayContext.Provider value={{ displayIdx: 0, next: mockNext, previous: mockPrev }}>
         <NavButton direction={t.direction} disabled>
           a
         </NavButton>
       </DisplayContext.Provider>,
     );
-    const btn = getByRole('button');
+    const btn = screen.getByRole('button');
     fireEvent.click(btn);
     expect(mockNext).not.toHaveBeenCalled();
     expect(mockPrev).not.toHaveBeenCalled();
-    cleanupDOM();
+    cleanup();
   });
 });
 
 test('button renders the correct children', () => {
   const testText = 'abc';
-  const { getByText } = render(<NavButton direction='forward'>{testText}</NavButton>);
-  getByText(testText);
+  render(<NavButton direction='forward'>{testText}</NavButton>);
+  screen.getByText(testText);
 });
 
 test('button calls the onclick handler if it is passed', () => {
   const testText = 'abc';
   const mockHandleClick = jest.fn();
-  const { getByText } = render(
+  render(
     <NavButton direction='forward' onClick={mockHandleClick}>
       {testText}
     </NavButton>,
   );
-  const button = getByText(testText);
+  const button = screen.getByText(testText);
   act(() => {
     fireEvent.click(button);
   });

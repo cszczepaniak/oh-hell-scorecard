@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 
 import PlusMinusButtonGroup from '../PlusMinusButtonGroup';
 
@@ -8,7 +8,7 @@ test('button event are fired and handled', () => {
   const mockOnIncrement = jest.fn();
   const mockOnDecrement = jest.fn();
 
-  const { getAllByRole } = render(
+  render(
     <PlusMinusButtonGroup
       onIncrement={mockOnIncrement}
       onDecrement={mockOnDecrement}
@@ -17,7 +17,7 @@ test('button event are fired and handled', () => {
     />,
   );
 
-  const btns = getAllByRole('button');
+  const btns = screen.getAllByRole('button');
   fireEvent.click(btns[0]);
   expect(mockOnIncrement).toHaveBeenCalledTimes(1);
   fireEvent.click(btns[1]);
