@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 import { AnyAction } from '@reduxjs/toolkit';
 
-import { INewGameRequest, defaultRequest } from '../shared/newGame/types';
+import { INewGameRequest, defaultRequest } from '../../shared/newGame/types';
 
 interface INewGameConfigContextValues {
   state: INewGameRequest;

@@ -4,7 +4,7 @@ import { faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle } from '@f
 import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
 
 import { NewGame } from './features/newGame/NewGame';
-import { INewGameRequest } from './features/shared/newGame/types';
+import { INewGameRequest } from './shared/newGame/types';
 
 const theme: ThemeConfig = {
   Icon: {

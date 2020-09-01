@@ -1,4 +1,4 @@
-import { defaultRequest } from '../../shared/newGame/types';
+import { defaultRequest } from '../../../shared/newGame/types';
 import { reducer, actions } from '../slice';
 import { INewGameState, ScoringMode } from '../types';
 
