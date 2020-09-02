@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { cleanup, render, act, fireEvent, screen } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 
+import { NewGameContext } from '../../../shared/newGame/context';
 import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/newGame/types';
 import { NewGameConfigContext } from '../context';
 import { SettingsForm } from '../SettingsForm';
@@ -19,14 +22,6 @@ const renderWithSettings = (scoringMode: ScoringMode, bonusRounds: boolean) => {
   const res: [() => void, INewGameRequest] = [mockDispatch, state];
   return res;
 };
-
-// TODO this test will change - the button will be a link instead
-test.skip('clicking the submit button should call handleCreateGame', () => {
-  render(<SettingsForm />);
-  act(() => {
-    fireEvent.click(screen.getByText(/create game/i));
-  });
-});
 
 test.each([
   [ScoringMode.Standard, true, false],
@@ -90,4 +85,31 @@ test.each([false, true])('bonus round checkbox click dispatches toggle action', 
   expect(mockDispatch).toHaveBeenCalled();
   expect(mockDispatch).toHaveBeenLastCalledWith(actions.toggleBonusRounds());
   cleanup();
+});
+
+test('submitting sets request and reroutes to /game', () => {
+  const mockSetRequest = jest.fn();
+  const testRequest: INewGameRequest = {
+    playerNames: ['a', 'b', 'c', 'd'],
+    dealer: 'a',
+    settings: {
+      bonusRounds: false,
+      scoringMode: ScoringMode.Standard,
+    },
+  };
+  const history = createMemoryHistory();
+  render(
+    <Router history={history}>
+      <NewGameConfigContext.Provider value={{ state: testRequest, dispatch: jest.fn() }}>
+        <NewGameContext.Provider value={{ request: defaultRequest, setRequest: mockSetRequest }}>
+          <SettingsForm />
+        </NewGameContext.Provider>
+      </NewGameConfigContext.Provider>
+    </Router>,
+  );
+  act(() => {
+    fireEvent.click(screen.getByText(/create game/i));
+  });
+  expect(mockSetRequest).toHaveBeenCalledWith(testRequest);
+  expect(history.location.pathname).toBe('/game');
 });
