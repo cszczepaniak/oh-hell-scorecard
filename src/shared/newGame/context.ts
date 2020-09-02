@@ -10,6 +10,6 @@ interface INewGameContextValues {
 export const NewGameContext = createContext<INewGameContextValues>({
   request: defaultRequest,
   setRequest: () => {
-    return;
+    throw Error('context is not implemented');
   },
 });

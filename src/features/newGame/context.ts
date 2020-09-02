@@ -12,7 +12,7 @@ interface INewGameConfigContextValues {
 export const NewGameConfigContext = createContext<INewGameConfigContextValues>({
   state: defaultRequest,
   dispatch: () => {
-    return;
+    throw Error('context is not implemented');
   },
 });
 
@@ -25,9 +25,9 @@ interface IDisplayContextValues {
 export const DisplayContext = createContext<IDisplayContextValues>({
   displayIdx: 0,
   next: () => {
-    return;
+    throw Error('context is not implemented');
   },
   previous: () => {
-    return;
+    throw Error('context is not implemented');
   },
 });

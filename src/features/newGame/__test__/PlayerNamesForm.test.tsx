@@ -4,7 +4,7 @@ import { render, fireEvent, screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { defaultRequest } from '../../../shared/newGame/types';
-import { NewGameConfigContext } from '../context';
+import { NewGameConfigContext, DisplayContext } from '../context';
 import { PlayerNamesForm } from '../PlayerNamesForm';
 import { actions } from '../slice';
 
@@ -151,9 +151,11 @@ test('submit button should update context', async () => {
 
   const playerNames = ['q', 'w', 'e', 'r'];
   render(
-    <NewGameConfigContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
-      <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
-    </NewGameConfigContext.Provider>,
+    <DisplayContext.Provider value={{ displayIdx: 0, next: jest.fn(), previous: jest.fn() }}>
+      <NewGameConfigContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+        <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
+      </NewGameConfigContext.Provider>
+    </DisplayContext.Provider>,
   );
 
   const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);

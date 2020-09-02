@@ -50,9 +50,11 @@ test('button calls the onclick handler if it is passed', () => {
   const testText = 'abc';
   const mockHandleClick = jest.fn();
   render(
-    <NavButton direction='forward' onClick={mockHandleClick}>
-      {testText}
-    </NavButton>,
+    <DisplayContext.Provider value={{ displayIdx: 0, next: jest.fn(), previous: jest.fn() }}>
+      <NavButton direction='forward' onClick={mockHandleClick}>
+        {testText}
+      </NavButton>
+    </DisplayContext.Provider>,
   );
   const button = screen.getByText(testText);
   act(() => {
