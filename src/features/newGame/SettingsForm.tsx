@@ -1,19 +1,25 @@
 import React, { useContext } from 'react';
 
 import { Button, Checkbox, FieldStack, FieldWrapper, Heading, Radio, Set } from 'bumbag';
+import { useHistory } from 'react-router-dom';
 
-import { NewGameContext } from './context';
+import { NewGameContext } from '../../shared/newGame/context';
+import { ScoringMode } from '../../shared/newGame/types';
+import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
 import { SettingExplainerWrapper } from './SettingExplainerWrapper';
 import { actions } from './slice';
-import { ScoringMode, INewGameState } from './types';
 
-interface ISettingsFormProps {
-  handleCreateGame: (state: INewGameState) => void;
-}
+export const SettingsForm: React.FunctionComponent = () => {
+  const { state, dispatch } = useContext(NewGameConfigContext);
+  const { setRequest } = useContext(NewGameContext);
+  const history = useHistory();
 
-export const SettingsForm: React.FunctionComponent<ISettingsFormProps> = ({ handleCreateGame }) => {
-  const { state, dispatch } = useContext(NewGameContext);
+  const handleClickCreate = () => {
+    setRequest(state);
+    // ideally the button would be a link and we wouldn't have to `push`, but we also need to set the request here
+    history.push('/game');
+  };
 
   return (
     <React.Fragment>
@@ -54,7 +60,7 @@ export const SettingsForm: React.FunctionComponent<ISettingsFormProps> = ({ hand
         </FieldWrapper>
         <Set>
           <NavButton direction='back'>Select Dealer</NavButton>
-          <Button type='button' onClick={() => handleCreateGame(state)} palette='primary'>
+          <Button type='button' palette='primary' onClick={handleClickCreate}>
             Create Game!
           </Button>
         </Set>

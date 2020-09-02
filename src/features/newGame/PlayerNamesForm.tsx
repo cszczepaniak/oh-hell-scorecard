@@ -4,7 +4,7 @@ import { Box, Button, Stack, Heading, InputField, Text, Set } from 'bumbag';
 import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
 import * as Yup from 'yup';
 
-import { NewGameContext } from './context';
+import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
 import PlusMinusButtonGroup from './PlusMinusButtonGroup';
 import { actions } from './slice';
@@ -23,7 +23,7 @@ interface PlayerNamesFormProps {
 }
 
 export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({ minPlayers, maxPlayers }) => {
-  const { state, dispatch } = useContext(NewGameContext);
+  const { state, dispatch } = useContext(NewGameConfigContext);
 
   const onClickClearNames = (resetForm: () => void) => () => {
     resetForm();

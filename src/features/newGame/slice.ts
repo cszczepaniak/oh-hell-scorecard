@@ -1,15 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { INewGameState, ScoringMode } from './types';
-
-export const initialState: INewGameState = {
-  playerNames: [],
-  dealer: '',
-  settings: {
-    scoringMode: ScoringMode.Negative,
-    bonusRounds: true,
-  },
-};
+import { defaultRequest, ScoringMode } from '../../shared/newGame/types';
 
 interface IAction {
   type: string;
@@ -29,7 +20,7 @@ interface ISetScoringModeAction extends IAction {
 
 const newGameSlice = createSlice({
   name: 'newGame',
-  initialState: initialState,
+  initialState: defaultRequest,
   reducers: {
     setPlayerNames(state, action: ISetPlayerNamesAction) {
       state.playerNames = action.payload;

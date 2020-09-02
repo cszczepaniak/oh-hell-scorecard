@@ -3,9 +3,10 @@ import React from 'react';
 import { render, fireEvent, screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { NewGameContext } from '../context';
+import { defaultRequest } from '../../../shared/newGame/types';
+import { NewGameConfigContext, DisplayContext } from '../context';
 import { PlayerNamesForm } from '../PlayerNamesForm';
-import { actions, initialState } from '../slice';
+import { actions } from '../slice';
 
 const plusBtnIdx = 0;
 const minusBtnIdx = 1;
@@ -116,13 +117,13 @@ test('select dealer button is disabled if there are duplicate names', async () =
 });
 
 test('clear form button resets the form and clears the names in context', async () => {
-  const mockState = initialState;
+  const mockState = defaultRequest;
   const mockDispatch = jest.fn();
 
   render(
-    <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+    <NewGameConfigContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
       <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
-    </NewGameContext.Provider>,
+    </NewGameConfigContext.Provider>,
   );
   const resetBtn = screen.getByText(clearNamesButtonMatcher);
   const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);
@@ -145,14 +146,16 @@ test('clear form button resets the form and clears the names in context', async 
 });
 
 test('submit button should update context', async () => {
-  const mockState = initialState;
+  const mockState = defaultRequest;
   const mockDispatch = jest.fn();
 
   const playerNames = ['q', 'w', 'e', 'r'];
   render(
-    <NewGameContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
-      <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
-    </NewGameContext.Provider>,
+    <DisplayContext.Provider value={{ displayIdx: 0, next: jest.fn(), previous: jest.fn() }}>
+      <NewGameConfigContext.Provider value={{ state: mockState, dispatch: mockDispatch }}>
+        <PlayerNamesForm minPlayers={3} maxPlayers={10} />,
+      </NewGameConfigContext.Provider>
+    </DisplayContext.Provider>,
   );
 
   const inputs = screen.getAllByPlaceholderText(inputPlaceholderRegex);

@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 
 import { Box, Button, Stack, Heading, Set } from 'bumbag';
 
-import { NewGameContext } from './context';
+import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
 import { actions } from './slice';
 
 export const SelectDealerForm: React.FunctionComponent = () => {
-  const { state, dispatch } = useContext(NewGameContext);
+  const { state, dispatch } = useContext(NewGameConfigContext);
 
   const dealerIsValid = () => {
     return state.dealer && state.playerNames.includes(state.dealer);

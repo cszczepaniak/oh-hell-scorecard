@@ -8,8 +8,17 @@ export interface IGameSettings {
   bonusRounds: boolean;
 }
 
-export interface INewGameState {
+export interface INewGameRequest {
   playerNames: string[];
   dealer: string;
   settings: IGameSettings;
 }
+
+export const defaultRequest: INewGameRequest = {
+  playerNames: [],
+  dealer: '',
+  settings: {
+    bonusRounds: true,
+    scoringMode: ScoringMode.Negative,
+  },
+};

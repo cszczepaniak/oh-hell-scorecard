@@ -13,6 +13,7 @@
     "@types/react": "^16.9.44",
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.9",
+    "@types/react-router-dom": "^5.1.5",
     "@types/yup": "^0.29.4",
     "bumbag": "^1.0.2",
     "eslint-plugin-import": "^2.22.0",
@@ -21,6 +22,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "typescript": "^3.8.3",
     "yup": "^0.29.3"

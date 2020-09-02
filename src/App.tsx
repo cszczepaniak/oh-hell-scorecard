@@ -2,9 +2,11 @@ import React from 'react';
 
 import { faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import { Game } from './features/game/Game';
 import { NewGame } from './features/newGame/NewGame';
-import { INewGameState } from './features/newGame/types';
+import { NewGameContainer } from './shared/newGame/NewGameContainer';
 
 const theme: ThemeConfig = {
   Icon: {
@@ -24,14 +26,20 @@ const theme: ThemeConfig = {
 };
 
 const App: React.FunctionComponent = () => {
-  const handleCreateGame = (state: INewGameState) => {
-    console.log('Creating game...');
-    const { playerNames, dealer, settings } = state;
-    console.log({ playerNames, dealer, settings });
-  };
   return (
     <BumbagProvider theme={theme}>
-      <NewGame minPlayers={3} maxPlayers={10} handleCreateGame={handleCreateGame} />
+      <NewGameContainer>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path='/'>
+              <NewGame minPlayers={3} maxPlayers={10} />
+            </Route>
+            <Route exact path='/game'>
+              <Game />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </NewGameContainer>
     </BumbagProvider>
   );
 };
