@@ -9,7 +9,7 @@ The purpose of this project is to create a web app to score a game of [Oh Hell](
 
 - [TypeScript](https://www.typescriptlang.org/) and associated tooling
 - Other devops tools ([Husky](https://www.npmjs.com/package/husky), [lint-staged](https://github.com/okonet/lint-staged), [eslint](https://eslint.org/), CI/CD strategies ([Docker](https://www.docker.com/)), etc.)
-- [React context API](https://reactjs.org/docs/context.html) vs. [Redux](https://redux.js.org/) for state management (it seems like Redux gets ubiquitously applied to any React project, which can lead to many values being in an app's global state which don't belong there, and many people on the internet agree. I want to learn to use the correct tool for a job.)
+- [React context API](https://reactjs.org/docs/context.html) as opposed to [Redux](https://redux.js.org/) for state management. I want to see what it takes to create a Redux-less application!
 
 ---
 
