@@ -8,9 +8,5 @@ import { defaultRequest } from '../../shared/newGame/types';
 export const Game: React.FunctionComponent = () => {
   const { request: newGameRequest } = useContext(NewGameContext);
 
-  return newGameRequest === defaultRequest ? (
-    <Redirect to='/' />
-  ) : (
-    <div>{newGameRequest === defaultRequest ? '' : JSON.stringify(newGameRequest)}</div>
-  );
+  return newGameRequest === defaultRequest ? <Redirect to='/' /> : <div>{JSON.stringify(newGameRequest)}</div>;
 };
