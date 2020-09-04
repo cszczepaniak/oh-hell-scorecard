@@ -13,7 +13,7 @@ interface IPlayerCardProps {
 
 export const PlayerCard: React.FunctionComponent<IPlayerCardProps> = ({ name, dealerName, stats }) => {
   return (
-    <Card title={name + (dealerName === name ? ' - dealer' : '')} margin='major-2' width='50%'>
+    <Card title={name + (dealerName === name ? ' - dealer' : '')} margin='major-2' minWidth='250px'>
       <Text fontSize='1.5rem'>{stats.score}</Text>
       <div>
         <Text>Current bid: {stats.currentBid}</Text>
