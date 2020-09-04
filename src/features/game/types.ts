@@ -6,6 +6,7 @@ export interface IGame extends INewGameRequest {
 
 export interface IGameStats {
   score: number;
+  currentBid: number;
   pointsPerRound: number;
   bidsPerRound: number;
   tricksPerRound: number;
