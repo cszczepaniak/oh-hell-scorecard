@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faMinus,
+  faArrowRight,
+  faArrowLeft,
+  faQuestionCircle,
+  faChevronRight,
+  faChevronDown,
+} from '@fortawesome/free-solid-svg-icons';
 import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
@@ -12,7 +20,7 @@ const theme: ThemeConfig = {
   Icon: {
     iconSets: [
       {
-        icons: [faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle],
+        icons: [faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle, faChevronRight, faChevronDown],
         prefix: 'solid-',
         type: 'font-awesome',
       },
