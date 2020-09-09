@@ -28,7 +28,7 @@ export const PlayerCard: React.FunctionComponent<IPlayerCardProps> = ({ name, de
           </DropdownMenu>
           <Popover.State>
             <Popover.Disclosure use={Button}>View Stats</Popover.Disclosure>
-            <Popover hasArrow>
+            <Popover hasArrow tabIndex={0}>
               <StatsPanel stats={stats} />
             </Popover>
           </Popover.State>
