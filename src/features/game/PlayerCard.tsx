@@ -23,12 +23,13 @@ export const PlayerCard: React.FunctionComponent<IPlayerCardProps> = ({ name, de
             menu={[0, 1, 2].map(v => (
               <DropdownMenu.Item key={v}>{v}</DropdownMenu.Item>
             ))}
+            data-testid='BidDropdown'
           >
             <Button iconAfter='solid-chevron-down'>Bid</Button>
           </DropdownMenu>
           <Popover.State>
             <Popover.Disclosure use={Button}>View Stats</Popover.Disclosure>
-            <Popover hasArrow tabIndex={0}>
+            <Popover title={`${name}'s stats`} hasArrow tabIndex={0}>
               <StatsPanel stats={stats} />
             </Popover>
           </Popover.State>
