@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Blockquote, Flex, Paragraph } from 'bumbag';
 
-import { IconButton } from '../iconButton/IconButton';
+import { IconButton } from '../../shared/components/iconButton/IconButton';
 
 interface SettingExplainerProps {
   text: string;
