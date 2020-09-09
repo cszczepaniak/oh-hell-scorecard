@@ -90,6 +90,30 @@ test('player card displays bid', () => {
 });
 
 test('stats panel is shown if the button is clicked', () => {
+  const name = 'testPlayer';
+  render(
+    <PlayerCard
+      name={name}
+      dealerName=''
+      stats={{
+        bidsPerRound: 0,
+        currentBid: 0,
+        hitPercentage: 0,
+        pointsBack: 0,
+        pointsPerRound: 0,
+        score: 0,
+        totalBids: 0,
+        tricksPerRound: 0,
+      }}
+    />,
+  );
+  act(() => {
+    fireEvent.click(screen.getByText(/view stats/i));
+  });
+  expect(screen.getByText(`${name}'s stats`)).toBeInTheDocument();
+});
+
+test('bid menu is shown if the button is clicked', () => {
   render(
     <PlayerCard
       name='testPlayer'
@@ -106,9 +130,8 @@ test('stats panel is shown if the button is clicked', () => {
       }}
     />,
   );
-  const button = screen.getByText(/view stats/i);
   act(() => {
-    fireEvent.click(button);
+    fireEvent.click(screen.getByText('Bid'));
   });
-  expect(screen.getByTestId('StatsPanel')).toBeInTheDocument();
+  expect(screen.getByTestId('BidDropdown')).toBeInTheDocument();
 });

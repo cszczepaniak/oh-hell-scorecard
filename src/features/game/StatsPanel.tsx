@@ -10,7 +10,7 @@ interface IStatsPanelProps {
 
 export const StatsPanel: React.FunctionComponent<IStatsPanelProps> = ({ stats }) => {
   return (
-    <Table variant='minimal' data-testid='StatsPanel'>
+    <Table variant='minimal'>
       <Table.Body>
         <Table.Row>
           <Table.Cell>bidsPerRound</Table.Cell>
