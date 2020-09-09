@@ -5,6 +5,9 @@
 import '@testing-library/jest-dom/extend-expect';
 import '@testing-library/jest-dom';
 
+// a polyfill for MutationObserver
+import 'mutationobserver-shim';
+
 // we have to set up a mock for window.matchMedia, otherwise we get an error
 // https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
 beforeAll(() => {
