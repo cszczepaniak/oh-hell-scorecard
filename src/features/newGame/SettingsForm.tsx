@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import { Button, Checkbox, FieldStack, FieldWrapper, Heading, Radio, Set } from 'bumbag';
 import { useHistory } from 'react-router-dom';
 
-import { NewGameContext } from '../../shared/newGame/context';
 import { ScoringMode } from '../../shared/newGame/types';
+import { useCreateGame } from '../../shared/persistence/persistence';
 import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
 import { SettingExplainerWrapper } from './SettingExplainerWrapper';
@@ -12,11 +12,11 @@ import { actions } from './slice';
 
 export const SettingsForm: React.FunctionComponent = () => {
   const { state, dispatch } = useContext(NewGameConfigContext);
-  const { setRequest } = useContext(NewGameContext);
   const history = useHistory();
+  const createGame = useCreateGame();
 
   const handleClickCreate = () => {
-    setRequest(state);
+    createGame(state);
     // ideally the button would be a link and we wouldn't have to `push`, but we also need to set the request here
     history.push('/game');
   };

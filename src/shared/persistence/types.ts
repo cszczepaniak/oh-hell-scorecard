@@ -1,4 +1,4 @@
-import { INewGameRequest, IGameSettings } from '../../shared/newGame/types';
+import { INewGameRequest, IGameSettings, defaultRequest } from '../newGame/types';
 
 export interface IGame extends INewGameRequest {
   dealer: string;
@@ -7,6 +7,14 @@ export interface IGame extends INewGameRequest {
   settings: IGameSettings;
   playerStats: { [name: string]: IGameStats };
 }
+
+export const emptyGame: IGame = {
+  dealer: '',
+  playerNames: [],
+  currentRound: 0,
+  settings: defaultRequest.settings,
+  playerStats: {},
+};
 
 export interface IGameStats {
   score: number;

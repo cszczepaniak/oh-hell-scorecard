@@ -4,7 +4,6 @@ import { cleanup, render, act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import { NewGameContext } from '../../../shared/newGame/context';
 import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/newGame/types';
 import { NewGameConfigContext } from '../context';
 import { SettingsForm } from '../SettingsForm';
@@ -87,8 +86,7 @@ test.each([false, true])('bonus round checkbox click dispatches toggle action', 
   cleanup();
 });
 
-test('submitting sets request and reroutes to /game', () => {
-  const mockSetRequest = jest.fn();
+test('submitting reroutes to /game', () => {
   const testRequest: INewGameRequest = {
     playerNames: ['a', 'b', 'c', 'd'],
     dealer: 'a',
@@ -101,15 +99,12 @@ test('submitting sets request and reroutes to /game', () => {
   render(
     <Router history={history}>
       <NewGameConfigContext.Provider value={{ state: testRequest, dispatch: jest.fn() }}>
-        <NewGameContext.Provider value={{ request: defaultRequest, setRequest: mockSetRequest }}>
-          <SettingsForm />
-        </NewGameContext.Provider>
+        <SettingsForm />
       </NewGameConfigContext.Provider>
     </Router>,
   );
   act(() => {
     fireEvent.click(screen.getByText(/create game/i));
   });
-  expect(mockSetRequest).toHaveBeenCalledWith(testRequest);
   expect(history.location.pathname).toBe('/game');
 });
