@@ -1,4 +1,4 @@
-import { INewGameRequest, IGameSettings } from '../../shared/newGame/types';
+import { INewGameRequest, IGameSettings } from '../../shared/persistence/types';
 
 export interface IGame extends INewGameRequest {
   dealer: string;

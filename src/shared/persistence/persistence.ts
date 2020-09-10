@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { INewGameRequest } from '../newGame/types';
-import { IGame, IGameStats, emptyGame } from './types';
+import { IGame, IGameStats, emptyGame, INewGameRequest } from './types';
 
 const gameStorageKey = 'SavedGame';
 

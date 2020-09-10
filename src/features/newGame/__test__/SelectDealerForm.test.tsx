@@ -2,7 +2,7 @@ import React from 'react';
 
 import { act, cleanup, render, fireEvent, screen } from '@testing-library/react';
 
-import { defaultRequest, INewGameRequest } from '../../../shared/newGame/types';
+import { defaultRequest, INewGameRequest } from '../../../shared/persistence/types';
 import { NewGameConfigContext, DisplayContext } from '../context';
 import { SelectDealerForm } from '../SelectDealerForm';
 import { actions } from '../slice';

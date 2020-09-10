@@ -1,4 +1,4 @@
-import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/newGame/types';
+import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/persistence/types';
 import { reducer, actions } from '../slice';
 
 test('reducer should set player names with setPlayerNames action', () => {

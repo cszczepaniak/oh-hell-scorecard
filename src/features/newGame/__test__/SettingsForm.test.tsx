@@ -4,7 +4,7 @@ import { cleanup, render, act, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/newGame/types';
+import { defaultRequest, INewGameRequest, ScoringMode } from '../../../shared/persistence/types';
 import { NewGameConfigContext } from '../context';
 import { SettingsForm } from '../SettingsForm';
 import { actions } from '../slice';

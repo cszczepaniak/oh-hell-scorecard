@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { defaultRequest, ScoringMode } from '../../shared/newGame/types';
+import { defaultRequest, ScoringMode } from '../../shared/persistence/types';
 
 interface IAction {
   type: string;

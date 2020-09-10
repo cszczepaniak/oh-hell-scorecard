@@ -3,7 +3,7 @@ import React from 'react';
 import { render, fireEvent, screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { defaultRequest } from '../../../shared/newGame/types';
+import { defaultRequest } from '../../../shared/persistence/types';
 import { NewGameConfigContext, DisplayContext } from '../context';
 import { PlayerNamesForm } from '../PlayerNamesForm';
 import { actions } from '../slice';

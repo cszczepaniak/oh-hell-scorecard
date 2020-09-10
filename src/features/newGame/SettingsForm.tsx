@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import { Button, Checkbox, FieldStack, FieldWrapper, Heading, Radio, Set } from 'bumbag';
 import { useHistory } from 'react-router-dom';
 
-import { ScoringMode } from '../../shared/newGame/types';
 import { useCreateGame } from '../../shared/persistence/persistence';
+import { ScoringMode } from '../../shared/persistence/types';
 import { NewGameConfigContext } from './context';
 import { NavButton } from './NavButton';
 import { SettingExplainerWrapper } from './SettingExplainerWrapper';

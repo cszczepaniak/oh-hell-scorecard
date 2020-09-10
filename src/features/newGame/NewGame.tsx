@@ -2,7 +2,7 @@ import React, { useReducer, useState } from 'react';
 
 import { Box, Heading, PageContent } from 'bumbag';
 
-import { defaultRequest } from '../../shared/newGame/types';
+import { defaultRequest } from '../../shared/persistence/types';
 import { NewGameConfigContext, DisplayContext } from './context';
 import { PlayerNamesForm } from './PlayerNamesForm';
 import { SelectDealerForm } from './SelectDealerForm';
