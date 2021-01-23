@@ -1,107 +1,138 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Box, Button, Stack, Heading, InputField, Text, Set } from 'bumbag';
-import { Formik, Form, Field, FieldArray, getIn, FieldProps } from 'formik';
-import * as Yup from 'yup';
-
-import { NewGameConfigContext } from './context';
-import { NavButton } from './NavButton';
-import PlusMinusButtonGroup from './PlusMinusButtonGroup';
-import { actions } from './slice';
-
-const FormSchema = Yup.object().shape({
-  playerNames: Yup.array().of(Yup.string().required('Name is required')),
-});
-
-export interface PlayerNameFormData {
-  playerNames: string[];
-}
+// import { NewGameConfigContext } from './context';
+// import { actions } from './slice';
+import { Button, Grid, IconButton, Switch, TextField, Typography } from '@material-ui/core';
+import { Clear, Forward } from '@material-ui/icons';
 
 interface PlayerNamesFormProps {
   minPlayers: number;
   maxPlayers: number;
 }
 
+interface Player {
+  name: string;
+  isDealer: boolean;
+}
+
+const initialPlayers: Player[] = new Array(4).fill({
+  name: '',
+  isDealer: false,
+});
+
 export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({ minPlayers, maxPlayers }) => {
-  const { state, dispatch } = useContext(NewGameConfigContext);
-
-  const onClickClearNames = (resetForm: () => void) => () => {
-    resetForm();
-    dispatch(actions.setPlayerNames([]));
-  };
-
-  const hasDuplicates = (names: string[]) => names.some(n => names.indexOf(n) !== names.lastIndexOf(n));
+  // const { state, dispatch } = useContext(NewGameConfigContext);
+  const {
+    players,
+    validation,
+    setName,
+    toggleIsDealer,
+    addPlayer,
+    removePlayer,
+    handlePlayerNameBlur,
+  } = usePlayerFormData(minPlayers, maxPlayers);
 
   return (
-    <Formik
-      initialValues={
-        state.playerNames.length > 0 ? { playerNames: state.playerNames } : { playerNames: Array(4).fill('') }
-      }
-      onSubmit={(values: PlayerNameFormData) => {
-        dispatch(actions.setPlayerNames(values.playerNames));
-      }}
-      validationSchema={FormSchema}
-    >
-      {({ isValid, values, resetForm, submitForm }) => (
-        <Form>
-          <Heading use='h5'>Enter player names</Heading>
-          <FieldArray name='playerNames'>
-            {arrayHelper => (
-              <Stack spacing='major-3'>
-                <FormInputs names={values.playerNames} />
-                <Set>
-                  <PlusMinusButtonGroup
-                    onIncrement={() => values.playerNames.length < maxPlayers && arrayHelper.push('')}
-                    onDecrement={() =>
-                      values.playerNames.length > minPlayers && arrayHelper.remove(values.playerNames.length - 1)
-                    }
-                    disablePlus={values.playerNames.length === maxPlayers}
-                    disableMinus={values.playerNames.length === minPlayers}
-                  />
-                  <Button onClick={onClickClearNames(resetForm)}>Clear Names</Button>
-                </Set>
-                <NavButton
-                  direction='forward'
-                  onClick={() => submitForm()}
-                  disabled={!isValid || values.playerNames.includes('') || hasDuplicates(values.playerNames)}
-                >
-                  Select Dealer
-                </NavButton>
-              </Stack>
-            )}
-          </FieldArray>
-        </Form>
-      )}
-    </Formik>
+    <Grid container spacing={3} alignItems='center'>
+      <Grid item xs={8}>
+        <Typography variant='h5'>Enter player names</Typography>
+      </Grid>
+      <Grid item xs={2}>
+        <Typography>Dealer?</Typography>
+      </Grid>
+      {players.map((p, i) => (
+        <>
+          <Grid item xs={8}>
+            <TextField
+              value={p.name}
+              variant='outlined'
+              fullWidth
+              placeholder={`Player ${i + 1}`}
+              error={validation[i].length > 0}
+              helperText={validation[i]}
+              onChange={e => setName(i, e.target.value)}
+              onBlur={() => handlePlayerNameBlur(i)}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Switch color='primary' onChange={() => toggleIsDealer(i)} checked={p.isDealer} />
+          </Grid>
+          <Grid item xs={2}>
+            <IconButton disabled={players.length <= minPlayers} onClick={() => removePlayer(i)}>
+              <Clear />
+            </IconButton>
+          </Grid>
+        </>
+      ))}
+      <Grid item xs={4}>
+        <Button fullWidth variant='contained' disabled={players.length === maxPlayers} onClick={addPlayer}>
+          Add Player
+        </Button>
+      </Grid>
+      <Grid item xs={4}>
+        <Button fullWidth color='primary' variant='contained'>
+          <div>Game Settings</div>
+          <Forward style={{ marginLeft: 'auto' }} />
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
-interface FormInputsProps {
-  names: string[];
-}
-const FormInputs: React.FunctionComponent<FormInputsProps> = ({ names }) => (
-  <React.Fragment>
-    {names.map((_, i) => (
-      <FieldWithError key={i} name={`playerNames[${i}]`} placeholder={`Player ${i + 1}`} />
-    ))}
-  </React.Fragment>
-);
+// custom hook for handling the form data
+const usePlayerFormData = (minPlayers: number, maxPlayers: number) => {
+  const [players, setPlayers] = useState(initialPlayers);
+  const [touched, setTouched] = useState(Array(initialPlayers.length).fill(false));
+  const [validation, setValidation] = useState<string[]>(Array(initialPlayers.length).fill(''));
 
-interface FieldWithErrorProps {
-  name: string;
-  placeholder: string;
-}
-const FieldWithError: React.FunctionComponent<FieldWithErrorProps> = ({ name, placeholder }) => (
-  <Box marginBottom='major-3' position='relative'>
-    <Field name={name} component={InputField.Formik} placeholder={placeholder} />
-    <Box position='absolute'>
-      <Field name={name}>
-        {(props: FieldProps) => {
-          const error = getIn(props.form.errors, name);
-          const touch = getIn(props.form.touched, name);
-          return <Text color='danger'>{touch && error ? error : ''}</Text>;
-        }}
-      </Field>
-    </Box>
-  </Box>
-);
+  // form validation
+  useEffect(() => {
+    setValidation(
+      players.map((p, i) => {
+        if (touched[i] && p.name.length === 0) {
+          return 'Name is required';
+        }
+        return '';
+      }),
+    );
+  }, [players, touched]);
+
+  return {
+    players,
+    validation,
+    setName: (idx: number, name: string) => {
+      // set the name
+      const newPlayers = [...players];
+      newPlayers[idx] = { ...newPlayers[idx], name };
+      setPlayers(newPlayers);
+    },
+    toggleIsDealer: (idx: number) => {
+      if (!players[idx].isDealer) {
+        setPlayers(players.map((p, i) => ({ ...p, isDealer: i === idx })));
+        return;
+      }
+      const newPlayers = [...players];
+      newPlayers[idx].isDealer = false;
+      setPlayers(newPlayers);
+    },
+    addPlayer: () => {
+      if (players.length < maxPlayers) {
+        setPlayers([...players, { name: '', isDealer: false }]);
+        setTouched([...touched, false]);
+        setValidation([...validation, '']);
+      }
+    },
+    removePlayer: (idx: number) => {
+      if (players.length > minPlayers) {
+        setPlayers(players.filter((_, i) => i !== idx));
+        setTouched(touched.filter((_, i) => i !== idx));
+        setValidation(validation.filter((_, i) => i !== idx));
+      }
+    },
+    handlePlayerNameBlur: (idx: number) => {
+      const touchedCopy = [...touched];
+      touchedCopy[idx] = true;
+      setTouched(touchedCopy);
+    },
+  };
+};
