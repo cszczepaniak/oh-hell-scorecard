@@ -3,8 +3,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { Home } from './features/newGame/Home';
-import { PlayerNamesForm } from './features/newGame/PlayerNamesForm';
+import { PlayerNamesForm } from './components/forms/PlayerNamesForm';
+import { Home } from './components/pages/Home';
 import { store } from './redux/root';
 
 const App: React.FunctionComponent = () => {
