@@ -1,55 +1,27 @@
 import React from 'react';
 
-import {
-  faPlus,
-  faMinus,
-  faArrowRight,
-  faArrowLeft,
-  faQuestionCircle,
-  faChevronRight,
-  faChevronDown,
-} from '@fortawesome/free-solid-svg-icons';
-import { Provider as BumbagProvider, ThemeConfig } from 'bumbag';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { Game } from './features/game/Game';
-import { NewGame } from './features/newGame/NewGame';
-import { NewGameContainer } from './shared/newGame/NewGameContainer';
-
-const theme: ThemeConfig = {
-  Icon: {
-    iconSets: [
-      {
-        icons: [faPlus, faMinus, faArrowRight, faArrowLeft, faQuestionCircle, faChevronRight, faChevronDown],
-        prefix: 'solid-',
-        type: 'font-awesome',
-      },
-      // {
-      //   icons: [faPlus, faMinus],
-      //   prefix: 'regular-',
-      //   type: 'font-awesome',
-      // },
-    ],
-  },
-};
+import { Home } from './features/newGame/Home';
+import { PlayerNamesForm } from './features/newGame/PlayerNamesForm';
+import { store } from './redux/root';
 
 const App: React.FunctionComponent = () => {
-  return (
-    <BumbagProvider theme={theme}>
-      <NewGameContainer>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path='/'>
-              <NewGame minPlayers={3} maxPlayers={10} />
-            </Route>
-            <Route exact path='/game'>
-              <Game />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </NewGameContainer>
-    </BumbagProvider>
-  );
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path='/'>
+                        <Home />
+                    </Route>
+                    <Route exact path='/newGame'>
+                        <PlayerNamesForm minPlayers={3} maxPlayers={10} />
+                    </Route>
+                </Switch>
+            </BrowserRouter>
+        </Provider>
+    );
 };
 
 export default App;
