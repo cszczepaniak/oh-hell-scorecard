@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from 'react';
 
 import { Box, Button, Grid, IconButton, Switch, TextField, Typography } from '@material-ui/core';
 import { Clear, Forward } from '@material-ui/icons';
-import { nanoid } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 
 import { useDealer, usePlayerNames } from '../hooks';
@@ -63,7 +62,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
         if (errorText === dealerError && dealer.length > 0) {
             setErrorText('');
         }
-    }, [playerNames, dealer]);
+    }, [playerNames, dealer, errorText]);
 
     return (
         <Grid container spacing={3} alignItems='center'>
@@ -74,7 +73,8 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
                 <Typography>Dealer?</Typography>
             </Grid>
             {playerNames.map((p, i) => (
-                <Fragment key={`${p}-${nanoid()}`}>
+                // TODO it'd be better not to use the index as the key
+                <Fragment key={i}>
                     <Grid item xs={8}>
                         <TextField
                             value={p}
