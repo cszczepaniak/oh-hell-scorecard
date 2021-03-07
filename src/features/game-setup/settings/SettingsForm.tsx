@@ -4,10 +4,10 @@ import { Dialog, Grid, IconButton, MenuItem, Select, Switch, Typography } from '
 import { Help } from '@material-ui/icons';
 
 import { ScoringMode } from '../../game/game';
-import { useGame } from '../../game/game-hooks';
+import { useGameSettings } from '../hooks';
 
 export const SettingsForm: React.FunctionComponent = () => {
-    const { game, setBonusRounds, setScoringMode } = useGame();
+    const { bonusRounds, setBonusRounds, scoringMode, setScoringMode } = useGameSettings();
     const [bonusRoundModalOpen, setBonusRoundModalOpen] = useState(false);
     const [scoringModeModalOpen, setScoringModeModalOpen] = useState(false);
 
@@ -24,11 +24,7 @@ export const SettingsForm: React.FunctionComponent = () => {
                     players are awarded 20 points instead of 10 if they bid 0 and take 0 tricks.
                 </Dialog>
                 <Grid container direction='row'>
-                    <Switch
-                        color='primary'
-                        checked={game.settings.bonusRounds}
-                        onChange={() => setBonusRounds(!game.settings.bonusRounds)}
-                    />
+                    <Switch color='primary' checked={bonusRounds} onChange={() => setBonusRounds(!bonusRounds)} />
                     <IconButton onClick={() => setBonusRoundModalOpen(true)}>
                         <Help />
                     </IconButton>
@@ -45,7 +41,7 @@ export const SettingsForm: React.FunctionComponent = () => {
                     receive negative points equal to the difference between bid and actual tricks taken.
                 </Dialog>
                 <Grid container direction='row'>
-                    <Select onChange={handleScoringModeChange} variant='outlined' value={game.settings.scoringMode}>
+                    <Select onChange={handleScoringModeChange} variant='outlined' value={scoringMode}>
                         <MenuItem value={'Standard'}>Standard</MenuItem>
                         <MenuItem value={'Negative'}>Negative</MenuItem>
                     </Select>

@@ -24,31 +24,3 @@ export const useGame = (): UseGameReturnType => {
         unsetDealer: () => dispatch(unsetDealer()),
     };
 };
-
-interface UsePlayerNamesReturnType {
-    playerNames: string[];
-    setPlayerNames: (playerNames: string[]) => void;
-}
-
-export const usePlayerNames = (): UsePlayerNamesReturnType => {
-    const {
-        game: { playerNames },
-        setPlayerNames,
-    } = useGame();
-    return { playerNames, setPlayerNames };
-};
-
-interface UseDealerReturnType {
-    dealer: string;
-    setDealer: (dealerName: string) => void;
-    unsetDealer: () => void;
-}
-
-export const useDealer = (): UseDealerReturnType => {
-    const {
-        game: { dealer },
-        setDealer,
-        unsetDealer,
-    } = useGame();
-    return { dealer, setDealer, unsetDealer };
-};
