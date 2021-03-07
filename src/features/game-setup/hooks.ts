@@ -1,3 +1,6 @@
+import { useSelector } from 'react-redux';
+
+import { RootState } from '../../redux/root';
 import { ScoringMode } from '../game/game';
 import { useGame } from '../game/game-hooks';
 
@@ -37,13 +40,8 @@ interface UseGameSettingsReturnType {
 }
 
 export const useGameSettings = (): UseGameSettingsReturnType => {
-    const {
-        game: {
-            settings: { bonusRounds, scoringMode },
-        },
-        setBonusRounds,
-        setScoringMode,
-    } = useGame();
+    const { setBonusRounds, setScoringMode } = useGame();
+    const { bonusRounds, scoringMode } = useSelector((state: RootState) => state.game.settings);
     return {
         bonusRounds,
         setBonusRounds,
