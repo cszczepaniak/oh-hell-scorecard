@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { PlayerNamesForm } from './components/forms/PlayerNamesForm';
+import { SettingsForm } from './components/forms/SettingsForm';
 import { Home } from './components/pages/Home';
 import { store } from './redux/root';
 
@@ -17,6 +18,9 @@ const App: React.FunctionComponent = () => {
                     </Route>
                     <Route exact path='/newGame'>
                         <PlayerNamesForm minPlayers={3} maxPlayers={10} />
+                    </Route>
+                    <Route exact path='/gameSettings'>
+                        <SettingsForm />
                     </Route>
                 </Switch>
             </BrowserRouter>

@@ -1,71 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// import { Button, Checkbox, FieldStack, FieldWrapper, Heading, Radio, Set } from 'bumbag';
-// import { useHistory } from 'react-router-dom';
+import { Dialog, Grid, IconButton, MenuItem, Select, Switch, Typography } from '@material-ui/core';
+import { Help } from '@material-ui/icons';
 
-// import { NewGameContext } from '../../shared/newGame/context';
-// import { ScoringMode } from '../../shared/newGame/types';
-// import { NewGameConfigContext } from './context';
-// import { NavButton } from './NavButton';
-// import { SettingExplainerWrapper } from './SettingExplainerWrapper';
-// import { actions } from './slice';
+import { useGame } from '../../hooks/game-hooks';
+import { ScoringMode } from '../../redux/game';
 
 export const SettingsForm: React.FunctionComponent = () => {
-    // const { state, dispatch } = useContext(NewGameConfigContext);
-    // const { setRequest } = useContext(NewGameContext);
-    // const history = useHistory();
+    const { game, setBonusRounds, setScoringMode } = useGame();
+    const [bonusRoundModalOpen, setBonusRoundModalOpen] = useState(false);
+    const [scoringModeModalOpen, setScoringModeModalOpen] = useState(false);
 
-    // const handleClickCreate = () => {
-    //     setRequest(state);
-    //     // ideally the button would be a link and we wouldn't have to `push`, but we also need to set the request here
-    //     history.push('/game');
-    // };
+    const handleScoringModeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setScoringMode(event.target.value as ScoringMode);
+    };
 
     return (
-        <div>settings</div>
-        // <React.Fragment>
-        //   <Heading use='h5'>Choose settings</Heading>
-        //   <FieldStack>
-        //     <FieldWrapper label='Scoring Mode'>
-        //       <React.Fragment>
-        //         <SettingExplainerWrapper text='Players are awarded one point for each trick they take, plus a bonus of 10 points for hitting their bid.'>
-        //           <Radio
-        //             label='Standard Scoring'
-        //             checked={state.settings.scoringMode === ScoringMode.Standard}
-        //             onChange={() => {
-        //               dispatch(actions.setScoringMode(ScoringMode.Standard));
-        //             }}
-        //           />
-        //         </SettingExplainerWrapper>
-        //         <SettingExplainerWrapper text='Players are awarded 10 plus one point for each trick they take if they hit their bid, otherwise they receive negative points equal to the difference between bid and actual tricks taken.'>
-        //           <Radio
-        //             label='Negative Scoring'
-        //             checked={state.settings.scoringMode === ScoringMode.Negative}
-        //             onChange={() => {
-        //               dispatch(actions.setScoringMode(ScoringMode.Negative));
-        //             }}
-        //           />
-        //         </SettingExplainerWrapper>
-        //       </React.Fragment>
-        //     </FieldWrapper>
-        //     <FieldWrapper label='Bonus Rounds'>
-        //       <SettingExplainerWrapper text='Rounds with the most cards for the given number of players are bonus rounds. In a bonus round, players are awarded 20 points instead of 10 if they bid 0 and take 0 tricks.'>
-        //         <Checkbox
-        //           label='Use bonus rounds'
-        //           checked={state.settings.bonusRounds}
-        //           onChange={() => {
-        //             dispatch(actions.toggleBonusRounds());
-        //           }}
-        //         />
-        //       </SettingExplainerWrapper>
-        //     </FieldWrapper>
-        //     <Set>
-        //       <NavButton direction='back'>Select Dealer</NavButton>
-        //       <Button type='button' palette='primary' onClick={handleClickCreate}>
-        //         Create Game!
-        //       </Button>
-        //     </Set>
-        //   </FieldStack>
-        // </React.Fragment>
+        <Grid container direction='column'>
+            <Grid item>
+                <Typography>Bonus Rounds</Typography>
+                <Dialog open={bonusRoundModalOpen} onClose={() => setBonusRoundModalOpen(false)}>
+                    Rounds with the most cards for the given number of players are bonus rounds. In a bonus round,
+                    players are awarded 20 points instead of 10 if they bid 0 and take 0 tricks.
+                </Dialog>
+                <Grid container direction='row'>
+                    <Switch
+                        color='primary'
+                        checked={game.settings.bonusRounds}
+                        onChange={() => setBonusRounds(!game.settings.bonusRounds)}
+                    />
+                    <IconButton onClick={() => setBonusRoundModalOpen(true)}>
+                        <Help />
+                    </IconButton>
+                </Grid>
+            </Grid>
+            <Grid item>
+                <Typography>Scoring Mode</Typography>
+                <Dialog open={scoringModeModalOpen} onClose={() => setScoringModeModalOpen(false)}>
+                    <Typography>Standard:</Typography>
+                    Players are awarded one point for each trick they take, plus a bonus of 10 points for hitting their
+                    bid.
+                    <Typography>Negative:</Typography>
+                    Players are awarded 10 plus one point for each trick they take if they hit their bid, otherwise they
+                    receive negative points equal to the difference between bid and actual tricks taken.
+                </Dialog>
+                <Grid container direction='row'>
+                    <Select onChange={handleScoringModeChange} variant='outlined' value={game.settings.scoringMode}>
+                        <MenuItem value={'Standard'}>Standard</MenuItem>
+                        <MenuItem value={'Negative'}>Negative</MenuItem>
+                    </Select>
+                    <IconButton onClick={() => setScoringModeModalOpen(true)}>
+                        <Help />
+                    </IconButton>
+                </Grid>
+            </Grid>
+        </Grid>
     );
 };
