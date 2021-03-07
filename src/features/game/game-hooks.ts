@@ -1,15 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-    Game,
-    ScoringMode,
-    setBonusRounds,
-    setDealer,
-    setPlayerNames,
-    setScoringMode,
-    unsetDealer,
-} from '../redux/game';
-import { RootState } from '../redux/root';
+import { RootState } from '../../redux/root';
+import { Game, ScoringMode, setBonusRounds, setDealer, setPlayerNames, setScoringMode, unsetDealer } from './game';
 
 interface UseGameReturnType {
     game: Game;

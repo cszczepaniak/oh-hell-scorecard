@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Dialog, Grid, IconButton, MenuItem, Select, Switch, Typography } from '@material-ui/core';
 import { Help } from '@material-ui/icons';
 
-import { useGame } from '../../hooks/game-hooks';
-import { ScoringMode } from '../../redux/game';
+import { ScoringMode } from '../../game/game';
+import { useGame } from '../../game/game-hooks';
 
 export const SettingsForm: React.FunctionComponent = () => {
     const { game, setBonusRounds, setScoringMode } = useGame();

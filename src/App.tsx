@@ -3,9 +3,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import { PlayerNamesForm } from './components/forms/PlayerNamesForm';
-import { SettingsForm } from './components/forms/SettingsForm';
 import { Home } from './components/pages/Home';
+import { PlayerNamesForm } from './features/game-setup/players/PlayerNamesForm';
+import { SettingsForm } from './features/game-setup/settings/SettingsForm';
 import { store } from './redux/root';
 
 const App: React.FunctionComponent = () => {

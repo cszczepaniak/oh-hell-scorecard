@@ -4,7 +4,7 @@ import { Box, Button, Grid, IconButton, Switch, TextField, Typography } from '@m
 import { Clear, Forward } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 
-import { useDealer, usePlayerNames } from '../../hooks/game-hooks';
+import { useDealer, usePlayerNames } from '../../game/game-hooks';
 
 interface PlayerNamesFormProps {
     minPlayers: number;
