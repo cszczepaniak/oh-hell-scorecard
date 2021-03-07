@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { Box, Button, Grid, IconButton, Switch, TextField, Typography } from '@material-ui/core';
 import { Clear, Forward } from '@material-ui/icons';
+import { nanoid } from '@reduxjs/toolkit';
 import { useHistory } from 'react-router-dom';
 
 import { useDealer, usePlayerNames } from '../hooks';
@@ -73,7 +74,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
                 <Typography>Dealer?</Typography>
             </Grid>
             {playerNames.map((p, i) => (
-                <>
+                <Fragment key={`${p}-${nanoid()}`}>
                     <Grid item xs={8}>
                         <TextField
                             value={p}
@@ -99,7 +100,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
                             <Clear />
                         </IconButton>
                     </Grid>
-                </>
+                </Fragment>
             ))}
             <Grid item xs={4}>
                 <Button
