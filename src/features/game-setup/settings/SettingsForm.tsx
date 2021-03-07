@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Dialog, Grid, IconButton, MenuItem, Select, Switch, Typography } from '@material-ui/core';
+import { Button, Checkbox, Dialog, Grid, IconButton, MenuItem, Select, Typography } from '@material-ui/core';
 import { Help } from '@material-ui/icons';
 
 import { ScoringMode } from '../../game/game';
@@ -16,7 +16,7 @@ export const SettingsForm: React.FunctionComponent = () => {
     };
 
     return (
-        <Grid container direction='column'>
+        <Grid container direction='column' spacing={2}>
             <Grid item>
                 <Typography>Bonus Rounds</Typography>
                 <Dialog open={bonusRoundModalOpen} onClose={() => setBonusRoundModalOpen(false)}>
@@ -24,7 +24,7 @@ export const SettingsForm: React.FunctionComponent = () => {
                     players are awarded 20 points instead of 10 if they bid 0 and take 0 tricks.
                 </Dialog>
                 <Grid container direction='row'>
-                    <Switch color='primary' checked={bonusRounds} onChange={() => setBonusRounds(!bonusRounds)} />
+                    <Checkbox color='primary' checked={bonusRounds} onChange={() => setBonusRounds(!bonusRounds)} />
                     <IconButton onClick={() => setBonusRoundModalOpen(true)}>
                         <Help />
                     </IconButton>
@@ -49,6 +49,11 @@ export const SettingsForm: React.FunctionComponent = () => {
                         <Help />
                     </IconButton>
                 </Grid>
+            </Grid>
+            <Grid item>
+                <Button variant='contained' color='primary'>
+                    Start Game
+                </Button>
             </Grid>
         </Grid>
     );
