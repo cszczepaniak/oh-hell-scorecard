@@ -3,6 +3,9 @@ name: eslint
 on:
   pull_request:
 
+defaults:
+  working-directory: ./app
+
 jobs:
   build:
     runs-on: ubuntu-latest
