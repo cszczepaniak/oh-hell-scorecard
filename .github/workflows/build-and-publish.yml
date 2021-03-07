@@ -23,4 +23,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
       - name: Publish Artifact
-        run: publish-artifact.sh
+        run: sh publish-artifact.sh
