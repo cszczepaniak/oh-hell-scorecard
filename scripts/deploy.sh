@@ -7,5 +7,6 @@ unzip artifact.zip -d artifact
 
 sudo npm i -g aws-cdk
 npm i
+cdk bootstrap aws://$AWS_ACCOUNT_NUMBER/us-east-2
 cdk synth
 cdk deploy --require-approval=never

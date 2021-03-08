@@ -26,3 +26,5 @@ jobs:
         run: sh scripts/publish-artifact.sh
       - name: Deploy Website
         run: sh scripts/deploy.sh $GITHUB_SHA
+        env:
+          AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
