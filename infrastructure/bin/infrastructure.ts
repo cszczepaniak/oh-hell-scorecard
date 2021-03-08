@@ -4,4 +4,6 @@ import * as cdk from "@aws-cdk/core";
 import { InfrastructureStack } from "../lib/infrastructure-stack";
 
 const app = new cdk.App();
-new InfrastructureStack(app, "oh-hell-scorecard");
+new InfrastructureStack(app, "oh-hell-scorecard", {
+  env: { account: process.env.AWS_ACCOUNT_NUMBER, region: "us-east-2" },
+});
