@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@aws-cdk/core": "1.92.0",
+    "cdk-spa-deploy": "^1.92.0",
     "source-map-support": "^0.5.16"
   }
 }
