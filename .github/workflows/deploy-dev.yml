@@ -1,4 +1,4 @@
-name: Build and Publish Artifact
+name: Deploy to Dev Environment
 
 on:
   push:
@@ -24,3 +24,5 @@ jobs:
           aws-region: us-east-2
       - name: Publish Artifact
         run: sh scripts/publish-artifact.sh
+      - name: Deploy Website
+        run: sh scripts/deploy.sh $GITHUB_SHA
