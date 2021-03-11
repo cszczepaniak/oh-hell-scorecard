@@ -2,17 +2,26 @@ import React, { useState } from 'react';
 
 import { Button, Checkbox, Dialog, Grid, IconButton, MenuItem, Select, Typography } from '@material-ui/core';
 import { Help } from '@material-ui/icons';
+import { useHistory } from 'react-router';
 
 import { ScoringMode } from '../../game/game';
+import { useGame } from '../../game/game-hooks';
 import { useGameSettings } from '../hooks';
 
 export const SettingsForm: React.FunctionComponent = () => {
     const { bonusRounds, setBonusRounds, scoringMode, setScoringMode } = useGameSettings();
+    const { initializePlayers } = useGame();
+    const history = useHistory();
     const [bonusRoundModalOpen, setBonusRoundModalOpen] = useState(false);
     const [scoringModeModalOpen, setScoringModeModalOpen] = useState(false);
 
     const handleScoringModeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setScoringMode(event.target.value as ScoringMode);
+    };
+
+    const handleClick = () => {
+        initializePlayers();
+        history.push('/game');
     };
 
     return (
@@ -51,7 +60,7 @@ export const SettingsForm: React.FunctionComponent = () => {
                 </Grid>
             </Grid>
             <Grid item>
-                <Button variant='contained' color='primary'>
+                <Button variant='contained' color='primary' onClick={handleClick}>
                     Start Game
                 </Button>
             </Grid>
