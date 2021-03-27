@@ -32,7 +32,7 @@ export const SettingsFormUI: React.FunctionComponent<SettingsFormUIProps> = ({
                     </div>
                     <button
                         onClick={() => setBonusRoundModalOpen(true)}
-                        className='ml-8 bg-black text-white font-medium rounded-full w-5 h-5 flex items-center justify-center'
+                        className='ml-8 bg-black text-white font-medium rounded-full w-5 h-5 flex items-center justify-center hover:bg-gray-700'
                     >
                         ?
                     </button>
@@ -55,7 +55,7 @@ export const SettingsFormUI: React.FunctionComponent<SettingsFormUIProps> = ({
                         </select>
                         <button
                             onClick={() => setScoringModeModalOpen(true)}
-                            className='ml-8 bg-black text-white font-medium rounded-full w-5 h-5 flex items-center justify-center'
+                            className='ml-8 bg-black text-white font-medium rounded-full w-5 h-5 flex items-center justify-center hover:bg-gray-700'
                         >
                             ?
                         </button>
@@ -71,12 +71,7 @@ export const SettingsFormUI: React.FunctionComponent<SettingsFormUIProps> = ({
                         </p>
                     </div>
                 </Dialog>
-                <button
-                    onClick={handleSubmit}
-                    className='bg-blue-500 hover:bg-blue-600 p-2 border border-blue-700  text-white font-medium'
-                >
-                    Start Game
-                </button>
+                <button onClick={handleSubmit}>Start Game</button>
             </div>
         </div>
     );

@@ -18,12 +18,12 @@
     textarea,
     select,
     select[multiple] {
-        @apply rounded-md;
+        @apply rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent;
     }
 
     [type='checkbox'],
     [type='radio'] {
-        @apply rounded-sm;
+        @apply h-5 w-5 rounded-sm text-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
     }
 
     body {
@@ -33,6 +33,6 @@
 
 @layer components {
     button {
-        @apply rounded-md;
+        @apply rounded-md bg-blue-500 hover:bg-blue-800 p-2  text-white font-medium;
     }
 }
