@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useHistory } from 'react-router';
 
@@ -7,24 +7,59 @@ import { SelectDealerFormUI } from './SelectDealerFormUI';
 
 export interface SelectDealerFormUIProps {
     playerNames: string[];
+    dealer: string;
     handleDealerChange: (val: string) => void;
     handleClickBack: () => void;
-    nextTo: string;
+    handleClickNext: () => void;
+    error: string;
+    showError: boolean;
 }
 
 export const SelectDealerForm: React.FunctionComponent = () => {
+    const [error, setError] = useState('');
+    const [showError, setShowError] = useState(false);
     const { playerNames } = usePlayerNames();
-    const { setDealer, unsetDealer } = useDealer();
+    const { dealer, setDealer, unsetDealer } = useDealer();
     const history = useHistory();
+    const handleClickNext = () => {
+        if (!showError) {
+            setShowError(true);
+        }
+        if (!error) {
+            history.push('/gameSettings');
+        }
+    };
+
+    const handleClick = (name: string) => {
+        if (dealer === name) {
+            unsetDealer();
+            if (showError) {
+                setShowError(false);
+            }
+            return;
+        }
+        setDealer(name);
+    };
+
+    useEffect(() => {
+        if (!dealer) {
+            setError('Must select a dealer!');
+        } else {
+            setError('');
+        }
+    }, [dealer, setError]);
 
     const props: SelectDealerFormUIProps = {
         playerNames,
-        handleDealerChange: setDealer,
+        dealer,
+        handleDealerChange: handleClick,
         handleClickBack: () => {
             unsetDealer();
             history.push('/newGame');
         },
-        nextTo: '/gameSettings',
+        handleClickNext,
+        error,
+        showError,
     };
 
     return <SelectDealerFormUI {...props} />;
