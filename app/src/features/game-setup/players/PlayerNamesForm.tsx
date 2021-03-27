@@ -1,14 +1,26 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Box, Button, Grid, IconButton, Switch, TextField, Typography } from '@material-ui/core';
-import { Clear, Forward } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 
 import { useDealer, usePlayerNames } from '../hooks';
+import { PlayerNamesFormUI } from './PlayerNamesFormUI';
 
 interface PlayerNamesFormProps {
     minPlayers: number;
     maxPlayers: number;
+}
+
+export interface PlayerNamesFormUIProps {
+    addPlayer: (name: string) => void;
+    playerNames: string[];
+    setName: (idx: number, playerName: string) => void;
+    errorText: string;
+    handleGoToNext: () => void;
+    validation: string[];
+    handlePlayerNameBlur: (idx: number) => void;
+    removePlayer: (idx: number) => void;
+    canRemovePlayer: boolean;
+    canAddPlayer: boolean;
 }
 
 const playerNamesError = 'Player names must be unique and non-empty';
@@ -20,8 +32,6 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
         dealer,
         validation,
         setName,
-        setDealer,
-        unsetDealer,
         addPlayer,
         removePlayer,
         handlePlayerNameBlur,
@@ -30,28 +40,12 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
 
     const history = useHistory();
 
-    const handleOnDealerChange = (playerName: string) => {
-        if (playerName.length === 0) {
-            return;
-        }
-        if (dealer.length > 0 && dealer === playerName) {
-            console.log(`unsetting dealer ${playerName}`);
-            unsetDealer();
-            return;
-        }
-        setDealer(playerName);
-    };
-
-    const handleGoToGameSettings = () => {
+    const handleGoToNext = () => {
         if (playerNames.some(n => n.length === 0) || hasDuplicates(playerNames)) {
             setErrorText(playerNamesError);
             return;
         }
-        if (dealer.length === 0) {
-            setErrorText(dealerError);
-            return;
-        }
-        history.push('/gameSettings');
+        history.push('/selectDealer');
     };
 
     // clear error text if the errors have been fixed
@@ -64,69 +58,20 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
         }
     }, [playerNames, dealer, errorText]);
 
-    return (
-        <Grid container spacing={3} alignItems='center'>
-            <Grid item xs={8}>
-                <Typography variant='h5'>Enter player names</Typography>
-            </Grid>
-            <Grid item xs={2}>
-                <Typography>Dealer?</Typography>
-            </Grid>
-            {playerNames.map((p, i) => (
-                // TODO it'd be better not to use the index as the key
-                <Fragment key={i}>
-                    <Grid item xs={8}>
-                        <TextField
-                            value={p}
-                            variant='outlined'
-                            fullWidth
-                            placeholder={`Player ${i + 1}`}
-                            error={validation[i].length > 0}
-                            helperText={validation[i]}
-                            onChange={e => setName(i, e.target.value)}
-                            onBlur={() => handlePlayerNameBlur(i)}
-                        />
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Switch
-                            color='primary'
-                            onChange={() => handleOnDealerChange(p)}
-                            checked={p.length > 0 && dealer === p}
-                            disabled={p.length === 0}
-                        />
-                    </Grid>
-                    <Grid item xs={2}>
-                        <IconButton disabled={playerNames.length <= minPlayers} onClick={() => removePlayer(i)}>
-                            <Clear />
-                        </IconButton>
-                    </Grid>
-                </Fragment>
-            ))}
-            <Grid item xs={4}>
-                <Button
-                    fullWidth
-                    variant='contained'
-                    disabled={playerNames.length === maxPlayers}
-                    onClick={() => addPlayer('')}
-                >
-                    Add Player
-                </Button>
-            </Grid>
-            <Grid item xs={4}>
-                <Button fullWidth color='primary' variant='contained' onClick={handleGoToGameSettings}>
-                    <div>Game Settings</div>
-                    <Forward style={{ marginLeft: 'auto' }} />
-                </Button>
-            </Grid>
-            {errorText.length > 0 && (
-                <Grid item xs={8}>
-                    <Typography color='error'>
-                        <Box fontStyle='italic'>{errorText}</Box>
-                    </Typography>
-                </Grid>
-            )}
-        </Grid>
-    );
+    const props: PlayerNamesFormUIProps = {
+        addPlayer,
+        canAddPlayer: playerNames.length < maxPlayers,
+        removePlayer,
+        canRemovePlayer: playerNames.length > minPlayers,
+        playerNames,
+        setName,
+        errorText,
+        validation,
+        handleGoToNext,
+        handlePlayerNameBlur,
+    };
+
+    return <PlayerNamesFormUI {...props} />;
 };
 
 // custom hook for handling the form data
