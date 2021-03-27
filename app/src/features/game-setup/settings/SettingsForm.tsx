@@ -17,7 +17,7 @@ export interface SettingsFormUIProps {
     scoringMode: ScoringMode;
     handleScoringModeChange: (event: React.ChangeEvent<{ value: unknown }>) => void;
     handleSubmit: () => void;
-    handleClickBack: () => void;
+    backTo: string;
 }
 
 export const SettingsForm: React.FunctionComponent = () => {
@@ -35,9 +35,6 @@ export const SettingsForm: React.FunctionComponent = () => {
         initializePlayers();
         history.push('/game');
     };
-    const handleClickBack = () => {
-        history.push('/selectDealer');
-    };
 
     const props: SettingsFormUIProps = {
         bonusRoundModalOpen,
@@ -49,7 +46,7 @@ export const SettingsForm: React.FunctionComponent = () => {
         scoringMode,
         handleScoringModeChange,
         handleSubmit,
-        handleClickBack,
+        backTo: '/selectDealer',
     };
 
     return <SettingsFormUI {...props} />;

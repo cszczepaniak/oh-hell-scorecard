@@ -21,6 +21,8 @@ export interface PlayerNamesFormUIProps {
     removePlayer: (idx: number) => void;
     canRemovePlayer: boolean;
     canAddPlayer: boolean;
+    nextTo: string;
+    backTo: string;
 }
 
 const playerNamesError = 'Player names must be unique and non-empty';
@@ -69,6 +71,8 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
         validation,
         handleGoToNext,
         handlePlayerNameBlur,
+        nextTo: '/selectDealer',
+        backTo: '/',
     };
 
     return <PlayerNamesFormUI {...props} />;

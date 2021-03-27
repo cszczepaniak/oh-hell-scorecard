@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const Modal: React.FunctionComponent<Props> = ({ children, open, onClose }) => {
-    const [outsideDialog, setOutsideDialog] = useState(false);
+    const [outsideDialog, setOutsideDialog] = useState(true);
     const handleClose = () => {
         if (outsideDialog) {
             onClose();

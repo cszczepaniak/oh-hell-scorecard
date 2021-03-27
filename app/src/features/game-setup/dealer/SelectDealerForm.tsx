@@ -9,7 +9,7 @@ export interface SelectDealerFormUIProps {
     playerNames: string[];
     handleDealerChange: (val: string) => void;
     handleClickBack: () => void;
-    handleClickNext: () => void;
+    nextTo: string;
 }
 
 export const SelectDealerForm: React.FunctionComponent = () => {
@@ -17,20 +17,14 @@ export const SelectDealerForm: React.FunctionComponent = () => {
     const { setDealer, unsetDealer } = useDealer();
     const history = useHistory();
 
-    const handleClickBack = () => {
-        unsetDealer();
-        history.push('/newGame');
-    };
-
-    const handleClickNext = () => {
-        history.push('/gameSettings');
-    };
-
     const props: SelectDealerFormUIProps = {
         playerNames,
         handleDealerChange: setDealer,
-        handleClickBack,
-        handleClickNext,
+        handleClickBack: () => {
+            unsetDealer();
+            history.push('/newGame');
+        },
+        nextTo: '/gameSettings',
     };
 
     return <SelectDealerFormUI {...props} />;

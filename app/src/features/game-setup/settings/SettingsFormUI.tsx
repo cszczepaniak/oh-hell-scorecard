@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Modal } from '../../../components/shared/Modal';
+import { PreGameShell } from '../../../components/shared/PreGameShell';
 import { SettingsFormUIProps } from './SettingsForm';
 
 export const SettingsFormUI: React.FunctionComponent<SettingsFormUIProps> = ({
@@ -13,10 +14,10 @@ export const SettingsFormUI: React.FunctionComponent<SettingsFormUIProps> = ({
     scoringMode,
     handleScoringModeChange,
     handleSubmit,
-    handleClickBack,
+    backTo,
 }) => {
     return (
-        <div className='flex flex-col items-center bg-white max-w-md mx-auto h-screen sm:h-full sm:my-8 p-4 sm:rounded-2xl sm:border sm:border-gray-200 sm:shadow-md'>
+        <>
             <Modal open={bonusRoundModalOpen} onClose={() => setBonusRoundModalOpen(false)}>
                 <h3 className='font-semibold text-lg'>Bonus Rounds</h3>
                 <p>
@@ -31,8 +32,7 @@ export const SettingsFormUI: React.FunctionComponent<SettingsFormUIProps> = ({
                     receive negative points equal to the difference between bid and actual tricks taken.
                 </p>
             </Modal>
-            <h1 className='font-semibold text-lg mb-4'>Game Settings</h1>
-            <div className='flex flex-col space-y-4 w-full max-w-xs'>
+            <PreGameShell title='Game Settings' backTo={backTo} onClickNext={handleSubmit} nextButtonText='Start Game'>
                 <div className='flex justify-between items-center'>
                     <div className='flex-1'>
                         <input
@@ -66,15 +66,7 @@ export const SettingsFormUI: React.FunctionComponent<SettingsFormUIProps> = ({
                         </button>
                     </div>
                 </div>
-                <div className='flex space-x-4'>
-                    <button onClick={handleClickBack} className='w-full btn-secondary'>
-                        Back
-                    </button>
-                    <button onClick={handleSubmit} className='w-full'>
-                        Start Game
-                    </button>
-                </div>
-            </div>
-        </div>
+            </PreGameShell>
+        </>
     );
 };
