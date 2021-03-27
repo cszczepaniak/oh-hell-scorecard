@@ -1,19 +1,15 @@
 import React from 'react';
 
-import { Button, Grid, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
 export const Home: React.FunctionComponent = () => {
+    const history = useHistory();
     return (
-        <Grid container>
-            <Grid item xs={12}>
-                <Typography>Oh Heck Scorecard</Typography>
-            </Grid>
-            <Grid item xs={6}>
-                <Button component={Link} to='/newGame' variant='contained' color='primary'>
-                    Start a Game
-                </Button>
-            </Grid>
-        </Grid>
+        <div className='mx-auto my-8 text-center'>
+            <h1 className='text-3xl sm:text-5xl'>Oh Heck Scorecard</h1>
+            <button onClick={() => history.push('/newGame')} className='mt-16 px-8 text-lg sm:text-xl'>
+                Start a Game
+            </button>
+        </div>
     );
 };
