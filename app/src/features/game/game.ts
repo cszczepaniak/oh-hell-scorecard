@@ -69,6 +69,50 @@ const gameSlice = createSlice({
         unsetDealer(state, _: PayloadAction<void>) {
             state.dealer = '';
         },
+        setRoundNumber(state, action: PayloadAction<number>) {
+            state.round = action.payload;
+        },
+        setNumberOfCards(state, action: PayloadAction<number>) {
+            state.numberOfCards = action.payload;
+        },
+        setBids(state, action: PayloadAction<number[]>) {
+            if (action.payload.length !== state.players.length) {
+                return state;
+            }
+            state.players = action.payload.map((b, i) => ({ ...state.players[i], currentBid: b }));
+        },
+        setTrick: {
+            prepare: (tricks: number, i: number) => ({ payload: { tricks, i } }),
+            reducer: (state, action: PayloadAction<{ tricks: number; i: number }>) => {
+                if (action.payload.i >= state.players.length) {
+                    return state;
+                }
+                state.players[action.payload.i].currentTricks = action.payload.tricks;
+            },
+        },
+        setBid: {
+            prepare: (bid: number, i: number) => ({ payload: { bid, i } }),
+            reducer: (state, action: PayloadAction<{ bid: number; i: number }>) => {
+                if (action.payload.i >= state.players.length) {
+                    return state;
+                }
+                state.players[action.payload.i].currentBid = action.payload.bid;
+            },
+        },
+        setTricks(state, action: PayloadAction<number[]>) {
+            if (action.payload.length !== state.players.length) {
+                return state;
+            }
+            state.players = action.payload.map((t, i) => ({ ...state.players[i], currentTricks: t }));
+        },
+        scoreRound(state, action: PayloadAction<number[]>) {
+            if (action.payload.length !== state.players.length) {
+                return state;
+            }
+            for (let i = 0; i < state.players.length; i++) {
+                state.players[i].score += action.payload[i];
+            }
+        },
     },
 });
 
@@ -77,6 +121,13 @@ export const {
     setBonusRounds,
     setDealer,
     setPlayerNames,
+    setRoundNumber,
+    setNumberOfCards,
+    setTrick,
+    setTricks,
+    setBid,
+    setBids,
+    scoreRound,
     setScoringMode,
     togglePhase,
     unsetDealer,

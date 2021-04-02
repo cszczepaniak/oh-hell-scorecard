@@ -14,7 +14,7 @@ const App: React.FunctionComponent = () => {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <div className='w-full h-screen sm:h-auto bg-white sm:bg-gray-50 sm:max-w-3xl sm:mx-auto'>
+                <div className='w-full h-screen sm:h-auto bg-white sm:bg-gray-50'>
                     <Switch>
                         <Route exact path='/'>
                             <Home />
