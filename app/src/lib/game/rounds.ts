@@ -17,6 +17,6 @@ export function getNumberOfCards(nPlayers: number, round: number): number {
     return maxCards * 2 + 1 - round;
 }
 
-function getMaxCards(nPlayers: number): number {
+export function getMaxCards(nPlayers: number): number {
     return Math.floor(52 / nPlayers);
 }

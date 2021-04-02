@@ -1,4 +1,4 @@
-import { scoreRound } from './scoring';
+import { calculateScores } from './scoring';
 
 describe('scoreRound', () => {
     test.each([
@@ -9,7 +9,7 @@ describe('scoreRound', () => {
         [[1, 1, 1, 1, 1], [0, 5, 0, 5, 0], 10, [-1, -4, -1, -4, -1]],
         [[1, 3, 4, 1, 0], [1, 3, 4, 2, 0], 10, [11, 13, 14, -1, 10]],
     ])('scoring a normal round works', (bids, tricks, nCards, expScores) => {
-        const scores = scoreRound(bids, tricks, nCards, false);
+        const scores = calculateScores(bids, tricks, nCards, false);
         expect(scores).toEqual(expScores);
     });
 
@@ -19,7 +19,7 @@ describe('scoreRound', () => {
         [[1, 2, 3, 0, 0], [4, 4, 2, 0, 0], 10, [-3, -2, -1, 20, 20]],
         [[4, 3, 2, 1, 0, 0], [2, 2, 2, 1, 1, 0], 8, [-2, -1, 12, 11, -1, 20]],
     ])('scoring a bonus round works', (bids, tricks, nCards, expScores) => {
-        const scores = scoreRound(bids, tricks, nCards, true);
+        const scores = calculateScores(bids, tricks, nCards, true);
         expect(scores).toEqual(expScores);
     });
 
@@ -30,7 +30,7 @@ describe('scoreRound', () => {
     ])('throws when there is an error', (bids, tricks, nCards, expError) => {
         expect.assertions(1);
         try {
-            scoreRound(bids, tricks, nCards, false);
+            calculateScores(bids, tricks, nCards, false);
         } catch (err) {
             expect(err.message).toEqual(expError);
         }

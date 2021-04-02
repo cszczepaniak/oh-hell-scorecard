@@ -1,6 +1,11 @@
 import { areBidsValid, areTricksValid } from './validation';
 
-export function scoreRound(bids: number[], tricks: number[], nCards: number, enableBonusRounds: boolean): number[] {
+export function calculateScores(
+    bids: number[],
+    tricks: number[],
+    nCards: number,
+    enableBonusRounds: boolean,
+): number[] {
     const result: number[] = [];
     if (bids.length !== tricks.length) {
         throw new Error('Bids and tricks must have the same length!');
@@ -25,7 +30,7 @@ export function scoreRound(bids: number[], tricks: number[], nCards: number, ena
     return result;
 }
 
-function isBonus(nPlayers: number, nCards: number): boolean {
+export function isBonus(nPlayers: number, nCards: number): boolean {
     const leftoverCards = 52 - nPlayers * nCards;
     return leftoverCards <= nPlayers && leftoverCards > 0;
 }
