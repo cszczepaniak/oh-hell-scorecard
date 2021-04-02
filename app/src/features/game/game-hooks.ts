@@ -65,6 +65,8 @@ export const useGame = (): UseGameReturnType => {
                 game.settings.bonusRounds,
             );
             dispatch(scoreRound(scores));
+            const dealerIdx = game.players.findIndex(p => p.name === game.dealer);
+            dispatch(setDealer(game.players[(dealerIdx + 1) % game.players.length].name));
         },
     };
 };
