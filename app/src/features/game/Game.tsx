@@ -21,7 +21,7 @@ export interface GameUIProps {
 export type Phase = 'Bidding' | 'Scoring';
 
 export const Game: React.FunctionComponent = () => {
-    const { game, setBids, setTricks, submitRound, incrementRound, setBid, setTrick } = useGame();
+    const { game, resetBids, resetTricks, submitRound, incrementRound, setBid, setTrick } = useGame();
     const { dealer } = useDealer();
     const [phase, setPhase] = useState<Phase>('Bidding');
     const [error, setError] = useState('');
@@ -77,8 +77,8 @@ export const Game: React.FunctionComponent = () => {
         submitRound();
         incrementRound();
         setPhase('Bidding');
-        setBids(Array(game.players.length).fill(0));
-        setTricks(Array(game.players.length).fill(0));
+        resetBids();
+        resetTricks();
     };
     return (
         <GameUI

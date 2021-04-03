@@ -7,12 +7,10 @@ import {
     Game,
     ScoringMode,
     scoreRound,
-    setBids,
     setBonusRounds,
     setNumberOfCards,
     setRoundNumber,
     setScoringMode,
-    setTricks,
     unsetDealer,
     setBid,
     setTrick,
@@ -20,6 +18,8 @@ import {
     setDealerIndex,
     addPlayer,
     removePlayerAt,
+    resetBids,
+    resetTricks,
 } from './game';
 
 interface UseGameReturnType {
@@ -32,10 +32,10 @@ interface UseGameReturnType {
     setScoringMode: (scoringMode: ScoringMode) => void;
     unsetDealer: () => void;
     incrementRound: () => void;
+    resetBids: () => void;
+    resetTricks: () => void;
     setBid: (bids: number, i: number) => void;
-    setBids: (bids: number[]) => void;
     setTrick: (tricks: number, i: number) => void;
-    setTricks: (tricks: number[]) => void;
     submitRound: () => void;
 }
 
@@ -61,9 +61,9 @@ export const useGame = (): UseGameReturnType => {
             dispatch(setNumberOfCards(getNumberOfCards(game.players.length, nextRound)));
         },
         setBid: (bid: number, i: number) => dispatch(setBid(bid, i)),
-        setBids: (bids: number[]) => dispatch(setBids(bids)),
+        resetBids: () => dispatch(resetBids()),
+        resetTricks: () => dispatch(resetTricks()),
         setTrick: (trick: number, i: number) => dispatch(setTrick(trick, i)),
-        setTricks: (tricks: number[]) => dispatch(setTricks(tricks)),
         submitRound: () => {
             const scores = calculateScores(game);
             dispatch(scoreRound(scores));
