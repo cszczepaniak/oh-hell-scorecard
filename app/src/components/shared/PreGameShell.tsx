@@ -45,7 +45,7 @@ export const PreGameShell: React.FunctionComponent<Props> = ({
     };
 
     return (
-        <div className='flex flex-col space-y-4 items-center bg-white max-w-md mx-auto h-screen sm:h-full sm:my-8 p-4 sm:rounded-2xl sm:border sm:border-gray-200 sm:shadow-md'>
+        <div className='flex flex-col space-y-4 items-center bg-white max-w-md mx-auto sm:my-8 p-4 sm:rounded-2xl sm:border sm:border-gray-200 sm:shadow-md'>
             <h3 className='font-semibold text-lg'>{title}</h3>
             <div className='flex flex-col space-y-4 w-full px-8'>
                 {children}
