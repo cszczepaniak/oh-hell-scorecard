@@ -28,7 +28,7 @@ export const PlayerNamesFormUI: React.FunctionComponent<PlayerNamesFormUIProps> 
                         placeholder={`Player ${i + 1} name`}
                         value={n}
                         onBlur={() => handlePlayerNameBlur(i)}
-                        onChange={e => setName(i, e.target.value)}
+                        onChange={e => setName(e.target.value, i)}
                         className={clsx('min-w-0 flex-1', {
                             ['border-red-600']: validation[i].length > 0,
                             ['ring-red-600']: validation[i].length > 0,

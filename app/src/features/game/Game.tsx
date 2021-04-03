@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { areBidsValid, areTricksValid } from '../../lib/game/validation';
 import { allowInteger } from '../../lib/utils/input-utils';
+import { useDealer } from '../game-setup/hooks';
 import { Game as GameModel } from './game';
 import { useGame } from './game-hooks';
 import { GameUI } from './GameUI';
 
 export interface GameUIProps {
     game: GameModel;
+    dealer: string;
     phase: Phase;
     error: string;
     handleBidChange: (e: React.ChangeEvent<HTMLInputElement>, i: number) => void;
@@ -20,6 +22,7 @@ export type Phase = 'Bidding' | 'Scoring';
 
 export const Game: React.FunctionComponent = () => {
     const { game, setBids, setTricks, submitRound, incrementRound, setBid, setTrick } = useGame();
+    const { dealer } = useDealer();
     const [phase, setPhase] = useState<Phase>('Bidding');
     const [error, setError] = useState('');
     useEffect(() => {
@@ -80,6 +83,7 @@ export const Game: React.FunctionComponent = () => {
     return (
         <GameUI
             game={game}
+            dealer={dealer}
             phase={phase}
             error={error}
             handleSubmitBids={handleSubmitBids}

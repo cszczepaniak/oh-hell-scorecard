@@ -5,28 +5,30 @@ import { calculateScores } from '../../lib/game/scoring';
 import { RootState } from '../../redux/root';
 import {
     Game,
-    initializePlayers,
     ScoringMode,
     scoreRound,
     setBids,
     setBonusRounds,
-    setDealer,
     setNumberOfCards,
-    setPlayerNames,
     setRoundNumber,
     setScoringMode,
     setTricks,
     unsetDealer,
     setBid,
     setTrick,
+    setPlayerName,
+    setDealerIndex,
+    addPlayer,
+    removePlayerAt,
 } from './game';
 
 interface UseGameReturnType {
     game: Game;
-    initializePlayers: () => void;
+    addPlayer: (name: string) => void;
+    removePlayerAt: (i: number) => void;
     setBonusRounds: (setting: boolean) => void;
-    setDealer: (dealerName: string) => void;
-    setPlayerNames: (names: string[]) => void;
+    setDealerIndex: (i: number) => void;
+    setPlayerName: (name: string, i: number) => void;
     setScoringMode: (scoringMode: ScoringMode) => void;
     unsetDealer: () => void;
     incrementRound: () => void;
@@ -42,12 +44,17 @@ export const useGame = (): UseGameReturnType => {
     const dispatch = useDispatch();
     return {
         game,
-        initializePlayers: () => dispatch(initializePlayers()),
+        addPlayer: (name: string) => dispatch(addPlayer(name)),
+        removePlayerAt: (i: number) => dispatch(removePlayerAt(i)),
         setBonusRounds: (setting: boolean) => dispatch(setBonusRounds(setting)),
-        setDealer: (dealerName: string) => dispatch(setDealer(dealerName)),
-        setPlayerNames: (names: string[]) => dispatch(setPlayerNames(names)),
         setScoringMode: (scoringMode: ScoringMode) => dispatch(setScoringMode(scoringMode)),
-        unsetDealer: () => dispatch(unsetDealer()),
+        setDealerIndex: (i: number) => {
+            dispatch(setDealerIndex(i));
+        },
+        setPlayerName: (name: string, i: number) => dispatch(setPlayerName(name, i)),
+        unsetDealer: () => {
+            dispatch(unsetDealer());
+        },
         incrementRound: () => {
             const nextRound = game.round + 1;
             dispatch(setRoundNumber(nextRound));
@@ -60,8 +67,8 @@ export const useGame = (): UseGameReturnType => {
         submitRound: () => {
             const scores = calculateScores(game);
             dispatch(scoreRound(scores));
-            const dealerIdx = game.players.findIndex(p => p.name === game.dealer);
-            dispatch(setDealer(game.players[(dealerIdx + 1) % game.players.length].name));
+            const dealerIdx = (game.dealerIndex + 1) % game.players.length;
+            dispatch(setDealerIndex(dealerIdx));
         },
     };
 };

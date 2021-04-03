@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 
 import { ScoringMode } from '../../game/game';
-import { useGame } from '../../game/game-hooks';
 import { useGameSettings } from '../hooks';
 import { SettingsFormUI } from './SettingsFormUI';
 
@@ -22,7 +21,6 @@ export interface SettingsFormUIProps {
 
 export const SettingsForm: React.FunctionComponent = () => {
     const { bonusRounds, setBonusRounds, scoringMode, setScoringMode } = useGameSettings();
-    const { initializePlayers } = useGame();
     const history = useHistory();
     const [bonusRoundModalOpen, setBonusRoundModalOpen] = useState(false);
     const [scoringModeModalOpen, setScoringModeModalOpen] = useState(false);
@@ -32,7 +30,6 @@ export const SettingsForm: React.FunctionComponent = () => {
     };
 
     const handleSubmit = () => {
-        initializePlayers();
         history.push('/game');
     };
 

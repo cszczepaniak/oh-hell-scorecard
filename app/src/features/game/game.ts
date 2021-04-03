@@ -12,25 +12,25 @@ export interface Player {
 }
 
 export interface Game {
-    playerNames: string[];
     players: Player[];
     phase: Phase;
     round: number;
     numberOfCards: number;
-    dealer: string;
+    dealerIndex: number;
     settings: {
         scoringMode: ScoringMode;
         bonusRounds: boolean;
     };
 }
 
+const initialPlayer: Player = { name: '', score: 0, currentBid: 0, currentTricks: 0 };
+
 const initialState: Game = {
-    playerNames: ['', '', '', ''],
-    players: [],
+    players: Array(4).fill({ ...initialPlayer }),
     phase: 'Bidding',
     round: 1,
     numberOfCards: 1,
-    dealer: '',
+    dealerIndex: -1,
     settings: {
         scoringMode: 'Negative',
         bonusRounds: true,
@@ -48,26 +48,35 @@ const gameSlice = createSlice({
             }
             state.phase = 'Bidding';
         },
-        initializePlayers(state) {
-            const names = [...state.playerNames];
-            const players: Player[] = [];
-            names.forEach(name => players.push({ name, score: 0, currentBid: 0, currentTricks: 0 }));
-            return { ...state, players };
+        addPlayer(state, action: PayloadAction<string>) {
+            state.players.push({ name: action.payload, score: 0, currentBid: 0, currentTricks: 0 });
+        },
+        removePlayerAt(state, action: PayloadAction<number>) {
+            if (state.dealerIndex === action.payload) {
+                unsetDealer();
+            }
+            state.players = state.players.filter((_, i) => i !== action.payload);
         },
         setBonusRounds(state, action: PayloadAction<boolean>) {
             state.settings.bonusRounds = action.payload;
         },
-        setDealer(state, action: PayloadAction<string>) {
-            state.dealer = action.payload;
+        setDealerIndex(state, action: PayloadAction<number>) {
+            state.dealerIndex = action.payload;
         },
-        setPlayerNames(state, action: PayloadAction<string[]>) {
-            state.playerNames = action.payload;
+        setPlayerName: {
+            prepare: (name: string, i: number) => ({ payload: { name, i } }),
+            reducer: (state, action: PayloadAction<{ name: string; i: number }>) => {
+                if (action.payload.i >= state.players.length) {
+                    return state;
+                }
+                state.players[action.payload.i].name = action.payload.name;
+            },
         },
         setScoringMode(state, action: PayloadAction<ScoringMode>) {
             state.settings.scoringMode = action.payload;
         },
-        unsetDealer(state, _: PayloadAction<void>) {
-            state.dealer = '';
+        unsetDealer(state) {
+            state.dealerIndex = -1;
         },
         setRoundNumber(state, action: PayloadAction<number>) {
             state.round = action.payload;
@@ -117,10 +126,11 @@ const gameSlice = createSlice({
 });
 
 export const {
-    initializePlayers,
+    addPlayer,
+    removePlayerAt,
     setBonusRounds,
-    setDealer,
-    setPlayerNames,
+    setDealerIndex,
+    setPlayerName,
     setRoundNumber,
     setNumberOfCards,
     setTrick,

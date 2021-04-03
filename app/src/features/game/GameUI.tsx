@@ -11,6 +11,7 @@ export const GameUI: React.FunctionComponent<GameUIProps> = ({
     game,
     phase,
     error,
+    dealer,
     handleBidChange,
     handleTrickChange,
     handleSubmitBids,
@@ -34,7 +35,7 @@ export const GameUI: React.FunctionComponent<GameUIProps> = ({
                 </div>
                 {isBonus(game.players.length, game.numberOfCards) && <p className='italic'>Bonus round!</p>}
             </div>
-            <div className='flex-1 flex flex-col overflow-auto divide-y divide-gray-300 sm:divide-y-0 sm:space-y-4 sm:px-4 sm:max-w-xl'>
+            <div className='flex-1 flex flex-col overflow-auto divide-y divide-gray-300 sm:divide-y-0 sm:space-y-4 sm:px-4 sm:pb-4 sm:max-w-xl'>
                 {game.players.map((p, i) => (
                     <div key={p.name} className='flex flex-col bg-white p-4  sm:rounded-md sm:shadow'>
                         <h4 className='font-semibold text-xl'>
@@ -45,7 +46,7 @@ export const GameUI: React.FunctionComponent<GameUIProps> = ({
                                     'font-normal',
                                     'text-sm',
                                     'ml-2',
-                                    game.dealer !== p.name && 'hidden',
+                                    dealer !== p.name && 'hidden',
                                 )}
                             >
                                 (Dealer)

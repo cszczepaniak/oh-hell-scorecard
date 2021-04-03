@@ -16,10 +16,10 @@ export const SelectDealerFormUI: React.FunctionComponent<SelectDealerFormUIProps
 }) => {
     return (
         <PreGameShell title='Select Dealer' onClickNext={handleClickNext} onClickBack={handleClickBack}>
-            {playerNames.map(n => (
+            {playerNames.map((n, i) => (
                 <button
                     key={n}
-                    onClick={() => handleDealerChange(n)}
+                    onClick={() => handleDealerChange(n, i)}
                     className={clsx(
                         n === dealer && ['bg-blue-500', 'hover:bg-blue-500', 'text-white', 'border', 'border-blue-500'],
                         n !== dealer && ['bg-white', 'hover:bg-blue-100', 'text-black', 'border', 'border-black'],
