@@ -11,10 +11,11 @@ export const TextInput: React.FunctionComponent<Props> = ({ label, disabled, cla
         <div className='flex flex-col flex-1'>
             <label htmlFor={label}>{label}</label>
             <input
+                {...rest}
                 id={label}
                 type='text'
-                {...rest}
                 className={clsx(className, 'w-full', 'disabled:text-gray-400', 'disabled:bg-gray-100')}
+                aria-disabled={disabled}
                 disabled={disabled}
             />
         </div>

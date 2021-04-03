@@ -46,13 +46,8 @@ export const PlayerNamesFormUI: React.FunctionComponent<PlayerNamesFormUIProps> 
                             'items-center',
                             'justify-center',
                             'rounded-full',
-                            {
-                                ['hover:bg-red-800']: canRemovePlayer,
-                                ['bg-red-600']: canRemovePlayer,
-                                ['bg-gray-400']: !canRemovePlayer,
-                                ['hover:bg-gray-400']: !canRemovePlayer,
-                                ['pointer-events-none']: !canRemovePlayer,
-                            },
+                            canRemovePlayer && ['bg-red-600', 'hover:bg-red-800'],
+                            !canRemovePlayer && ['bg-gray-400', 'hover:bg-gray-400', 'pointer-events-none'],
                         )}
                     >
                         <span className='w-2 h-0.5 bg-white' />
