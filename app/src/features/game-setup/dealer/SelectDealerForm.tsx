@@ -8,7 +8,7 @@ import { SelectDealerFormUI } from './SelectDealerFormUI';
 export interface SelectDealerFormUIProps {
     playerNames: string[];
     dealer: string;
-    handleDealerChange: (val: string) => void;
+    handleDealerChange: (val: string, i?: number) => void;
     handleClickBack: () => void;
     handleClickNext: () => void;
     error: string;
@@ -19,7 +19,7 @@ export const SelectDealerForm: React.FunctionComponent = () => {
     const [error, setError] = useState('');
     const [showError, setShowError] = useState(false);
     const { playerNames } = usePlayerNames();
-    const { dealer, setDealer, unsetDealer } = useDealer();
+    const { dealer, setDealerIndex, unsetDealer } = useDealer();
     const history = useHistory();
     const handleClickNext = () => {
         if (!showError) {
@@ -30,7 +30,7 @@ export const SelectDealerForm: React.FunctionComponent = () => {
         }
     };
 
-    const handleClick = (name: string) => {
+    const handleClick = (name: string, i = 0) => {
         if (dealer === name) {
             unsetDealer();
             if (showError) {
@@ -38,7 +38,7 @@ export const SelectDealerForm: React.FunctionComponent = () => {
             }
             return;
         }
-        setDealer(name);
+        setDealerIndex(i);
     };
 
     useEffect(() => {

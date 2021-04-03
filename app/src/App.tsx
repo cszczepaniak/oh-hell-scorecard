@@ -14,7 +14,7 @@ const App: React.FunctionComponent = () => {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <div className='w-full h-screen sm:h-auto bg-white sm:bg-gray-50'>
+                <div className='w-full bg-white sm:bg-gray-50' style={{ height: window.innerHeight }}>
                     <Switch>
                         <Route exact path='/'>
                             <Home />

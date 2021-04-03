@@ -7,6 +7,8 @@ module.exports = {
     variants: {
         extend: {
             cursor: ['hover'],
+            backgroundColor: ['disabled'],
+            textColor: ['disabled'],
         },
     },
     plugins: [require('@tailwindcss/forms')],

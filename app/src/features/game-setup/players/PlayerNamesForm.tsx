@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
+import { useGame } from '../../game/game-hooks';
 import { useDealer, usePlayerNames } from '../hooks';
 import { PlayerNamesFormUI } from './PlayerNamesFormUI';
 
@@ -13,7 +14,7 @@ interface PlayerNamesFormProps {
 export interface PlayerNamesFormUIProps {
     addPlayer: (name: string) => void;
     playerNames: string[];
-    setName: (idx: number, playerName: string) => void;
+    setName: (name: string, i: number) => void;
     errorText: string;
     handleGoToNext: () => void;
     validation: string[];
@@ -58,7 +59,7 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
         if (errorText === dealerError && dealer.length > 0) {
             setErrorText('');
         }
-    }, [playerNames, dealer, errorText]);
+    }, [errorText, playerNames, dealer]);
 
     const props: PlayerNamesFormUIProps = {
         addPlayer,
@@ -80,8 +81,9 @@ export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({
 
 // custom hook for handling the form data
 const usePlayerFormData = (minPlayers: number, maxPlayers: number) => {
-    const { playerNames, setPlayerNames } = usePlayerNames();
-    const { dealer, setDealer, unsetDealer } = useDealer();
+    const { addPlayer, removePlayerAt, setPlayerName } = useGame();
+    const { playerNames } = usePlayerNames();
+    const { dealer, unsetDealer } = useDealer();
     const [touched, setTouched] = useState(Array(playerNames.length).fill(false));
     const [validation, setValidation] = useState<string[]>(Array(playerNames.length).fill(''));
 
@@ -101,31 +103,18 @@ const usePlayerFormData = (minPlayers: number, maxPlayers: number) => {
         playerNames,
         dealer,
         validation,
-        setName: (idx: number, playerName: string) => {
-            const playersCopy = [...playerNames];
-            playersCopy[idx] = playerName;
-            setPlayerNames(playersCopy);
-        },
-        setDealer: (playerName: string) => {
-            if (!playerNames.includes(playerName)) {
-                setDealer('');
-            }
-            setDealer(playerName);
-        },
+        setName: setPlayerName,
         unsetDealer,
         addPlayer: (playerName: string) => {
             if (playerNames.length < maxPlayers) {
-                setPlayerNames([...playerNames, playerName]);
+                addPlayer(playerName);
                 setTouched([...touched, false]);
                 setValidation([...validation, '']);
             }
         },
         removePlayer: (idx: number) => {
-            if (dealer === playerNames[idx]) {
-                unsetDealer();
-            }
             if (playerNames.length > minPlayers) {
-                setPlayerNames(playerNames.filter((_, i) => i !== idx));
+                removePlayerAt(idx);
                 setTouched(touched.filter((_, i) => i !== idx));
                 setValidation(validation.filter((_, i) => i !== idx));
             }

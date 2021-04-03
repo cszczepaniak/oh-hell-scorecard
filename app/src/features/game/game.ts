@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type ScoringMode = 'Standard' | 'Negative';
 
-type Phase = 'Bidding' | 'Scoring';
-
 export interface Player {
     name: string;
     score: number;
@@ -12,25 +10,23 @@ export interface Player {
 }
 
 export interface Game {
-    playerNames: string[];
     players: Player[];
-    phase: Phase;
     round: number;
     numberOfCards: number;
-    dealer: string;
+    dealerIndex: number;
     settings: {
         scoringMode: ScoringMode;
         bonusRounds: boolean;
     };
 }
 
+const initialPlayer: Player = { name: '', score: 0, currentBid: 0, currentTricks: 0 };
+
 const initialState: Game = {
-    playerNames: ['', '', '', ''],
-    players: [],
-    phase: 'Bidding',
+    players: Array(4).fill({ ...initialPlayer }),
     round: 1,
     numberOfCards: 1,
-    dealer: '',
+    dealerIndex: -1,
     settings: {
         scoringMode: 'Negative',
         bonusRounds: true,
@@ -41,39 +37,47 @@ const gameSlice = createSlice({
     name: 'game',
     initialState,
     reducers: {
-        togglePhase(state) {
-            if (state.phase === 'Bidding') {
-                state.phase = 'Scoring';
-                return;
-            }
-            state.phase = 'Bidding';
+        addPlayer(state, action: PayloadAction<string>) {
+            state.players.push({ name: action.payload, score: 0, currentBid: 0, currentTricks: 0 });
         },
-        initializePlayers(state) {
-            const names = [...state.playerNames];
-            const players: Player[] = [];
-            names.forEach(name => players.push({ name, score: 0, currentBid: 0, currentTricks: 0 }));
-            return { ...state, players };
+        removePlayerAt(state, action: PayloadAction<number>) {
+            if (state.dealerIndex === action.payload) {
+                unsetDealer();
+            }
+            state.players = state.players.filter((_, i) => i !== action.payload);
+        },
+        setDealerIndex(state, action: PayloadAction<number>) {
+            state.dealerIndex = action.payload;
+        },
+        setPlayerName: {
+            prepare: (name: string, i: number) => ({ payload: { name, i } }),
+            reducer: (state, action: PayloadAction<{ name: string; i: number }>) => {
+                if (action.payload.i >= state.players.length) {
+                    return state;
+                }
+                state.players[action.payload.i].name = action.payload.name;
+            },
+        },
+        unsetDealer(state) {
+            state.dealerIndex = -1;
         },
         setBonusRounds(state, action: PayloadAction<boolean>) {
             state.settings.bonusRounds = action.payload;
         },
-        setDealer(state, action: PayloadAction<string>) {
-            state.dealer = action.payload;
-        },
-        setPlayerNames(state, action: PayloadAction<string[]>) {
-            state.playerNames = action.payload;
-        },
         setScoringMode(state, action: PayloadAction<ScoringMode>) {
             state.settings.scoringMode = action.payload;
-        },
-        unsetDealer(state, _: PayloadAction<void>) {
-            state.dealer = '';
         },
         setRoundNumber(state, action: PayloadAction<number>) {
             state.round = action.payload;
         },
         setNumberOfCards(state, action: PayloadAction<number>) {
             state.numberOfCards = action.payload;
+        },
+        resetBids(state) {
+            state.players = state.players.map(p => ({ ...p, currentBid: 0 }));
+        },
+        resetTricks(state) {
+            state.players = state.players.map(p => ({ ...p, currentTricks: 0 }));
         },
         setBids(state, action: PayloadAction<number[]>) {
             if (action.payload.length !== state.players.length) {
@@ -117,19 +121,22 @@ const gameSlice = createSlice({
 });
 
 export const {
-    initializePlayers,
+    // player stuff
+    addPlayer,
+    removePlayerAt,
+    setPlayerName,
+    setDealerIndex,
+    unsetDealer,
+    // settings stuff
     setBonusRounds,
-    setDealer,
-    setPlayerNames,
+    setScoringMode,
+    // game stuff
     setRoundNumber,
     setNumberOfCards,
     setTrick,
-    setTricks,
     setBid,
-    setBids,
+    resetBids,
+    resetTricks,
     scoreRound,
-    setScoringMode,
-    togglePhase,
-    unsetDealer,
 } = gameSlice.actions;
 export default gameSlice.reducer;

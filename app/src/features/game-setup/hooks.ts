@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useSelector } from 'react-redux';
 
 import { RootState } from '../../redux/root';
@@ -6,30 +8,31 @@ import { useGame } from '../game/game-hooks';
 
 interface UsePlayerNamesReturnType {
     playerNames: string[];
-    setPlayerNames: (playerNames: string[]) => void;
+    setPlayerName: (name: string, i: number) => void;
 }
 
 export const usePlayerNames = (): UsePlayerNamesReturnType => {
     const {
-        game: { playerNames },
-        setPlayerNames,
+        game: { players },
+        setPlayerName,
     } = useGame();
-    return { playerNames, setPlayerNames };
+    const playerNames = useMemo(() => players.map(p => p.name), [players]);
+    return { playerNames, setPlayerName };
 };
 
 interface UseDealerReturnType {
     dealer: string;
-    setDealer: (dealerName: string) => void;
+    setDealerIndex: (i: number) => void;
     unsetDealer: () => void;
 }
 
 export const useDealer = (): UseDealerReturnType => {
     const {
-        game: { dealer },
-        setDealer,
+        game: { dealerIndex, players },
+        setDealerIndex,
         unsetDealer,
     } = useGame();
-    return { dealer, setDealer, unsetDealer };
+    return { dealer: players[dealerIndex]?.name ?? '', setDealerIndex, unsetDealer };
 };
 
 interface UseGameSettingsReturnType {
