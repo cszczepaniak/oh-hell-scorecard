@@ -58,12 +58,7 @@ export const useGame = (): UseGameReturnType => {
         setTrick: (trick: number, i: number) => dispatch(setTrick(trick, i)),
         setTricks: (tricks: number[]) => dispatch(setTricks(tricks)),
         submitRound: () => {
-            const scores = calculateScores(
-                game.players.map(p => p.currentBid),
-                game.players.map(p => p.currentTricks),
-                game.numberOfCards,
-                game.settings.bonusRounds,
-            );
+            const scores = calculateScores(game);
             dispatch(scoreRound(scores));
             const dealerIdx = game.players.findIndex(p => p.name === game.dealer);
             dispatch(setDealer(game.players[(dealerIdx + 1) % game.players.length].name));
