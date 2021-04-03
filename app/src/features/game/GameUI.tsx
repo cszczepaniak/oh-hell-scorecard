@@ -72,7 +72,7 @@ export const GameUI: React.FunctionComponent<GameUIProps> = ({
                     </div>
                 ))}
             </div>
-            <div className='flex flex-row w-full sm:justify-end space-x-4 px-4 sm:space-x-8 sm:px-8 py-2 border-t border-gray-400'>
+            <div className='flex flex-row w-full sm:justify-end space-x-4 px-4 sm:space-x-8 sm:px-8 py-2 border-t border-gray-300'>
                 <Button
                     disabled={phase === 'Scoring'}
                     onClick={handleSubmitBids}
