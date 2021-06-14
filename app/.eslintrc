@@ -7,7 +7,7 @@
       "jsx": true // Allows for the parsing of JSX
     }
   },
-  "plugins": ["@typescript-eslint", "react", "import"],
+  "plugins": ["@typescript-eslint", "react", "import", "prettier"],
   "settings": {
     "react": {
       "version": "detect" // Tells eslint-plugin-react to automatically detect the version of React to use
@@ -16,12 +16,11 @@
   "extends": [
     "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
     "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
-    "prettier/@typescript-eslint", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
