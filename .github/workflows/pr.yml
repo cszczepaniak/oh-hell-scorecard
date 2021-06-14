@@ -1,4 +1,4 @@
-name: Unit Tests
+name: PR Build
 
 on:
   pull_request:
@@ -16,8 +16,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "13.x"
-      - run: npm install
-      - run: npm test -- --coverage
+      - run: sh ./scripts/build.sh
         env:
           CI: true
       - name: Upload coverage
