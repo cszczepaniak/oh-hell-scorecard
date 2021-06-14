@@ -60,7 +60,7 @@
         "husky": "^4.2.5",
         "lint-staged": "^10.2.11",
         "mutationobserver-shim": "^0.3.7",
-        "postcss": "^7.0.35",
+        "postcss": "^8.2.10",
         "prettier": "^2.0.5",
         "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.4"
     },
