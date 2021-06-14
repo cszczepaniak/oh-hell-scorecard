@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '../../redux/root';
-import { ScoringMode } from '../game/game';
 import { useGame } from '../game/game-hooks';
+import { ScoringMode } from '../game/game-state';
 
 interface UsePlayerNamesReturnType {
     playerNames: string[];

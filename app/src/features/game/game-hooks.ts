@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { getNumberOfCards } from '../../lib/game/rounds';
 import { calculateScores } from '../../lib/game/scoring';
-import { RootState } from '../../redux/root';
+import { RootState, useRootSelector } from '../../redux/root';
 import {
-    Game,
+    GameModel,
     ScoringMode,
     scoreRound,
     setBonusRounds,
@@ -20,10 +20,10 @@ import {
     removePlayerAt,
     resetBids,
     resetTricks,
-} from './game';
+} from './game-state';
 
 interface UseGameReturnType {
-    game: Game;
+    game: GameModel;
     addPlayer: (name: string) => void;
     removePlayerAt: (i: number) => void;
     setBonusRounds: (setting: boolean) => void;
@@ -40,7 +40,7 @@ interface UseGameReturnType {
 }
 
 export const useGame = (): UseGameReturnType => {
-    const game: Game = useSelector((state: RootState) => state.game);
+    const game = useRootSelector((state: RootState) => state.game);
     const dispatch = useDispatch();
     return {
         game,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -11,10 +11,20 @@ import { Game } from './features/game/Game';
 import { store } from './redux/root';
 
 const App: React.FunctionComponent = () => {
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowHeight(window.innerHeight);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <div className='w-full bg-white sm:bg-gray-50' style={{ height: window.innerHeight }}>
+                <div className='w-full bg-white sm:bg-gray-50' style={{ height: windowHeight }}>
                     <Switch>
                         <Route exact path='/'>
                             <Home />

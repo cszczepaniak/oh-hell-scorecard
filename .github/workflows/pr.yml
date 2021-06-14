@@ -1,11 +1,7 @@
-name: Unit Tests
+name: PR Build
 
 on:
   pull_request:
-
-defaults:
-  run:
-    working-directory: ./app
 
 jobs:
   build:
@@ -15,9 +11,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: "13.x"
-      - run: npm install
-      - run: npm test -- --coverage
+          node-version: "12.x"
+      - run: sh ./scripts/build.sh
         env:
           CI: true
       - name: Upload coverage
