@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { areBidsValid, areTricksValid } from '../../lib/game/validation';
 import { allowInteger } from '../../lib/utils/input-utils';
 import { useDealer } from '../game-setup/hooks';
-import { Game as GameModel } from './game';
 import { useGame } from './game-hooks';
+import { GameModel } from './game-state';
 import { GameUI } from './GameUI';
 
 export interface GameUIProps {

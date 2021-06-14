@@ -9,7 +9,7 @@ export interface Player {
     currentTricks: number;
 }
 
-export interface Game {
+export interface GameModel {
     players: Player[];
     round: number;
     numberOfCards: number;
@@ -22,7 +22,7 @@ export interface Game {
 
 const initialPlayer: Player = { name: '', score: 0, currentBid: 0, currentTricks: 0 };
 
-const initialState: Game = {
+const initialState: GameModel = {
     players: Array(4).fill({ ...initialPlayer }),
     round: 1,
     numberOfCards: 1,

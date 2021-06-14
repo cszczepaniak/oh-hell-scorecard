@@ -1,7 +1,7 @@
-import { Game, ScoringMode } from '../../features/game/game';
+import { GameModel, ScoringMode } from '../../features/game/game-state';
 import { areBidsValid, areTricksValid } from './validation';
 
-export function calculateScores(game: Game): number[] {
+export function calculateScores(game: GameModel): number[] {
     const result: number[] = [];
     const bids = game.players.map(p => p.currentBid);
     const tricks = game.players.map(p => p.currentTricks);

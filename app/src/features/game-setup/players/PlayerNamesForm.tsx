@@ -30,15 +30,8 @@ const playerNamesError = 'Player names must be unique and non-empty';
 const dealerError = 'Please select a dealer';
 
 export const PlayerNamesForm: React.FunctionComponent<PlayerNamesFormProps> = ({ minPlayers, maxPlayers }) => {
-    const {
-        playerNames,
-        dealer,
-        validation,
-        setName,
-        addPlayer,
-        removePlayer,
-        handlePlayerNameBlur,
-    } = usePlayerFormData(minPlayers, maxPlayers);
+    const { playerNames, dealer, validation, setName, addPlayer, removePlayer, handlePlayerNameBlur } =
+        usePlayerFormData(minPlayers, maxPlayers);
     const [errorText, setErrorText] = useState('');
 
     const history = useHistory();

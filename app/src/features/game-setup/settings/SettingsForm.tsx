@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useHistory } from 'react-router';
 
-import { ScoringMode } from '../../game/game';
+import { ScoringMode } from '../../game/game-state';
 import { useGameSettings } from '../hooks';
 import { SettingsFormUI } from './SettingsFormUI';
 

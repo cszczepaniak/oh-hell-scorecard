@@ -1,30 +1,26 @@
-import { Game, Player, ScoringMode } from '../../features/game/game';
+import { GameModel, Player, ScoringMode } from '../../features/game/game-state';
 import { calculateScores } from './scoring';
 
-const createGameFactory = (scoringMode: ScoringMode, bonusRounds = true) => (
-    bids: number[],
-    tricks: number[],
-    nCards: number,
-): Game => {
-    const testPlayers: Player[] = bids.map((b, i) => ({
-        currentBid: b,
-        currentTricks: tricks[i],
-        name: '',
-        score: 0,
-    }));
-    return {
-        settings: {
-            scoringMode,
-            bonusRounds,
-        },
-        playerNames: [],
-        phase: 'Bidding',
-        round: 0,
-        dealer: '',
-        players: testPlayers,
-        numberOfCards: nCards,
+const createGameFactory =
+    (scoringMode: ScoringMode, bonusRounds = true) =>
+    (bids: number[], tricks: number[], nCards: number): GameModel => {
+        const testPlayers: Player[] = bids.map((b, i) => ({
+            currentBid: b,
+            currentTricks: tricks[i],
+            name: '',
+            score: 0,
+        }));
+        return {
+            settings: {
+                scoringMode,
+                bonusRounds,
+            },
+            round: 0,
+            players: testPlayers,
+            numberOfCards: nCards,
+            dealerIndex: 0,
+        };
     };
-};
 
 describe('scoreRound', () => {
     test.each([
